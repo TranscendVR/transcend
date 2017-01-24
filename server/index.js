@@ -8,7 +8,7 @@ const { resolve } = require('path');
 const morgan = require('morgan');
 const chalk = require('chalk');
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'production') {
   // Logging middleware (dev only)
   app.use(morgan('dev'));
 }
