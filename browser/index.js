@@ -1,4 +1,4 @@
-/* global io */
+/* global io socket */
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
@@ -7,7 +7,10 @@
 
 // Right now, the boilerplate shapes are huge - should consider doing something about that
 
-const socket = io(window.location.origin);
+import { putUserOnDOM } from './utils';
+import './components/publish-location';
+
+window.socket = io(window.location.origin);
 
 const scene = document.querySelector('a-scene');
 
@@ -32,14 +35,9 @@ socket.on('connect', () => {
 // When someone connects initially, this will get any other users already there
 socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
-  for (let i = 0; i < users.length; i++) {
-    const avatar = document.createElement('a-box');
-    scene.appendChild(avatar);
-    avatar.setAttribute('id', users[i].id);
-    avatar.setAttribute('color', users[i].color);
-    avatar.setAttribute('position', `${users[i].x} ${users[i].y} ${users[i].z}`);
-    avatar.setAttribute('rotation', `${users[i].xrot} ${users[i].yrot} ${users[i].zrot}`);
-  }
+  users.forEach(user => {
+    putUserOnDOM(user);
+  });
   // This goes to the server, and then goes to `publish-location` to tell the `tick` to start
   socket.emit('haveGottenOthers');
   // This goes to the server, and then back to the function with the setInterval
@@ -51,12 +49,7 @@ socket.on('getOthersCallback', users => {
 // For those who are already there, this will update if someone new connects
 socket.on('newUser', user => {
   console.log('Someone else has joined');
-  const avatar = document.createElement('a-box');
-  scene.appendChild(avatar);
-  avatar.setAttribute('id', user.id);
-  avatar.setAttribute('color', user.color);
-  avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
-  avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
+  putUserOnDOM(user);
 });
 
 // This comes back with a user array of all users but the one viewing the scene
@@ -68,11 +61,11 @@ socket.on('startTheInterval', () => {
 
 socket.on('usersUpdated', users => {
   console.log('Updating position for all users');
-  for (let i = 0; i < users.length; i++) {
-    const otherAvatar = document.querySelector(`#${users[i].id}`);
-    otherAvatar.setAttribute('position', `${users[i].x} ${users[i].y} ${users[i].z}`);
-    otherAvatar.setAttribute('rotation', `${users[i].xrot} ${users[i].yrot} ${users[i].zrot}`);
-  }
+  users.forEach(user => {
+    const otherAvatar = document.querySelector(`#${user.id}`);
+    otherAvatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
+    otherAvatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
+  });
 });
 
 // Remove a user's avatar when they disconnect from the server

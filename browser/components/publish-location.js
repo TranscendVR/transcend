@@ -4,7 +4,7 @@
 
 let hasGottenOthers = false;
 
-AFRAME.registerComponent('publish-location', {
+export default AFRAME.registerComponent('publish-location', {
   tick: function () {
     socket.on('startTick', () => hasGottenOthers = true);
     if (hasGottenOthers) {
