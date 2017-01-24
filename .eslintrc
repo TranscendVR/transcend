@@ -1,0 +1,24 @@
+{
+  "extends": "standard",
+  "plugins": [
+    "react"
+  ],
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "no-extra-semi": [2],
+    "no-multiple-empty-lines": [2, {"max": 2}],
+    "no-return-assign": [0],
+    "no-trailing-spaces": [0],
+    "no-var": [1],
+    "object-curly-spacing": [1, "always"],
+    "prefer-const": [1],
+    "semi": [2, "always"],
+    "react/jsx-uses-react": [2],
+    "react/jsx-uses-vars": [2]
+  }
+}
