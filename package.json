@@ -43,6 +43,7 @@
     "nodemon": "^1.11.0",
     "pg": "^6.1.2",
     "pg-native": "^1.10.0",
+    "randomcolor": "^0.4.4",
     "redux": "^3.6.0",
     "redux-logger": "^2.7.4",
     "redux-thunk": "^2.2.0",
