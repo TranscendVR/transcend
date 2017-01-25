@@ -1,9 +1,10 @@
 const bcrypt = require('bcryptjs');
 const Sequelize = require('sequelize');
-const db = require('./../index');
+const db = require('../index');
 
 const User = db.define('users', {
   name: Sequelize.STRING,
+  displayName: Sequelize.STRING,
   email: {
     type: Sequelize.STRING,
     validate: {
