@@ -27,7 +27,7 @@ describe('Square', () => {
         });
     });
 
-    it('throws n error if the X-Coordinate Upper Bound is inclusive or the Lower Bound is exclusive', () => {
+    it('throws an error if the X-Coordinate Upper Bound is inclusive or the Lower Bound is exclusive', () => {
       return createdSquare.save()
       .then(square => {
         return square.update({
@@ -47,7 +47,7 @@ describe('Square', () => {
       });
     });
 
-    it('throws n error if the Z-Coordinate Upper Bound is inclusive or the Lower Bound is exclusive', () => {
+    it('throws an error if the Z-Coordinate Upper Bound is inclusive or the Lower Bound is exclusive', () => {
       return createdSquare.save()
       .then(square => {
         return square.update({
