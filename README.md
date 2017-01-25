@@ -1,5 +1,7 @@
 # Transcend
 
+[ ![Codeship Status for TranscendVR/transcend](https://app.codeship.com/projects/99da1ca0-c4d2-0134-5840-0ea22bbd4aa1/status?branch=master)](https://app.codeship.com/projects/198072)
+
 ***v.*** be or go beyond the range or limits of
 
 A VR environment in which people across geographical boundaries can congregate, move around, explore, and interact as if they were actually together. It's a world that goes beyond traditional boundaries, allowing people from different places, situations, and walks of life to come together to share ideas and experiences.
