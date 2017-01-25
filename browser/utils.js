@@ -1,6 +1,5 @@
-const scene = document.querySelector('a-scene');
-
 export function putUserOnDOM (user) {
+  const scene = document.querySelector('a-scene');
   const avatar = document.createElement('a-box');
   scene.appendChild(avatar);
   avatar.setAttribute('id', user.id);

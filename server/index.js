@@ -3,7 +3,7 @@ const server = http.createServer();
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const { resolve } = require('path');
+const path = require('path');
 const chalk = require('chalk');
 
 if (process.env.NODE_ENV !== 'production') {
@@ -23,13 +23,18 @@ const io = socketio(server);
 require('./socket')(io);
 
 // Serve static files
-app.use(express.static(resolve(__dirname, '..', 'public')));
-app.use(express.static(resolve(__dirname, '..', 'browser')));
+const rootPath = path.join(__dirname, '../');
+app.use(express.static(path.join(rootPath, './browser/app.html')));
+app.use(express.static(path.join(rootPath, './browser/favicon/favicon.ico')));
+app.use(express.static(path.join(rootPath, './public')));
 
 // Our custom routes will go here
 
 // Send index.html for anything else
-app.get('/*', (_, res) => res.sendFile(resolve(__dirname, '..', 'public', 'index.html')));
+// app.get('/*', (_, res) => res.sendFile(resolve(__dirname, '..', 'public', 'index.html')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(rootPath, './browser/app.html'));
+});
 
 const port = process.env.PORT || 1337;
 server.listen(port, () => {

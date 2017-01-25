@@ -1,23 +1,25 @@
-/* global io socket */
+/* global socket */
+
+import io from 'socket.io-client';
+window.socket = io.connect();
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
 // by them.
 // The other users will get the updated position via sockets.
 
-// Right now, the boilerplate shapes are huge - should consider doing something about that
+import { putUserOnDOM } from '../utils';
+import '../aframeComponents/publish-location';
 
-import { putUserOnDOM } from './utils';
-import './components/publish-location';
-
-window.socket = io(window.location.origin);
-
-const scene = document.querySelector('a-scene');
+let scene;
+console.log('first scene console.log' + scene);
 
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
   socket.on('createUser', user => {
+    scene = document.querySelector('a-scene');
+    console.log('second scene console.log' + scene);
     const avatar = document.createElement('a-box');
     scene.appendChild(avatar);
     avatar.setAttribute('id', user.id);

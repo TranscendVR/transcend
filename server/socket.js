@@ -9,10 +9,12 @@ module.exports = io => {
     users.createUser(id);
     const user = users.userFromId(id);
 
-    // This goes to the user that just connected
-    socket.emit('createUser', user);
-    // This goes to the users who are already connected
-    socket.broadcast.emit('newUser', user);
+    socket.on('sceneLoad', () => {
+      // This goes to the user that just connected
+      socket.emit('createUser', user);
+      // This goes to the users who are already connected
+      socket.broadcast.emit('newUser', user);
+    });
 
     // This will send all of the current users to the user that just connected
     socket.on('getOthers', () => {
