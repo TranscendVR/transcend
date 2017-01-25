@@ -25,6 +25,7 @@ require('./socket')(io);
 
 // Serve static files
 app.use(express.static(resolve(__dirname, '..', 'public')));
+app.use(express.static(resolve(__dirname, '..', 'browser')));
 
 // Our custom routes will go here
 
