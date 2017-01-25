@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const db = require('./../index');
+const db = require('.../index');
 
 // square is a room or shared space (like the hallway or main room)
 // Sequelize.GEOMETRY info: http://docs.sequelizejs.com/en/latest/api/datatypes/#geometry

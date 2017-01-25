@@ -1,4 +1,4 @@
-const db = require('./../index');
+const db = require('../index');
 const Square = require('./square');
 const { expect } = require('chai');
 
