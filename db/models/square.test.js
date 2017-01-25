@@ -8,7 +8,6 @@ describe('Square', () => {
   beforeEach(() => {
     createdSquare = Square.build({
       name: 'FakeSquare',
-      number: 1,
       xcoord: [{ value: 0, inclusive: true }, { value: 5, inclusive: false }],
       zcoord: [{ value: 0, inclusive: true }, { value: 5, inclusive: false }]
     });
@@ -19,11 +18,10 @@ describe('Square', () => {
   });
 
   describe('Validations', () => {
-    it('creates a square with two ranges, a name, and a number value', () => {
+    it('creates a square with two ranges and a name value', () => {
       createdSquare.save()
         .then(square => {
           expect(square.name).to.equal('FakeSquare');
-          expect(square.number).to.equal(1);
           expect(square.xcoord.inclusive).to.eql([true, false]);
           expect(square.zcoord.inclusive).to.eql([true, false]);
         });
