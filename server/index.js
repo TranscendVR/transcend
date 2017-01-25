@@ -4,12 +4,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const { resolve } = require('path');
-
-const morgan = require('morgan');
 const chalk = require('chalk');
 
 if (process.env.NODE_ENV !== 'production') {
   // Logging middleware (dev only)
+  const morgan = require('morgan');
   app.use(morgan('dev'));
 }
 
