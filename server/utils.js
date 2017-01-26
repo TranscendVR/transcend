@@ -32,8 +32,8 @@ function userFromId (id) {
 }
 
 // When a user connects, send them a list of all of the existing users
-function getOtherUsers (id) {
-  return users.filter(user => user.id !== id);
+function getOtherUsers (users, id) {
+  return users.filter(user => user.get('id') !== id);
 }
 
 // Update a user's position and rotation when it's pushed from the frontend

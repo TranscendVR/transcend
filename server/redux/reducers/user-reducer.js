@@ -28,18 +28,6 @@ const addUser = user => {
   };
 };
 
-const createAndEmitUser = socket => {
-  return dispatch => {
-    const id = socket.id;
-    const user = Map(createUser(id));
-    dispatch(addUser(user));
-    socket.on('sceneLoad', () => {
-      socket.emit('createUser', user);
-    });
-    socket.broadcast.emit('newUser', user);
-  };
-};
-
 // const createUser = id => {
 //   return {
 //     type: CREATE_USER,
@@ -59,6 +47,21 @@ const createAndEmitUser = socket => {
 //     id
 //   };
 // };
+
+/* --------------- THUNK ACTION CREATORS --------------- */
+const createAndEmitUser = socket => {
+  return dispatch => {
+    const id = socket.id;
+    const user = Map(createUser(id));
+    dispatch(addUser(user));
+    socket.on('sceneLoad', () => {
+      socket.emit('createUser', user);
+    });
+    socket.broadcast.emit('newUser', user);
+  };
+};
+
+
 
 /* --------------- REDUCER --------------- */
 

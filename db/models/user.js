@@ -12,7 +12,7 @@ const User = db.define('users', {
       notEmpty: true
     }
   },
-  // OAuth -> users may or may not have passwords.
+  // OAuth -> users may or may not hav e passwords.
   password_digest: Sequelize.STRING,
   password: Sequelize.VIRTUAL
 }, {

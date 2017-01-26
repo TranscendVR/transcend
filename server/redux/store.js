@@ -5,7 +5,7 @@ const thunkMiddleware = require('redux-thunk').default;
 const { userReducer } = require('./reducers/user-reducer');
 
 const rootReducer = combineReducers({
-  user: userReducer
+  users: userReducer
 });
 
 const store = createStore(
