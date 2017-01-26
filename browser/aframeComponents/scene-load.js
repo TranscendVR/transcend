@@ -2,7 +2,7 @@
 
 import AFRAME from 'aframe';
 
-// This component ensure the scene loads before anything else can happen.
+// This component ensures the scene loads before anything else can happen.
 // Without it, race conditions start occurring where entities are being accessed
 // before being placed on the DOM.
 

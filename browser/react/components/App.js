@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../aframeComponents/scene-load';
 
-const App = props => {
+export default function App (props) {
   return (
     <div>
       <a-scene scene-load>
@@ -13,6 +13,4 @@ const App = props => {
       </a-scene>
     </div>
   );
-};
-
-export default App;
+}
