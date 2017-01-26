@@ -1,6 +1,6 @@
 const { List, Map } = require('immutable');
 
-const { createUser } = require('../../utils.js');
+const { createUser } = require('../../utils');
 
 /* --------------- INITIAL STATE --------------- */
 
@@ -25,6 +25,18 @@ const addUser = user => {
   return {
     type: ADD_USER,
     user
+  };
+};
+
+const createAndEmitUser = socket => {
+  return dispatch => {
+    const id = socket.id;
+    const user = Map(createUser(id));
+    dispatch(addUser(user));
+    socket.on('sceneLoad', () => {
+      socket.emit('createUser', user);
+    });
+    socket.broadcast.emit('newUser', user);
   };
 };
 
@@ -61,9 +73,7 @@ function userReducer (state = initialState, action) {
   }
 }
 
-/* --------------- DISPATCHERS --------------- */
-
 module.exports = {
-  addUser,
+  createAndEmitUser,
   userReducer
 };

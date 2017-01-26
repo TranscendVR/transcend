@@ -1,7 +1,5 @@
 /* global socket */
 
-import { Map } from 'immutable';
-
 import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
 window.socket = io.connect();
@@ -22,9 +20,6 @@ socket.on('connect', () => {
 });
 
 socket.on('createUser', user => {
-  // console.log('user', user);
-  // const id = user.get('id');
-  // console.log('should give back id', id);
   scene = document.querySelector('a-scene');
   const avatar = document.createElement('a-entity');
   scene.appendChild(avatar);
@@ -37,7 +32,6 @@ socket.on('createUser', user => {
   avatar.setAttribute('camera', true);
   avatar.setAttribute('look-controls', true);
   avatar.setAttribute('wasd-controls', true);
-  console.log(avatar);
   socket.emit('getOthers');
 });
 
