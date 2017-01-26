@@ -2,7 +2,9 @@
 
 import AFRAME from 'aframe';
 
-// This component fires an event on each render loop for each entity it's attached to (aka, every)
+// This component is attached to the user who the scene belongs to
+// It fires an event on each render loop for that particular user
+// The backend then uses this information to update its state
 
 let hasGottenOthers = false;
 

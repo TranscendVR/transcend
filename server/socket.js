@@ -10,7 +10,8 @@ module.exports = io => {
     const user = users.userFromId(id);
 
     socket.on('sceneLoad', () => {
-      // This goes to the user that just connected
+      // This goes to the user that just connected after the scene has loaded
+      // for that user
       socket.emit('createUser', user);
     });
 

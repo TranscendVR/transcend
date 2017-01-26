@@ -1,17 +1,18 @@
 /* global socket */
 
 import io from 'socket.io-client';
+// All A-Frame components need access to the socket instance
 window.socket = io.connect();
-
-// `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
-// on the user that the scene belongs to, so that only that scene can be manipulated
-// by them.
-// The other users will get the updated position via sockets.
 
 import { putUserOnDOM } from '../utils';
 import '../aframeComponents/publish-location';
 
 let scene;
+
+// `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
+// on the user that the scene belongs to, so that only that scene can be manipulated
+// by them.
+// The other users will get the updated position via sockets.
 
 // This is the person who connected
 socket.on('connect', () => {
@@ -60,6 +61,7 @@ socket.on('startTheInterval', () => {
   }, 50);
 });
 
+// Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
   console.log('Updating position for all users');
   users.forEach(user => {
