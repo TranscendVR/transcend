@@ -16,7 +16,6 @@ function User (id) {
 // Create a user given the socket ID
 function createUser (id) {
   const user = new User(id);
-  users.push(user);
   return user;
 }
 

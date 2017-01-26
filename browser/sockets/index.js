@@ -1,5 +1,7 @@
 /* global socket */
 
+import { Map } from 'immutable';
+
 import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
 window.socket = io.connect();
@@ -17,21 +19,26 @@ let scene;
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
-  socket.on('createUser', user => {
-    scene = document.querySelector('a-scene');
-    const avatar = document.createElement('a-entity');
-    scene.appendChild(avatar);
-    avatar.setAttribute('id', user.id);
-    avatar.setAttribute('geometry', 'primitive', 'box');
-    avatar.setAttribute('material', 'color', user.color);
-    avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
-    avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
-    avatar.setAttribute('publish-location', true);
-    avatar.setAttribute('camera', true);
-    avatar.setAttribute('look-controls', true);
-    avatar.setAttribute('wasd-controls', true);
-    socket.emit('getOthers');
-  });
+});
+
+socket.on('createUser', user => {
+  // console.log('user', user);
+  // const id = user.get('id');
+  // console.log('should give back id', id);
+  scene = document.querySelector('a-scene');
+  const avatar = document.createElement('a-entity');
+  scene.appendChild(avatar);
+  avatar.setAttribute('id', user.id);
+  avatar.setAttribute('geometry', 'primitive', 'box');
+  avatar.setAttribute('material', 'color', user.color);
+  avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
+  avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
+  avatar.setAttribute('publish-location', true);
+  avatar.setAttribute('camera', true);
+  avatar.setAttribute('look-controls', true);
+  avatar.setAttribute('wasd-controls', true);
+  console.log(avatar);
+  socket.emit('getOthers');
 });
 
 // When someone connects initially, this will get any other users already there
