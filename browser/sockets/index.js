@@ -12,15 +12,13 @@ import { putUserOnDOM } from '../utils';
 import '../aframeComponents/publish-location';
 
 let scene;
-console.log('first scene console.log' + scene);
 
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
   socket.on('createUser', user => {
     scene = document.querySelector('a-scene');
-    console.log('second scene console.log' + scene);
-    const avatar = document.createElement('a-box');
+    const avatar = document.createElement('a-sphere');
     scene.appendChild(avatar);
     avatar.setAttribute('id', user.id);
     avatar.setAttribute('color', user.color);
