@@ -9,6 +9,7 @@ const initialState = List([]);
 /* --------------- ACTIONS --------------- */
 
 const ADD_USER = 'ADD_USER';
+const UPDATE_USER_POSITION = 'UPDATE_USER_POSITION';
 
 // // For user who just joined, create a user
 // const CREATE_USER = 'CREATE_USER';
@@ -28,6 +29,12 @@ const addUser = user => {
   };
 };
 
+const updateUser = userPosition => {
+  return {
+    type: UPDATE_USER_POSITION,
+    userPosition
+  }
+}
 // const createUser = id => {
 //   return {
 //     type: CREATE_USER,
@@ -61,8 +68,6 @@ const createAndEmitUser = socket => {
   };
 };
 
-
-
 /* --------------- REDUCER --------------- */
 
 function userReducer (state = initialState, action) {
@@ -71,6 +76,13 @@ function userReducer (state = initialState, action) {
     case ADD_USER:
       return state.push(action.user);
 
+    case UPDATE_USER_POSITION:
+      const index = state.findIndex(item => (
+      item.get('id') === action.userPosition.id));
+      state = state.setIn([index, 'position'], action.userPosition.position);
+      state = state.setIn([index, 'rotation'], action.userPosition.rotation);
+      return state;
+
     default:
       return state;
   }
@@ -78,5 +90,6 @@ function userReducer (state = initialState, action) {
 
 module.exports = {
   createAndEmitUser,
+  updateUser,
   userReducer
 };
