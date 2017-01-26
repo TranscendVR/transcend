@@ -1,27 +1,29 @@
-/* global io socket */
+/* global socket */
+
+import io from 'socket.io-client';
+// All A-Frame components need access to the socket instance
+window.socket = io.connect();
+
+import { putUserOnDOM } from '../utils';
+import '../aframeComponents/publish-location';
+
+let scene;
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
 // by them.
 // The other users will get the updated position via sockets.
 
-// Right now, the boilerplate shapes are huge - should consider doing something about that
-
-import { putUserOnDOM } from './utils';
-import './components/publish-location';
-
-window.socket = io(window.location.origin);
-
-const scene = document.querySelector('a-scene');
-
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
   socket.on('createUser', user => {
-    const avatar = document.createElement('a-box');
+    scene = document.querySelector('a-scene');
+    const avatar = document.createElement('a-entity');
     scene.appendChild(avatar);
     avatar.setAttribute('id', user.id);
-    avatar.setAttribute('color', user.color);
+    avatar.setAttribute('geometry', 'primitive', 'box');
+    avatar.setAttribute('material', 'color', user.color);
     avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
     avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
     avatar.setAttribute('publish-location', true);
@@ -59,6 +61,7 @@ socket.on('startTheInterval', () => {
   }, 50);
 });
 
+// Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
   console.log('Updating position for all users');
   users.forEach(user => {

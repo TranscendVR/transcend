@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
-  entry: './browser/index.js',
+  entry: './browser/react/index.js',
   output: {
     path: __dirname,
     filename: './public/bundle.js'
@@ -9,7 +9,7 @@ module.exports = {
   context: __dirname,
   devtool: 'source-map',
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['', '.js', '.jsx']
   },
   module: {
     loaders: [
@@ -18,7 +18,7 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
         query: {
-          presets: ['es2015', 'stage-2']
+          presets: ['react', 'es2015', 'stage-2']
         }
       }
     ]

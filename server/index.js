@@ -23,17 +23,20 @@ const io = socketio(server);
 require('./socket')(io);
 
 // Serve static files
-app.use(express.static(resolve(__dirname, '..', 'public')));
-app.use(express.static(resolve(__dirname, '..', 'browser')));
+app.use(express.static(resolve(__dirname, '../browser/app.html')));
+app.use(express.static(resolve(__dirname, '../browser/favicon/favicon.ico')));
+app.use(express.static(resolve(__dirname, '../public')));
 
 // Our custom routes will go here
 
 // Send index.html for anything else
-app.get('/*', (_, res) => res.sendFile(resolve(__dirname, '..', 'public', 'index.html')));
+app.get('/*', (req, res) => {
+  res.sendFile(resolve(__dirname, '../browser/app.html'));
+});
 
 const port = process.env.PORT || 1337;
 server.listen(port, () => {
-  console.log(chalk.green(`--- Listening on port ${port} ---`));
+  console.log(chalk.blue(`--- Listening on port ${port} ---`));
 });
 
 app.use('/', (err, req, res, next) => {
