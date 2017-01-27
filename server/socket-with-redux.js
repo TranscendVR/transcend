@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 
 const store = require('./redux/store');
-const { createAndEmitUser, updateUser } = require('./redux/reducers/user-reducer');
+const { createAndEmitUser, updateUserPosition } = require('./redux/reducers/user-reducer');
 const { getOtherUsers } = require('./utils');
 
 module.exports = io => {
@@ -32,7 +32,8 @@ module.exports = io => {
     // This will update a user's position when they move, and send it to everyone
     // except the specific scene's user
     socket.on('tick', userData => {
-      store.dispatch(updateUser(userData));
+      const allUsers = store.getState().users;
+      store.dispatch(updateUserPosition(userData, allUsers));
     });
 
   });

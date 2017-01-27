@@ -33,8 +33,8 @@ const updateUser = userPosition => {
   return {
     type: UPDATE_USER_POSITION,
     userPosition
-  }
-}
+  };
+};
 // const createUser = id => {
 //   return {
 //     type: CREATE_USER,
@@ -68,8 +68,18 @@ const createAndEmitUser = socket => {
   };
 };
 
-/* --------------- REDUCER --------------- */
+const updateUserPosition = (userData, allUsers) => {
+  return dispatch => {
+    const index = allUsers.findIndex(item => (
+    item.get('id') === userData.id));
+    allUsers = allUsers.setIn([index, 'position'], userData.position);
+    allUsers = allUsers.setIn([index, 'rotation'], userData.rotation);
+    dispatch(updateUser(allUsers));
+  };
+};
 
+/* --------------- REDUCER --------------- */
+// reducers should be pure functions
 function userReducer (state = initialState, action) {
   switch (action.type) {
 
@@ -77,11 +87,8 @@ function userReducer (state = initialState, action) {
       return state.push(action.user);
 
     case UPDATE_USER_POSITION:
-      const index = state.findIndex(item => (
-      item.get('id') === action.userPosition.id));
-      state = state.setIn([index, 'position'], action.userPosition.position);
-      state = state.setIn([index, 'rotation'], action.userPosition.rotation);
-      return state;
+      return state.merge(action.userPosition);
+      // not sure the correct function for immutable
 
     default:
       return state;
@@ -90,6 +97,6 @@ function userReducer (state = initialState, action) {
 
 module.exports = {
   createAndEmitUser,
-  updateUser,
+  updateUserPosition,
   userReducer
 };
