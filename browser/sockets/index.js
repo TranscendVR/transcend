@@ -38,8 +38,9 @@ socket.on('createUser', user => {
 // When someone connects initially, this will get any other users already there
 socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
-  users.forEach(user => {
-    putUserOnDOM(user);
+  // ES2017 has a fancy Object.entries() method that we could maybe use instead...
+  Object.keys(users).forEach(user => {
+    putUserOnDOM(users[user]);
   });
   // This goes to the server, and then goes to `publish-location` to tell the `tick` to start
   socket.emit('haveGottenOthers');
@@ -65,10 +66,10 @@ socket.on('startTheInterval', () => {
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
   console.log('Updating position for all users');
-  users.forEach(user => {
-    const otherAvatar = document.querySelector(`#${user.id}`);
-    otherAvatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
-    otherAvatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
+  Object.keys(users).forEach(user => {
+    const otherAvatar = document.querySelector(`#${users[user].id}`);
+    otherAvatar.setAttribute('position', `${users[user].x} ${users[user].y} ${users[user].z}`);
+    otherAvatar.setAttribute('rotation', `${users[user].xrot} ${users[user].yrot} ${users[user].zrot}`);
   });
 });
 

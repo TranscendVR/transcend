@@ -4,21 +4,12 @@ const { createUser } = require('../../utils');
 
 /* --------------- INITIAL STATE --------------- */
 
-const initialState = List([]);
+const initialState = Map({});
 
 /* --------------- ACTIONS --------------- */
 
 const ADD_USER = 'ADD_USER';
-const UPDATE_USER_POSITION = 'UPDATE_USER_POSITION';
-
-// // For user who just joined, create a user
-// const CREATE_USER = 'CREATE_USER';
-// // For user who just joined, get all users already there
-// const GET_USERS = 'GET_USERS';
-// // For users already there, get user who just joined
-// const ADD_USER = 'ADD_USER';
-// // For users in room, remove user if they disconnect
-// const REMOVE_USER = 'REMOVE_USER';
+const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 
 /* --------------- ACTION CREATORS --------------- */
 
@@ -29,31 +20,12 @@ const addUser = user => {
   };
 };
 
-const updateUser = userPosition => {
+const updateUserData = userData => {
   return {
-    type: UPDATE_USER_POSITION,
-    userPosition
+    type: UPDATE_USER_DATA,
+    userData
   };
 };
-// const createUser = id => {
-//   return {
-//     type: CREATE_USER,
-//     id
-//   };
-// };
-
-// const getUsers = () => {
-//   return {
-//     type: GET_USERS
-//   };
-// };
-
-// const removeUser = id => {
-//   return {
-//     type: REMOVE_USER,
-//     id
-//   };
-// };
 
 /* --------------- THUNK ACTION CREATORS --------------- */
 const createAndEmitUser = socket => {
@@ -68,15 +40,15 @@ const createAndEmitUser = socket => {
   };
 };
 
-const updateUserPosition = (userData, allUsers) => {
-  return dispatch => {
-    const index = allUsers.findIndex(item => (
-    item.get('id') === userData.id));
-    allUsers = allUsers.setIn([index, 'position'], userData.position);
-    allUsers = allUsers.setIn([index, 'rotation'], userData.rotation);
-    dispatch(updateUser(allUsers));
-  };
-};
+// const updateUserPosition = (userData, allUsers) => {
+//   return dispatch => {
+//     const index = allUsers.findIndex(item => (
+//     item.get('id') === userData.id));
+//     allUsers = allUsers.setIn([index, 'position'], userData.position);
+//     allUsers = allUsers.setIn([index, 'rotation'], userData.rotation);
+//     dispatch(updateUser(allUsers));
+//   };
+// };
 
 /* --------------- REDUCER --------------- */
 // reducers should be pure functions
@@ -84,11 +56,10 @@ function userReducer (state = initialState, action) {
   switch (action.type) {
 
     case ADD_USER:
-      return state.push(action.user);
+      return state.set(action.user.get('id'), action.user);
 
-    case UPDATE_USER_POSITION:
-      return state.merge(action.userPosition);
-      // not sure the correct function for immutable
+    case UPDATE_USER_DATA:
+      return state.mergeIn([action.userData.get('id')], action.userData);
 
     default:
       return state;
@@ -97,6 +68,6 @@ function userReducer (state = initialState, action) {
 
 module.exports = {
   createAndEmitUser,
-  updateUserPosition,
+  updateUserData,
   userReducer
 };
