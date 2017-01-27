@@ -77,6 +77,9 @@ function userReducer (state = initialState, action) {
 }
 
 module.exports = {
+  ADD_USER,
+  UPDATE_USER_DATA,
+  REMOVE_USER,
   createAndEmitUser,
   updateUserData,
   removeUserAndEmit,

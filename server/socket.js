@@ -38,6 +38,8 @@ module.exports = io => {
     // except the specific scene's user
     socket.on('tick', userData => {
       userData = Map(userData);
+      console.log('USER DATA HERE', userData);
+      console.log('CURRENT STATE', store.getState().users);
       store.dispatch(updateUserData(userData));
     });
 
