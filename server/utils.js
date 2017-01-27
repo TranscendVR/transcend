@@ -1,5 +1,4 @@
 const randomcolor = require('randomcolor');
-const users = [];
 
 // User constructor
 function User (id) {
@@ -25,7 +24,6 @@ function getOtherUsers (users, id) {
 }
 
 module.exports = {
-  users,
   createUser,
   getOtherUsers
 };
