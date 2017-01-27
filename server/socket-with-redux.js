@@ -36,5 +36,14 @@ module.exports = io => {
       userData = Map(userData);
       store.dispatch(updateUserData(userData));
     });
+
+    // This will send an array of users except for the specific scene's user
+    // Used to update position and rotation every x interval, as specified by the front-end
+    // This is literally the same as `getOthers` above
+    // DEFINITE TODO SOON: we want the backend to push state to the front-end, vs. the front-end requesting information on an interval from the back-end
+    socket.on('getUpdate', () => {
+      const allUsers = store.getState().users;
+      socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
+    });
   });
 };

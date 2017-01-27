@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const randomcolor = require('randomcolor');
 const users = [];
 

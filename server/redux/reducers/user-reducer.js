@@ -1,4 +1,4 @@
-const { List, Map } = require('immutable');
+const { Map } = require('immutable');
 
 const { createUser } = require('../../utils');
 
