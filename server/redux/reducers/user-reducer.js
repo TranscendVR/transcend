@@ -10,6 +10,7 @@ const initialState = Map({});
 
 const ADD_USER = 'ADD_USER';
 const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
+const REMOVE_USER = 'REMOVE_USER';
 
 /* --------------- ACTION CREATORS --------------- */
 
@@ -27,7 +28,15 @@ const updateUserData = userData => {
   };
 };
 
+const removeUser = userId => {
+  return {
+    type: REMOVE_USER,
+    userId
+  };
+};
+
 /* --------------- THUNK ACTION CREATORS --------------- */
+
 const createAndEmitUser = socket => {
   return dispatch => {
     const id = socket.id;
@@ -37,6 +46,14 @@ const createAndEmitUser = socket => {
       socket.emit('createUser', user);
     });
     socket.broadcast.emit('newUser', user);
+  };
+};
+
+const removeUserAndEmit = socket => {
+  return dispatch => {
+    const id = socket.id;
+    dispatch(removeUser(id));
+    socket.broadcast.emit('removeUser', id);
   };
 };
 
@@ -61,6 +78,9 @@ function userReducer (state = initialState, action) {
     case UPDATE_USER_DATA:
       return state.mergeIn([action.userData.get('id')], action.userData);
 
+    case REMOVE_USER:
+      return state.filterNot(user => user.get(`${action.id}`) === action.id);
+
     default:
       return state;
   }
@@ -69,5 +89,6 @@ function userReducer (state = initialState, action) {
 module.exports = {
   createAndEmitUser,
   updateUserData,
+  removeUserAndEmit,
   userReducer
 };

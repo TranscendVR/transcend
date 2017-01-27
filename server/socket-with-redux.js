@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const { Map } = require('immutable');
 
 const store = require('./redux/store');
-const { createAndEmitUser, updateUserData } = require('./redux/reducers/user-reducer');
+const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redux/reducers/user-reducer');
 const { getOtherUsers } = require('./utils');
 
 module.exports = io => {
@@ -44,6 +44,11 @@ module.exports = io => {
     socket.on('getUpdate', () => {
       const allUsers = store.getState().users;
       socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
+    });
+
+    socket.on('disconnect', () => {
+      store.dispatch(removeUserAndEmit(socket));
+      console.log(chalk.magenta(`${socket.id} has disconnected`));
     });
   });
 };
