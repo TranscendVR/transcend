@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const { resolve } = require('path');
 const chalk = require('chalk');
+const env = require('dotenv');
 
 if (process.env.NODE_ENV !== 'production') {
   // Logging middleware (dev only)
