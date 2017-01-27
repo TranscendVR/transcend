@@ -57,19 +57,6 @@ const updatedUser1Data = Map({
   zrot: 1
 });
 
-// may delete this
-const updatedUser2Data = Map({
-  id: 'number2',
-  color: 'purple',
-  x: 4,
-  y: 2.6,
-  z: 8,
-  xrot: 2,
-  yrot: 2,
-  zrot: 2
-});
-
-// set up 2 initial states - one empty, one filled
 let emptyInitialState;
 let populatedState;
 
@@ -84,7 +71,6 @@ beforeEach(() => {
 });
 
 describe('userReducer', () => {
-
   it('adds a user to an initial empty state of users', () => {
     const action = {
       type: ADD_USER,
