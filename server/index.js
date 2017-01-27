@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 const socketio = require('socket.io');
 server.on('request', app);
 const io = socketio(server);
-require('./socket-with-redux')(io);
+require('./socket')(io);
 
 // Serve static files
 app.use(express.static(resolve(__dirname, '../browser/app.html')));

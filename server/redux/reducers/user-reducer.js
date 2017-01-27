@@ -39,8 +39,8 @@ const removeUser = userId => {
 
 const createAndEmitUser = socket => {
   return dispatch => {
-    const id = socket.id;
-    const user = Map(createUser(id));
+    const userId = socket.id;
+    const user = Map(createUser(userId));
     dispatch(addUser(user));
     socket.on('sceneLoad', () => {
       socket.emit('createUser', user);
@@ -51,24 +51,14 @@ const createAndEmitUser = socket => {
 
 const removeUserAndEmit = socket => {
   return dispatch => {
-    const id = socket.id;
-    dispatch(removeUser(id));
-    socket.broadcast.emit('removeUser', id);
+    const userId = socket.id;
+    dispatch(removeUser(userId));
+    socket.broadcast.emit('removeUser', userId);
   };
 };
 
-// const updateUserPosition = (userData, allUsers) => {
-//   return dispatch => {
-//     const index = allUsers.findIndex(item => (
-//     item.get('id') === userData.id));
-//     allUsers = allUsers.setIn([index, 'position'], userData.position);
-//     allUsers = allUsers.setIn([index, 'rotation'], userData.rotation);
-//     dispatch(updateUser(allUsers));
-//   };
-// };
-
 /* --------------- REDUCER --------------- */
-// reducers should be pure functions
+
 function userReducer (state = initialState, action) {
   switch (action.type) {
 

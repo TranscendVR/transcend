@@ -1,55 +1,49 @@
-// const chalk = require('chalk');
-// const users = require('./utils');
+const chalk = require('chalk');
+const { Map } = require('immutable');
 
-// module.exports = io => {
-//   io.on('connection', socket => {
-//     console.log(chalk.yellow(`${socket.id} has connected`));
+const store = require('./redux/store');
+const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redux/reducers/user-reducer');
+const { getOtherUsers } = require('./utils');
 
-//     const id = socket.id;
-//     users.createUser(id);
-//     const user = users.userFromId(id);
+module.exports = io => {
+  io.on('connection', socket => {
+    console.log(chalk.yellow(`${socket.id} has connected`));
 
-//     socket.on('sceneLoad', () => {
-//       // This goes to the user that just connected after the scene has loaded
-//       // for that user
-//       socket.emit('createUser', user);
-//     });
+    // New user enters; create new user and new user appears for everyone else
+    store.dispatch(createAndEmitUser(socket));
 
-//     // This goes to the users who are already connected
-//     socket.broadcast.emit('newUser', user);
+    // This will send all of the current users to the user that just connected
+    socket.on('getOthers', () => {
+      const allUsers = store.getState().users;
+      socket.emit('getOthersCallback', getOtherUsers(allUsers, socket.id));
+    });
 
-//     // This will send all of the current users to the user that just connected
-//     socket.on('getOthers', () => {
-//       socket.emit('getOthersCallback', users.getOtherUsers(id));
-//     });
+    // This is a check to ensure that all of the existing users exist on the DOM
+    // before pushing updates to the backend
+    socket.on('haveGottenOthers', () => {
+      socket.emit('startTick');
+    });
 
-//     // This is a check to ensure that all of the existing users exist on the DOM
-//     // before pushing updates to the backend
-//     socket.on('haveGottenOthers', () => {
-//       socket.emit('startTick');
-//     });
+    // readyToReceiveUpdates is a check to make sure existing users have loaded
+    // for the new user
+    // Once they have, then the backend starts pushing updates to the frontend
+    socket.on('readyToReceiveUpdates', () => {
+      setInterval(() => {
+        const allUsers = store.getState().users;
+        socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
+      }, 50);
+    });
 
-//     // This is a check to ensure that everything is loaded before the new user
-//     // starts requesting updates from the backend
-//     socket.on('readyToReceiveUpdates', () => {
-//       socket.emit('startTheInterval');
-//     });
+    // This will update a user's position when they move, and send it to everyone
+    // except the specific scene's user
+    socket.on('tick', userData => {
+      userData = Map(userData);
+      store.dispatch(updateUserData(userData));
+    });
 
-//     // This will update a user's position when they move, and send it to everyone
-//     // except the specific scene's user
-//     socket.on('tick', userData => {
-//       users.updatePosition(userData);
-//     });
-
-//     // This will send an array of users except for the specific scene's user
-//     // Used to update position and rotation every x interval, as specified by the front-end
-//     socket.on('getUpdate', () => {
-//       socket.emit('usersUpdated', users.getOtherUsers(id));
-//     });
-
-//     socket.on('disconnect', () => {
-//       console.log(chalk.magenta(`${socket.id} has disconnected`));
-//       socket.broadcast.emit('removeUser', users.removeUser(id));
-//     });
-//   });
-// };
+    socket.on('disconnect', () => {
+      store.dispatch(removeUserAndEmit(socket));
+      console.log(chalk.magenta(`${socket.id} has disconnected`));
+    });
+  });
+};

@@ -38,7 +38,7 @@ socket.on('createUser', user => {
 // When someone connects initially, this will get any other users already there
 socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
-  // ES2017 has a fancy Object.entries() method that we could maybe use instead...
+  // For each existing user that the backend sends us, put on the DOM
   Object.keys(users).forEach(user => {
     putUserOnDOM(users[user]);
   });
@@ -56,13 +56,6 @@ socket.on('newUser', user => {
   putUserOnDOM(user);
 });
 
-// This comes back with a user array of all users but the one viewing the scene
-// socket.on('startTheInterval', () => {
-//   setInterval(() => {
-//     socket.emit('getUpdate');
-//   }, 50);
-// });
-
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
   console.log('Updating position for all users');
@@ -74,9 +67,9 @@ socket.on('usersUpdated', users => {
 });
 
 // Remove a user's avatar when they disconnect from the server
-socket.on('removeUser', id => {
+socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const avatarToBeRemoved = document.querySelector(`#${id}`);
+  const avatarToBeRemoved = document.querySelector(`#${userId}`);
   scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });

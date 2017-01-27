@@ -19,51 +19,13 @@ function createUser (id) {
   return user;
 }
 
-// Find the user object from the users array
-// I think this is also useless now
-// function userFromId (id) {
-//   let user;
-//   for (let i = 0; i < users.length; i++) {
-//     if (users[i].id === id) {
-//       user = users[i];
-//       break;
-//     }
-//   }
-//   return user;
-// }
-
 // When a user connects, send them a list of all of the existing users (minus themselves)
 function getOtherUsers (users, id) {
   return users.filterNot(userData => userData.get('id') === id);
 }
 
-// Update a user's position and rotation when it's pushed from the frontend
-// I think this is useless now
-// function updatePosition (userData) {
-//   const user = userFromId(userData.id);
-//   user.x = userData.position.x;
-//   user.y = userData.position.y;
-//   user.z = userData.position.z;
-//   user.xrot = userData.rotation.x;
-//   user.yrot = userData.rotation.y;
-//   user.zrot = userData.rotation.z;
-//   return user;
-// }
-
-// Remove a user from the users array
-// Will soon be useless, I think -- can just use filterNot
-// function removeUser (id) {
-//   const user = userFromId(id);
-//   const index = users.findIndex(userToRemove => userToRemove.id === id);
-//   users.splice(index, 1);
-//   return user;
-// }
-
 module.exports = {
   users,
   createUser,
-  // userFromId,
   getOtherUsers
-  // updatePosition,
-  // removeUser
 };
