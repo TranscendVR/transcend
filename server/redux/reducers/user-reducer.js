@@ -79,7 +79,7 @@ function userReducer (state = initialState, action) {
       return state.mergeIn([action.userData.get('id')], action.userData);
 
     case REMOVE_USER:
-      return state.filterNot(user => user.get(`${action.id}`) === action.id);
+      return state.delete(action.userId);
 
     default:
       return state;

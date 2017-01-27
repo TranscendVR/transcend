@@ -57,11 +57,11 @@ socket.on('newUser', user => {
 });
 
 // This comes back with a user array of all users but the one viewing the scene
-socket.on('startTheInterval', () => {
-  setInterval(() => {
-    socket.emit('getUpdate');
-  }, 50);
-});
+// socket.on('startTheInterval', () => {
+//   setInterval(() => {
+//     socket.emit('getUpdate');
+//   }, 50);
+// });
 
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {

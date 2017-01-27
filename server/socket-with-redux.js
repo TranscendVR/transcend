@@ -27,7 +27,10 @@ module.exports = io => {
     // This is a check to ensure that everything is loaded before the new user
     // starts requesting updates from the backend
     socket.on('readyToReceiveUpdates', () => {
-      socket.emit('startTheInterval');
+      setInterval(() => {
+        const allUsers = store.getState().users;
+        socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
+      }, 50);
     });
 
     // This will update a user's position when they move, and send it to everyone
@@ -41,10 +44,10 @@ module.exports = io => {
     // Used to update position and rotation every x interval, as specified by the front-end
     // This is literally the same as `getOthers` above
     // DEFINITE TODO SOON: we want the backend to push state to the front-end, vs. the front-end requesting information on an interval from the back-end
-    socket.on('getUpdate', () => {
-      const allUsers = store.getState().users;
-      socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
-    });
+    // socket.on('getUpdate', () => {
+    //   const allUsers = store.getState().users;
+    //   socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
+    // });
 
     socket.on('disconnect', () => {
       store.dispatch(removeUserAndEmit(socket));
