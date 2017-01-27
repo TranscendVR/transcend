@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
 window.socket = io.connect();
 
-import { putUserOnDOM } from '../utils';
+import { putUserOnDOM, addFirstPersonProperties } from '../utils';
 import '../aframeComponents/publish-location';
 
 let scene;
@@ -20,18 +20,8 @@ socket.on('connect', () => {
 });
 
 socket.on('createUser', user => {
-  scene = document.querySelector('a-scene');
-  const avatar = document.createElement('a-entity');
-  scene.appendChild(avatar);
-  avatar.setAttribute('id', user.id);
-  avatar.setAttribute('geometry', 'primitive', 'box');
-  avatar.setAttribute('material', 'color', user.color);
-  avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
-  avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
-  avatar.setAttribute('publish-location', true);
-  avatar.setAttribute('camera', true);
-  avatar.setAttribute('look-controls', true);
-  avatar.setAttribute('wasd-controls', true);
+  const avatar = putUserOnDOM(user);
+  addFirstPersonProperties(avatar);
   socket.emit('getOthers');
 });
 
