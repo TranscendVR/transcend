@@ -1,5 +1,5 @@
 export function putUserOnDOM (user) {
-  const scene = document.querySelector('a-scene');
+  const scene = document.getElementById('scene');
   const avatar = document.createElement('a-entity');
   scene.appendChild(avatar);
   avatar.setAttribute('id', user.id);

@@ -38,27 +38,26 @@ socket.on('getOthersCallback', users => {
   socket.emit('readyToReceiveUpdates');
 });
 
-// For those who are already there, this will update if someone new connects
-socket.on('newUser', user => {
-  console.log('Someone else has joined');
-  putUserOnDOM(user);
-});
-
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
-  console.log('Updating position for all users');
   Object.keys(users).forEach(user => {
-    const otherAvatar = document.querySelector(`#${users[user].id}`);
-    otherAvatar.setAttribute('position', `${users[user].x} ${users[user].y} ${users[user].z}`);
-    otherAvatar.setAttribute('rotation', `${users[user].xrot} ${users[user].yrot} ${users[user].zrot}`);
+    const otherAvatar = document.getElementById(users[user].id);
+    // If a user's avatar is NOT on the DOM already, add it
+    if (otherAvatar === null) {
+      putUserOnDOM(users[user]);
+    } else {
+      // If a user's avatar is already on the DOM, update it
+      otherAvatar.setAttribute('position', `${users[user].x} ${users[user].y} ${users[user].z}`);
+      otherAvatar.setAttribute('rotation', `${users[user].xrot} ${users[user].yrot} ${users[user].zrot}`);
+    }
   });
 });
 
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const scene = document.querySelector('a-scene');
-  const avatarToBeRemoved = document.querySelector(`#${userId}`);
+  const scene = document.getElementById('scene');
+  const avatarToBeRemoved = document.getElementById(userId);
   scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
