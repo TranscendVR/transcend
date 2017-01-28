@@ -45,7 +45,6 @@ const createAndEmitUser = socket => {
     socket.on('sceneLoad', () => {
       socket.emit('createUser', user);
     });
-    socket.broadcast.emit('newUser', user);
   };
 };
 
