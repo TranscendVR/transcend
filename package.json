@@ -40,6 +40,7 @@
     "cross-env": "^3.1.4",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
+    "immutable": "^3.8.1",
     "nodemon": "^1.11.0",
     "pg": "^6.1.2",
     "pg-native": "^1.10.0",
@@ -59,6 +60,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-enzyme": "^0.6.1",
+    "chai-immutable": "^1.6.0",
     "enzyme": "^2.7.1",
     "esl": "^5.2.2",
     "eslint": "^3.14.0",
