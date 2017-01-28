@@ -3,8 +3,8 @@ const app = process, { env } = app;
 const debug = require('debug')(`${app.name}:auth`);
 const passport = require('passport');
 
-const User = require('APP/db/models/user');
-const OAuth = require('APP/db/models/oauth');
+const User = require('../../db/models/user');
+const OAuth = require('../../db/models/oauth');
 const auth = require('express').Router();
 
 
@@ -78,9 +78,7 @@ OAuth.setupStrategy({
 // Other passport configuration:
 
 passport.serializeUser((user, done) => {
-  debug('will serialize user.id=%d', user.id)
   done(null, user.id)
-  debug('did serialize user.id=%d', user.id)
 })
 
 passport.deserializeUser(
@@ -123,21 +121,38 @@ passport.use(new (require('passport-local').Strategy) (
 
 auth.get('/whoami', (req, res) => res.send(req.user))
 
-//initial entry point for user to request login to google; redirects user to google (YP added this)
+// sign up
+auth.post('/local/signup', (req, res, next) => {
+  User.create({
+    name: req.body.name,
+    displayName: req.body.displayName,
+    email: req.body.email,
+    password: req.body.password
+  })
+  .then(user => {
+    req.login(user, (err) => {
+      if (err) next(err);
+      else res.sendStatus(201);
+    });
+  })
+  .catch(next);
+});
+
+// initial entry point for user to request login to google; redirects user to google (YP added this)
 auth.get('/:strategy', (req, res, next) => {
   passport.authenticate(req.params.strategy)(req, res, next)
-})
+});
 
-//google then brings user to consumer(us)
-auth.post('/:strategy/login', (req, res, next) =>
+// google then brings user to consumer(us)
+auth.post('/login/:strategy', (req, res, next) =>
   passport.authenticate(req.params.strategy, {
     successRedirect: '/'
   })(req, res, next)
-)
+);
 
 auth.post('/logout', (req, res, next) => {
-  req.logout()
-  res.redirect('/api/auth/whoami')
-})
+  req.logout();
+  res.redirect('/api/auth/whoami');
+});
 
 module.exports = auth;

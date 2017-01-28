@@ -5,6 +5,10 @@
 const User = require('./user');
 const Session = require('./session');
 const Square = require('./square');
+const OAuth = require('./oauth');
+
+OAuth.belongsTo(User);
+User.hasOne(OAuth);
 
 Session.belongsTo(User);
 User.hasOne(Session);
