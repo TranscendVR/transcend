@@ -28,18 +28,16 @@ module.exports = io => {
     // for the new user
     // Once they have, then the backend starts pushing updates to the frontend
     socket.on('readyToReceiveUpdates', () => {
-      setInterval(() => {
+      store.subscribe(() => {
         const allUsers = store.getState().users;
         socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
-      }, 50);
+      });
     });
 
     // This will update a user's position when they move, and send it to everyone
     // except the specific scene's user
     socket.on('tick', userData => {
       userData = Map(userData);
-      console.log('USER DATA HERE', userData);
-      console.log('CURRENT STATE', store.getState().users);
       store.dispatch(updateUserData(userData));
     });
 

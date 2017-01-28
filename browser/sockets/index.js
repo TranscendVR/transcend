@@ -7,8 +7,6 @@ window.socket = io.connect();
 import { putUserOnDOM, addFirstPersonProperties } from '../utils';
 import '../aframeComponents/publish-location';
 
-let scene;
-
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
 // by them.
@@ -59,6 +57,7 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
+  const scene = document.querySelector('a-scene');
   const avatarToBeRemoved = document.querySelector(`#${userId}`);
   scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
