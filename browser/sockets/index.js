@@ -41,9 +41,9 @@ socket.on('getOthersCallback', users => {
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
   Object.keys(users).forEach(user => {
-    const otherAvatar = document.querySelector(`#${users[user].id}`);
+    const otherAvatar = document.getElementById(users[user].id);
     // If a user's avatar is NOT on the DOM already, add it
-    if (!otherAvatar) {
+    if (otherAvatar === null) {
       putUserOnDOM(users[user]);
     } else {
       // If a user's avatar is already on the DOM, update it
@@ -56,8 +56,8 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const scene = document.querySelector('a-scene');
-  const avatarToBeRemoved = document.querySelector(`#${userId}`);
+  const scene = document.getElementById('scene');
+  const avatarToBeRemoved = document.getElementById(userId);
   scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });

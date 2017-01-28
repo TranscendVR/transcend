@@ -5,7 +5,7 @@ import '../../aframeComponents/scene-load';
 export default function App (props) {
   return (
     <div>
-      <a-scene scene-load>
+      <a-scene id="scene" scene-load>
         <a-entity geometry="primitive: sphere; radius: 1.25" position="0 1.25 -1" material="color: #EF2D5E"></a-entity>
         <a-entity geometry="primitive: box; width: 1; height: 1; depth: 1" position="-1 0.5 1" material="color: #4CC3D9"></a-entity>
         <a-entity geometry="primitive: cylinder; radius: 0.5; height: 1.5" position="1 0.75 1" material="color: #FFC65D"></a-entity>
