@@ -23,7 +23,7 @@ export default function userReducer (state = initialState, action) {
   switch (action.type) {
 
     case RECEIVE_USERS:
-      // return ;
+      return action.users;
 
     default:
       return state;
