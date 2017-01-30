@@ -1,5 +1,5 @@
 const request = require('supertest-as-promised');
-const {expect} = require('chai');
+const { expect } = require('chai');
 const db = require('APP/db');
 const User = require('APP/db/models/user');
 const app = require('../start');
@@ -33,54 +33,53 @@ const gertrude = {
 };
 
 describe('/api/auth', () => {
-    let howManyUsers;
+  let howManyUsers;
 
-    before('create a user', () => {
-
-        return db.didSync
-        .then(() =>
-        User.create(
-            {
-                name: alice.name,
-                email: alice.username,
-                password: alice.password
-            })
-        )
-        .then((createdUser) => {
-            alice.id = createdUser.id;
-            return User.create({
-                name: bert.name,
-                email: bert.username,
-                password: bert.password,
-                isAdmin: bert.isAdmin
-            });
-        })
-        .then((createdUser) => {
-            bert.id = createdUser.id;
-            return User.create({
-                name: lars.name,
-                email: lars.username,
-                password: lars.password,
-                isAdmin: lars.isAdmin
-            });
-        })
-        .then((createdUser) => {
-            lars.id = createdUser.id;
-            return User.create({
-                name: gertrude.name,
-                email: gertrude.username,
-                password: gertrude.password,
-                isAdmin: gertrude.isAdmin
-            });
-        })
-        .then((createdUser) => {
-            gertrude.id = createdUser.id;
-            return User.findAll();
-        })
-        .then(allusers => {
-            howManyUsers = allusers.length;
-        });
+  before('create a user', () => {
+    return db.didSync
+    .then(() =>
+    User.create(
+      {
+        name: alice.name,
+        email: alice.username,
+        password: alice.password
+      })
+    )
+    .then((createdUser) => {
+      alice.id = createdUser.id;
+      return User.create({
+        name: bert.name,
+        email: bert.username,
+        password: bert.password,
+        isAdmin: bert.isAdmin
+      });
+    })
+    .then((createdUser) => {
+      bert.id = createdUser.id;
+      return User.create({
+        name: lars.name,
+        email: lars.username,
+        password: lars.password,
+        isAdmin: lars.isAdmin
+      });
+    })
+    .then((createdUser) => {
+      lars.id = createdUser.id;
+      return User.create({
+        name: gertrude.name,
+        email: gertrude.username,
+        password: gertrude.password,
+        isAdmin: gertrude.isAdmin
+      });
+    })
+    .then((createdUser) => {
+      gertrude.id = createdUser.id;
+      return User.findAll();
+    })
+    .then(allusers => {
+      howManyUsers = allusers.length;
     });
+  });
 
   describe('POST /local/login (username, password)', () => {
     it('succeeds with a valid username and password', () =>
@@ -95,120 +94,120 @@ describe('/api/auth', () => {
     it('fails with an invalid username and password', () =>
       request(app)
         .post('/api/auth/local/login')
-        .send({username: alice.username, password: 'wrong'})
+        .send({ username: alice.username, password: 'wrong' })
         .expect(401)
     );
-});
+  });
 
   describe('Admin privileges', () => {
-      const agent = request.agent(app);
+    const agent = request.agent(app);
 
-      before('log in', () => agent
+    before('log in', () => agent
         .post('/api/auth/local/login')
         .send(gertrude));
 
-        it('Can retrieve all users', () =>
+    it('Can retrieve all users', () =>
           agent.get('/api/users')
             .expect(200)
             .then(res => expect(res.body.length).to.equal(howManyUsers))
         );
 
-        it('Can update themself (Gertrude)', () => {
-            agent.put(`/api/users/${gertrude.id}`)
+    it('Can update themself (Gertrude)', () => {
+      agent.put(`/api/users/${gertrude.id}`)
             .send({
-                name: 'THE Gertrude'
+              name: 'THE Gertrude'
             })
             .expect(200)
             .then(res => expect(res.body).to.contain({
-                name: 'THE Gertrude'
+              name: 'THE Gertrude'
             }));
-        });
+    });
 
-        it('Can update others (Alice)', () => {
-            agent.put(`/api/users/${alice.id}`)
+    it('Can update others (Alice)', () => {
+      agent.put(`/api/users/${alice.id}`)
             .send({
-                name: 'Alice in Wonderland'
+              name: 'Alice in Wonderland'
             })
             .expect(200)
             .then(res => expect(res.body).to.contain({
-                name: 'Alice in Wonderland'
+              name: 'Alice in Wonderland'
             }));
-        });
+    });
 
-        it('Can give others admin status (Bert)', () => {
-            agent.put(`/api/users/${bert.id}`)
+    it('Can give others admin status (Bert)', () => {
+      agent.put(`/api/users/${bert.id}`)
             .send({
-                isAdmin: true
+              isAdmin: true
             })
             .expect(200)
             .then(res => expect(res.body).to.contain({
-                name: 'Bert',
-                isAdmin: true
+              name: 'Bert',
+              isAdmin: true
             }));
-        });
+    });
 
-        // TODO: doesn't seem to work, not sure what's wrong
-        it('Can delete a user (Lars)', () => {
-            agent.delete(`/api/users/${lars.id}`)
+    // TODO: doesn't seem to work, not sure what's wrong
+    it('Can delete a user (Lars)', () => {
+      agent.delete(`/api/users/${lars.id}`)
             .expect(204);
-        });
+    });
   });
 
   describe('GET /whoami', () => {
-      describe('when logged in,', () => {
-          const agent = request.agent(app);
-          before('log in', () => agent
+    describe('when logged in,', () => {
+      const agent = request.agent(app);
+      before('log in', () => agent
           .post('/api/auth/local/login')
           .send(alice));
 
-          it('responds with the currently logged in user', () =>
+      it('responds with the currently logged in user', () =>
           agent.get('/api/auth/whoami')
           .set('Accept', 'application/json')
           .expect(200)
           .then(res => expect(res.body).to.contain({
-              email: alice.username
+            email: alice.username
           }))
-          );
+        );
 
-          it('can adjust their own user settings', () => {
-              agent.put(`/api/users/${alice.id}`)
+      it('can adjust their own user settings', () => {
+        agent.put(`/api/users/${alice.id}`)
               .send({
-                  name: 'THE Alice in Wonderland'
+                name: 'THE Alice in Wonderland'
               })
               .expect(200)
               .then(res => expect(res.body).to.contain({
-                  name: 'THE Alice in Wonderland'
+                name: 'THE Alice in Wonderland'
               }));
-          });
+      });
 
-          it('cannot adjust their own user settings to be admin status', () => {
-              agent.put(`/api/users/${alice.id}`)
+      it('cannot adjust their own user settings to be admin status', () => {
+        agent.put(`/api/users/${alice.id}`)
               .send({
-                  name: 'THE Alice in Wonderland',
-                  isAdmin: true
+                name: 'THE Alice in Wonderland',
+                isAdmin: true
               })
               .expect(200)
               .then(res => expect(res.body).to.contain({
-                  name: 'THE Alice in Wonderland',
-                  isAdmin: false
+                name: 'THE Alice in Wonderland',
+                isAdmin: false
               }));
-          });
+      });
 
-          it('cannot adjust other user settings', () => {
-              agent.put(`/api/users/${bert.id}`)
+      it('cannot adjust other user settings', () => {
+        agent.put(`/api/users/${bert.id}`)
               .send({
-                  name: 'Bert the Gert',
+                name: 'Bert the Gert'
               })
               .expect(401);
-          });
-  });
+      });
+    });
 
-  it('when not logged in responds with an empty object', () =>
+    it('when not logged in responds with an empty object', () =>
     request(app).get('/api/auth/whoami')
     .expect(200)
     .then(res => expect(res.body).to.eql({}))
     );
-});
+  });
 
   describe('POST /logout when logged in', () => {
     const agent = request.agent(app);

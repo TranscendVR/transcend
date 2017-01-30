@@ -58,6 +58,7 @@
     "sequelize": "^3.29.0",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
+    "supertest-as-promised": "^4.0.2",
     "webpack": "^1.14.0"
   },
   "devDependencies": {
