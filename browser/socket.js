@@ -64,8 +64,6 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const scene = document.getElementById('scene');
   const avatarToBeRemoved = document.getElementById(userId);
-  scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
