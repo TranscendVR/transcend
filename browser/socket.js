@@ -4,8 +4,8 @@ import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
 window.socket = io.connect();
 
-import { putUserOnDOM, addFirstPersonProperties } from '../utils';
-import '../aframeComponents/publish-location';
+import { putUserOnDOM, addFirstPersonProperties } from './utils';
+import './aframeComponents/publish-location';
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
