@@ -1,8 +1,8 @@
 const request = require('supertest-as-promised');
 const { expect } = require('chai');
-const db = require('APP/db');
-const User = require('APP/db/models/user');
-const app = require('../start');
+const db = require('../../db');
+const User = require('../../db/models/user');
+const app = require('../index');
 
 const alice = {
   name: 'Alice',

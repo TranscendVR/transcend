@@ -19,7 +19,7 @@
     "social",
     "vr"
   ],
-  "author": "Joey Darbyshire, Yoo-Nah Park, Beth Qiang",
+  "author": "Joey Darbyshire, Yoo-Nah Park, Beth Qiang, Sean McBride",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/TranscendVR/transcend/issues"
@@ -45,6 +45,10 @@
     "immutable": "^3.8.1",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-github2": "^0.1.10",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
     "pg": "^6.1.2",
     "pg-native": "^1.10.0",
     "randomcolor": "^0.4.4",
@@ -58,7 +62,6 @@
     "sequelize": "^3.29.0",
     "socket.io": "^1.7.2",
     "socket.io-client": "^1.7.2",
-    "supertest-as-promised": "^4.0.2",
     "webpack": "^1.14.0"
   },
   "devDependencies": {
@@ -77,6 +80,7 @@
     "react-addons-test-utils": "^15.4.2",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0",
-    "supertest": "^2.0.1"
+    "supertest": "^2.0.1",
+    "supertest-as-promised": "^4.0.2"
   }
 }

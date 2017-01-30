@@ -11,9 +11,11 @@ import SOCKET from '../sockets';
 ReactDOM.render(
   // <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path='/login' component={Login} />
+
       <Route path='/' component={App} />
     </Router>,
   // </Provider>,
   document.getElementById('react-app')
 );
+
+//<Route path='/login' component={Login} />
