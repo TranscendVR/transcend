@@ -1,4 +1,4 @@
-const { Map } = require('immutable');
+import { Map } from 'immutable';
 
 /* --------------- INITIAL STATE --------------- */
 
