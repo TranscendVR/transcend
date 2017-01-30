@@ -28,7 +28,14 @@ app.use(express.static(resolve(__dirname, '../browser/app.html')));
 app.use(express.static(resolve(__dirname, '../browser/favicon/favicon.ico')));
 app.use(express.static(resolve(__dirname, '../public')));
 
+// Set up session middleware
+app.use(require('cookie-session')({
+  name: 'session',
+  keys: [process.env.SESSION_SECRET || 'an insecure secret key']
+}));
+
 // Our custom routes will go here
+app.use('/api', require('./api'));
 
 // Send index.html for anything else
 app.get('/*', (req, res) => {

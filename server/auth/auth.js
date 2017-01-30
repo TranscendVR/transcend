@@ -73,53 +73,53 @@ OAuth.setupStrategy({
     callbackURL: `${app.rootUrl}/api/auth/login/github`,
   },
   passport
-})
+});
 
 // Other passport configuration:
 
 passport.serializeUser((user, done) => {
-  done(null, user.id)
-})
+  done(null, user.id);
+});
 
 passport.deserializeUser(
   (id, done) => {
-    debug('will deserialize user.id=%d', id)
+    debug('will deserialize user.id=%d', id);
     User.findById(id)
       .then(user => {
-        debug('deserialize did ok user.id=%d', user.id)
-        done(null, user)
+        debug('deserialize did ok user.id=%d', user.id);
+        done(null, user);
       })
       .catch(err => {
-        debug('deserialize did fail err=%s', err)
-        done(err)
-      })
+        debug('deserialize did fail err=%s', err);
+        done(err);
+      });
   }
-)
+);
 
 passport.use(new (require('passport-local').Strategy) (
   (email, password, done) => {
-    debug('will authenticate user(email: "%s")', email)
+    debug('will authenticate user(email: "%s")', email);
     User.findOne({where: {email}})
       .then(user => {
         if (!user) {
-          debug('authenticate user(email: "%s") did fail: no such user', email)
-          return done(null, false, { message: 'Login incorrect' })
+          debug('authenticate user(email: "%s") did fail: no such user', email);
+          return done(null, false, { message: 'Login incorrect' });
         }
         return user.authenticate(password)
           .then(ok => {
             if (!ok) {
-              debug('authenticate user(email: "%s") did fail: bad password')
-              return done(null, false, { message: 'Login incorrect' })
+              debug('authenticate user(email: "%s") did fail: bad password');
+              return done(null, false, { message: 'Login incorrect' });
             }
-            debug('authenticate user(email: "%s") did ok: user.id=%d', user.id)
-            done(null, user)
-          })
+            debug('authenticate user(email: "%s") did ok: user.id=%d', user.id);
+            done(null, user);
+          });
       })
-      .catch(done)
+      .catch(done);
   }
-))
+));
 
-auth.get('/whoami', (req, res) => res.send(req.user))
+auth.get('/whoami', (req, res) => res.send(req.user));
 
 // sign up
 auth.post('/local/signup', (req, res, next) => {
@@ -140,7 +140,7 @@ auth.post('/local/signup', (req, res, next) => {
 
 // initial entry point for user to request login to google; redirects user to google (YP added this)
 auth.get('/:strategy', (req, res, next) => {
-  passport.authenticate(req.params.strategy)(req, res, next)
+  passport.authenticate(req.params.strategy)(req, res, next);
 });
 
 // google then brings user to consumer(us)
