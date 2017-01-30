@@ -6,7 +6,7 @@ const initialState = Map({});
 
 /* --------------- ACTIONS --------------- */
 
-const RECEIVE_USERS = 'RECEIVE_USERS';
+export const RECEIVE_USERS = 'RECEIVE_USERS';
 
 /* --------------- ACTION CREATORS --------------- */
 

@@ -8,8 +8,8 @@
     "build-watch": "webpack -w",
     "start": "webpack && nodemon server/index.js",
     "seed": "node db/seed.js",
-    "test": "cross-env NODE_ENV=testing mocha --compilers js:babel-register app/**/*.test.js app/**/*.test.jsx db/**/*.test.js server/**/*.test.js",
-    "test-watch": "cross-env NODE_ENV=testing mocha --compilers js:babel-register --watch app/**/*.test.js app/**/*.test.jsx db/**/*.test.js server/**/*.test.js"
+    "test": "cross-env NODE_ENV=testing mocha --compilers js:babel-register browser/**/*.test.js browser/**/*.test.jsx db/**/*.test.js server/**/*.test.js",
+    "test-watch": "cross-env NODE_ENV=testing mocha --compilers js:babel-register --watch browser/**/*.test.js browser/**/*.test.jsx db/**/*.test.js server/**/*.test.js"
   },
   "repository": {
     "type": "git",
