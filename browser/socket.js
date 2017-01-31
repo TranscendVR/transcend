@@ -4,8 +4,12 @@ import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
 window.socket = io.connect();
 
-import { putUserOnDOM, addFirstPersonProperties } from '../utils';
-import '../aframeComponents/publish-location';
+import { fromJS } from 'immutable';
+import store from './redux/store';
+import { receiveUsers } from './redux/reducers/user-reducer';
+
+import { putUserOnDOM, addFirstPersonProperties } from './utils';
+import './aframeComponents/publish-location';
 import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from '../webRTC/client';
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
@@ -42,15 +46,19 @@ socket.on('getOthersCallback', users => {
 
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
-  Object.keys(users).forEach(user => {
-    const otherAvatar = document.getElementById(users[user].id);
+  // Convert users to Immutable structure before sending to store
+  store.dispatch(receiveUsers(fromJS(users)));
+  const receivedUsers = store.getState().users;
+  receivedUsers.valueSeq().forEach(user => {
+    const otherAvatar = document.getElementById(user.get('id'));
     // If a user's avatar is NOT on the DOM already, add it
+    // Convert it back to a normal JS object so we can use putUserOnDOM function as is
     if (otherAvatar === null) {
-      putUserOnDOM(users[user]);
+      putUserOnDOM(user.toJS());
     } else {
       // If a user's avatar is already on the DOM, update it
-      otherAvatar.setAttribute('position', `${users[user].x} ${users[user].y} ${users[user].z}`);
-      otherAvatar.setAttribute('rotation', `${users[user].xrot} ${users[user].yrot} ${users[user].zrot}`);
+      otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+      otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
     }
   });
 });
@@ -58,9 +66,7 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const scene = document.getElementById('scene');
   const avatarToBeRemoved = document.getElementById(userId);
-  scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
 

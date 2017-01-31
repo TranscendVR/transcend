@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { Provider } from 'react-redux';
-// import store from '../redux/store';
-import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
+import { Provider } from 'react-redux';
+import store from '../redux/store';
+import { Router, Route, browserHistory } from 'react-router';
 import App from './components/App';
 
-import SOCKET from '../sockets';
+import SOCKET from '../socket';
 
 ReactDOM.render(
-  // <Provider store={store}>
+  <Provider store={store}>
     <Router history={browserHistory}>
       <Route path='/' component={App} />
-    </Router>,
-  // </Provider>,
+    </Router>
+  </Provider>,
   document.getElementById('react-app')
 );
