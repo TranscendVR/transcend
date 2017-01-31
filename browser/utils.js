@@ -15,4 +15,10 @@ export function addFirstPersonProperties (avatar) {
   avatar.setAttribute('camera', true);
   avatar.setAttribute('look-controls', true);
   avatar.setAttribute('wasd-controls', true);
+  const cursor = document.createElement('a-entity');
+  avatar.appendChild(cursor);
+  cursor.setAttribute('cursor', 'fuse: true; maxDistance: 30; timeout: 500');
+  cursor.setAttribute('position', '0 0 -5');
+  cursor.setAttribute('geometry', 'primitive: ring');
+  cursor.setAttribute('color: white; shader: flat');
 }
