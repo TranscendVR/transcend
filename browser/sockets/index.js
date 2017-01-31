@@ -6,6 +6,7 @@ window.socket = io.connect();
 
 import { putUserOnDOM, addFirstPersonProperties } from '../utils';
 import '../aframeComponents/publish-location';
+import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from '../webRTC/client';
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
@@ -15,6 +16,7 @@ import '../aframeComponents/publish-location';
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
+  setupLocalMedia();
 });
 
 socket.on('createUser', user => {
@@ -61,3 +63,13 @@ socket.on('removeUser', userId => {
   scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
+
+socket.on('addPeer', addPeerConn);
+
+socket.on('removePeer', removePeerConn);
+
+socket.on('sessionDescription', setRemoteAnswer);
+
+socket.on('iceCandidate', setIceCandidate);
+
+socket.on('disconnect', disconnectUser);
