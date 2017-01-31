@@ -10,6 +10,7 @@ import { receiveUsers } from './redux/reducers/user-reducer';
 
 import { putUserOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
+import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from '../webRTC/client';
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
@@ -19,6 +20,7 @@ import './aframeComponents/publish-location';
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
+  setupLocalMedia();
 });
 
 socket.on('createUser', user => {
@@ -67,3 +69,18 @@ socket.on('removeUser', userId => {
   const avatarToBeRemoved = document.getElementById(userId);
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
+
+// Adds a Peer to our DoM as their own Audio Element
+socket.on('addPeer', addPeerConn);
+
+// Removes Peer from DoM after they have disconnected or switched room
+socket.on('removePeer', removePeerConn);
+
+// Replies to an offer made by a new Peer
+socket.on('sessionDescription', setRemoteAnswer);
+
+// Handles setting the ice server for an ice Candidate
+socket.on('iceCandidate', setIceCandidate);
+
+// Removes all peer connections and audio Elements from the DoM
+socket.on('disconnect', disconnectUser);
