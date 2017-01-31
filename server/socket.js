@@ -99,22 +99,22 @@ module.exports = io => {
     socket.on('part', part);
 
     socket.on('relayICECandidate', function (config) {
-      const peer_id = config.peer_id;
-      const ice_candidate = config.ice_candidate;
-      console.log(`[${socket.id}] relaying ICE candidate to [${peer_id}] ice_candidate`);
+      const peerId = config.peer_id;
+      const iceCandidate = config.ice_candidate;
+      console.log(`[${socket.id}] relaying ICE candidate to [${peerId}] ${iceCandidate}`);
 
-      if (peer_id in sockets) {
-        sockets[peer_id].emit('iceCandidate', { 'peer_id': socket.id, 'ice_candidate': ice_candidate });
+      if (peerId in sockets) {
+        sockets[peerId].emit('iceCandidate', { 'peer_id': socket.id, 'ice_candidate': iceCandidate });
       }
     });
 
     socket.on('relaySessionDescription', function (config) {
-      const peer_id = config.peer_id;
-      const session_description = config.session_description;
-      console.log(`[${socket.id}] relaying session description to [${peer_id}] session_description`);
+      const peerId = config.peer_id;
+      const sessionDescription = config.session_description;
+      console.log(`[${socket.id}] relaying session description to [${peerId}] ${sessionDescription}`);
 
-      if (peer_id in sockets) {
-        sockets[peer_id].emit('sessionDescription', { 'peer_id': socket.id, 'session_description': session_description });
+      if (peerId in sockets) {
+        sockets[peerId].emit('sessionDescription', { 'peer_id': socket.id, 'session_description': sessionDescription });
       }
     });
   });
