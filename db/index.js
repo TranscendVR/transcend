@@ -21,7 +21,8 @@ const db = module.exports = new Sequelize(url, {
 require('./models');
 
 // Sync the db, creating it if necessary
-function sync (force = process.env.NODE_ENV === 'testing', retries = 0, maxRetries = 5) {
+// process.env.NODE_ENV === 'testing'
+function sync (force = true, retries = 0, maxRetries = 5) {
   return db.sync({ force })
     .then(ok => console.log(`Synced models to db ${url}`))
     .catch(fail => {

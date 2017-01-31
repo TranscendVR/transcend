@@ -3,7 +3,7 @@
 const debug = require('debug')('oauth');
 const Sequelize = require('sequelize');
 const db = require('../index');
-const User = require('./user');
+//const User = require('./user');
 
 const OAuth = db.define('oauths', {
   uid: Sequelize.STRING,
@@ -42,7 +42,7 @@ OAuth.V2 = (accessToken, refreshToken, profile, done) =>
       });
     })
     .then(({ oauth, user }) => user ||
-      User.create({
+      db.models('users').create({
         name: profile.displayName
       }).then(user => db.Promise.props({
         user,
