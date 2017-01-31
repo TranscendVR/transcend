@@ -9,7 +9,7 @@ const ICE_SERVERS = [
   { url: 'stun:stun.l.google.com:19302' }
 ];
 
-// This will be out socket connection
+// This will be our socket connection
 let signalingSocket = null;
 let localMediaStream = null; // Our microphone
 let peers = {}; // keep track of our peer connections, indexed by peer_id (aka socket.io id)

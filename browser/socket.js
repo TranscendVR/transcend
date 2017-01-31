@@ -76,7 +76,7 @@ socket.on('addPeer', addPeerConn);
 // Removes Peer from DoM after they have disconnected or switched room
 socket.on('removePeer', removePeerConn);
 
-// Replys to an offer made by a new Peer
+// Replies to an offer made by a new Peer
 socket.on('sessionDescription', setRemoteAnswer);
 
 // Handles setting the ice server for an ice Candidate
