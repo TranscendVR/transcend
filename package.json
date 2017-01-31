@@ -6,8 +6,9 @@
   "scripts": {
     "build": "webpack",
     "build-watch": "webpack -w",
-    "start": "webpack && nodemon server/index.js",
     "seed": "node db/seed.js",
+    "server": "nodemon server/index.js",
+    "start": "webpack && nodemon server/index.js",
     "test": "cross-env NODE_ENV=testing mocha --compilers js:babel-register browser/**/*.test.js browser/**/*.test.jsx db/**/*.test.js server/**/*.test.js",
     "test-watch": "cross-env NODE_ENV=testing mocha --compilers js:babel-register --watch browser/**/*.test.js browser/**/*.test.jsx db/**/*.test.js server/**/*.test.js"
   },
@@ -19,8 +20,8 @@
     "social",
     "vr"
   ],
-  "author": "Joey Darbyshire, Yoo-Nah Park, Beth Qiang",
-  "license": "ISC",
+  "author": "Joey Darbyshire, Sean McBride, Yoo-Nah Park, Beth Qiang",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/TranscendVR/transcend/issues"
   },
