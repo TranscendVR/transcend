@@ -14,4 +14,4 @@ As Mark Davis, Fullstack's Product Manager, describes [in a post about Fullstack
 
 > Here’s what we wish existed, now: a simple VR environment where up to 25 avatars can interact with each other, with real-time voice chat, that’s accessible on a Google Daydream headset as an MVP, but is also extensible to any WebVR enabled headset.
 
-This project serves to address that need. Transcend was built by [Joey Darbyshire](https://github.com/Jmikeydarby), [Yoo-Nah Park](https://github.com/parky22), and [Beth Qiang](https://github.com/bethqiang) as their Capstone Project during their Senior Phase at Fullstack Academy.
+This project serves to address that need. Transcend was built by [Joey Darbyshire](https://github.com/Jmikeydarby), [Sean McBride](https://github.com/spmcbride1201), [Yoo-Nah Park](https://github.com/parky22), and [Beth Qiang](https://github.com/bethqiang) as their Capstone Project during their Senior Phase at Fullstack Academy.

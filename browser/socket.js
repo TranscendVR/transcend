@@ -4,8 +4,13 @@ import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
 window.socket = io.connect();
 
-import { putUserOnDOM, addFirstPersonProperties } from '../utils';
-import '../aframeComponents/publish-location';
+import { fromJS } from 'immutable';
+import store from './redux/store';
+import { receiveUsers } from './redux/reducers/user-reducer';
+
+import { putUserOnDOM, addFirstPersonProperties } from './utils';
+import './aframeComponents/publish-location';
+import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
@@ -15,6 +20,7 @@ import '../aframeComponents/publish-location';
 // This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
+  setupLocalMedia();
 });
 
 socket.on('createUser', user => {
@@ -40,15 +46,19 @@ socket.on('getOthersCallback', users => {
 
 // Using a filtered users array, this updates the position & rotation of every other user
 socket.on('usersUpdated', users => {
-  Object.keys(users).forEach(user => {
-    const otherAvatar = document.getElementById(users[user].id);
+  // Convert users to Immutable structure before sending to store
+  store.dispatch(receiveUsers(fromJS(users)));
+  const receivedUsers = store.getState().users;
+  receivedUsers.valueSeq().forEach(user => {
+    const otherAvatar = document.getElementById(user.get('id'));
     // If a user's avatar is NOT on the DOM already, add it
+    // Convert it back to a normal JS object so we can use putUserOnDOM function as is
     if (otherAvatar === null) {
-      putUserOnDOM(users[user]);
+      putUserOnDOM(user.toJS());
     } else {
       // If a user's avatar is already on the DOM, update it
-      otherAvatar.setAttribute('position', `${users[user].x} ${users[user].y} ${users[user].z}`);
-      otherAvatar.setAttribute('rotation', `${users[user].xrot} ${users[user].yrot} ${users[user].zrot}`);
+      otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+      otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
     }
   });
 });
@@ -56,8 +66,21 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const scene = document.getElementById('scene');
   const avatarToBeRemoved = document.getElementById(userId);
-  scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
+
+// Adds a Peer to our DoM as their own Audio Element
+socket.on('addPeer', addPeerConn);
+
+// Removes Peer from DoM after they have disconnected or switched room
+socket.on('removePeer', removePeerConn);
+
+// Replies to an offer made by a new Peer
+socket.on('sessionDescription', setRemoteAnswer);
+
+// Handles setting the ice server for an ice Candidate
+socket.on('iceCandidate', setIceCandidate);
+
+// Removes all peer connections and audio Elements from the DoM
+socket.on('disconnect', disconnectUser);
