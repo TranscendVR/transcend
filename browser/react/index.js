@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import store from '../redux/store';
 import { Router, Route, browserHistory } from 'react-router';
 import App from './components/App';
+import Sean from './components/Sean';
 
 import SOCKET from '../socket';
 
@@ -11,6 +12,7 @@ ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path='/' component={App} />
+      <Route path='/sean' component={Sean} />
     </Router>
   </Provider>,
   document.getElementById('react-app')
