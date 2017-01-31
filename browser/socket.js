@@ -10,7 +10,7 @@ import { receiveUsers } from './redux/reducers/user-reducer';
 
 import { putUserOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
-import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from '../webRTC/client';
+import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
