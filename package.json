@@ -21,7 +21,7 @@
     "vr"
   ],
   "author": "Joey Darbyshire, Sean McBride, Yoo-Nah Park, Beth Qiang",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/TranscendVR/transcend/issues"
   },
