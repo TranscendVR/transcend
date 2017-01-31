@@ -56,6 +56,7 @@ module.exports = io => {
       delete sockets[socket.id];
     });
 
+    // Connects a new user to a channel and emits to all other users to initiate a new RTCPeerConnection with them
     socket.on('join', function (config) {
       console.log(`[${socket.id}] join ${config}`);
       const channel = config.channel;
@@ -79,6 +80,7 @@ module.exports = io => {
       socket.channels[channel] = channel;
     });
 
+    // Removes a user from a channel and tells all other users to discontinue their connection with them
     function part (channel) {
       console.log(`[${socket.id}] part`);
 
@@ -98,6 +100,7 @@ module.exports = io => {
 
     socket.on('part', part);
 
+    // If any user is an Ice Candidate, tells other users to set up a ICE connection with them
     socket.on('relayICECandidate', function (config) {
       const peerId = config.peer_id;
       const iceCandidate = config.ice_candidate;
@@ -108,6 +111,7 @@ module.exports = io => {
       }
     });
 
+    // Send the answer back to the new user in order to complete the handshake
     socket.on('relaySessionDescription', function (config) {
       const peerId = config.peer_id;
       const sessionDescription = config.session_description;
