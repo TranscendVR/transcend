@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const { resolve } = require('path');
 const chalk = require('chalk');
+const passport = require('passport');
 require('dotenv').config();
 
 if (process.env.NODE_ENV !== 'production') {
@@ -13,15 +14,19 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
-// Body parsing middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
 // Set up session middleware
 app.use(require('cookie-session')({
   name: 'session',
   keys: [process.env.SESSION_SECRET || 'an insecure secret key']
 }));
+
+// Body parsing middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Authentication middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Setting up socket.io
 const socketio = require('socket.io');
