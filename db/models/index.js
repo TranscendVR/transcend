@@ -7,12 +7,10 @@ const Session = require('./session');
 const Square = require('./square');
 const OAuth = require('./oauth');
 
-console.log('OAUTH', typeof OAuth);
-console.log('User', User);
 OAuth.belongsTo(User);
 User.hasOne(OAuth);
 
 Session.belongsTo(User);
 User.hasOne(Session);
 
-module.exports = { User, Session, Square };
+module.exports = { User, Session, Square, OAuth };

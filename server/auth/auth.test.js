@@ -32,7 +32,7 @@ const gertrude = {
   isAdmin: true
 };
 
-describe('/api/auth', () => {
+xdescribe('/api/auth', () => {
   let howManyUsers;
 
   before('create a user', () => {

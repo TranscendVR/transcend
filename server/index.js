@@ -17,6 +17,12 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Set up session middleware
+app.use(require('cookie-session')({
+  name: 'session',
+  keys: [process.env.SESSION_SECRET || 'an insecure secret key']
+}));
+
 // Setting up socket.io
 const socketio = require('socket.io');
 server.on('request', app);
@@ -27,12 +33,6 @@ require('./socket')(io);
 app.use(express.static(resolve(__dirname, '../browser/app.html')));
 app.use(express.static(resolve(__dirname, '../browser/favicon/favicon.ico')));
 app.use(express.static(resolve(__dirname, '../public')));
-
-// Set up session middleware
-app.use(require('cookie-session')({
-  name: 'session',
-  keys: [process.env.SESSION_SECRET || 'an insecure secret key']
-}));
 
 // Our custom routes will go here
 app.use('/api', require('./api'));

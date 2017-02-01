@@ -3,7 +3,7 @@
 const debug = require('debug')('oauth');
 const Sequelize = require('sequelize');
 const db = require('../index');
-//const User = require('./user');
+// const User = require('./user');
 
 const OAuth = db.define('oauths', {
   uid: Sequelize.STRING,
@@ -28,29 +28,30 @@ OAuth.V2 = (accessToken, refreshToken, profile, done) =>
     where: {
       provider: profile.provider,
       uid: profile.id
-    }})
-    .spread(oauth => {
-      debug('provider:%s will log in user:{name=%s uid=%s}',
-        profile.provider,
-        profile.displayName,
-        profile.uid);
-      oauth.profileJson = profile;
-      return db.Promise.props({
-        oauth,
-        user: oauth.getUser(),
-        _saveProfile: oauth.save()
-      });
-    })
-    .then(({ oauth, user }) => user ||
-      db.models('users').create({
-        name: profile.displayName
-      }).then(user => db.Promise.props({
-        user,
-        _setOauthUser: oauth.setUser(user)
-      }))
-    )
-    .then(({ user }) => done(null, user))
-    .catch(done);
+    }
+  })
+  .spread(oauth => {
+    debug('provider:%s will log in user:{name=%s uid=%s}',
+      profile.provider,
+      profile.displayName,
+      profile.uid);
+    oauth.profileJson = profile;
+    return db.Promise.props({
+      oauth,
+      user: oauth.getUser(),
+      _saveProfile: oauth.save()
+    });
+  })
+  .then(({ oauth, user }) => user ||
+    db.models('users').create({
+      name: profile.displayName
+    }).then(user => db.Promise.props({
+      user,
+      _setOauthUser: oauth.setUser(user)
+    }))
+  )
+  .then(({ user }) => done(null, user))
+  .catch(done);
 
 
 OAuth.setupStrategy =

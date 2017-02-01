@@ -27,4 +27,4 @@ const selfOrAdminOnly = action => (req, res, next) => {
 };
 
 
-module.exports = {mustBeLoggedIn, selfOnly, forbidden, selfOrAdminOnly};
+module.exports = { mustBeLoggedIn, selfOnly, forbidden, selfOrAdminOnly };
