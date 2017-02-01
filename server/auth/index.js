@@ -47,6 +47,11 @@ auth.post('/:strategy/login', (req, res, next) => {
   })(req, res, next);
 });
 
+auth.post('/logout', (req, res, next) => {
+  req.logout();
+  res.redirect('/api/auth/whoami');
+});
+
 // Rolling my own. Leaving this in for now, just in case.
 // auth.post('/local/login', function (req, res, next) {
 //   User.findOne({

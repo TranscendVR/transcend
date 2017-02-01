@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { login } from '../../redux/reducers/auth';
+import { login, logout } from '../../redux/reducers/auth';
 
 /* ----------------- COMPONENT ------------------ */
 
@@ -37,6 +37,9 @@ class Login extends React.Component {
           <button type="submit">Log In</button>
         </form>
         <div>
+          <button onClick={this.props.logout}>Logout</button>
+        </div>
+        <div>
           <p>
             <a target="_self" href="/auth/google">
               <span>Log in with Google</span>
@@ -64,6 +67,9 @@ class Login extends React.Component {
 const mapDispatch = dispatch => ({
   login (email, password) {
     dispatch(login(email, password));
+  },
+  logout () {
+    dispatch(logout());
   }
 });
 
