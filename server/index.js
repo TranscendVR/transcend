@@ -39,7 +39,7 @@ app.use(express.static(resolve(__dirname, '../browser/app.html')));
 app.use(express.static(resolve(__dirname, '../browser/favicon/favicon.ico')));
 app.use(express.static(resolve(__dirname, '../public')));
 
-// Our custom routes will go here
+// Routes
 app.use('/api', require('./api'));
 
 // Send index.html for anything else

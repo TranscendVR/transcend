@@ -10,7 +10,8 @@ import SOCKET from '../socket';
 
 import { whoami } from '../redux/reducers/auth';
 
-// Dispatch whoami to set the user whenever you hit the home page (mostly after OAuth)
+// Dispatch whoami to set the user whenever you hit the home page
+// Primary purpose right now is to set user right after OAuth
 const onHomeEnter = () => {
   store.dispatch(whoami());
 };

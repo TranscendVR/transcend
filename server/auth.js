@@ -3,7 +3,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-const User = require('../../db').model('users');
+const User = require('../db').model('users');
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -91,39 +91,12 @@ auth.get('/google/callback',
   })
 );
 
+// Send user info to frontend
 auth.get('/whoami', (req, res) => res.send(req.user));
 
 auth.post('/logout', (req, res, next) => {
   req.logout();
   res.redirect('/api/auth/whoami');
 });
-
-// Rolling my own. Leaving this in for now, just in case.
-// auth.post('/local/login', function (req, res, next) {
-//   User.findOne({
-//     where: {
-//       email: req.body.username
-//     }
-//   })
-//   .then(user => {
-//     console.log(user);
-//     if (!user) {
-//       res.sendStatus(401);
-//     } else {
-//       return user.authenticate(req.body.password)
-//       .then(ok => {
-//         if (!ok) {
-//           res.send('Ugh');
-//         } else {
-//           req.logIn(user, function (err) {
-//             if (err) return next(err);
-//             res.json(user);
-//           });
-//         }
-//       });
-//     }
-//   })
-//   .catch(next);
-// });
 
 module.exports = auth;
