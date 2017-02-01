@@ -24,6 +24,7 @@ require('./socket')(io);
 
 // Serve static files
 app.use(express.static(resolve(__dirname, '../browser/app.html')));
+app.use(express.static(resolve(__dirname, '../browser/aframeComponents')));
 app.use(express.static(resolve(__dirname, '../browser/favicon/favicon.ico')));
 app.use(express.static(resolve(__dirname, '../public')));
 
