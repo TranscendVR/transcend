@@ -21,3 +21,8 @@
 
            <a-entity light="type: point; intensity: 1.00; distance: 25; decay: 2"
           position="0 30 -25"></a-entity>
+
+<a-entity light="type: directional; intensity: 0.4" position="-10 30 -25"></a-entity>
+<a-entity light="type: directional; intensity: 0.4" position="10 30 -25"></a-entity>
+
+#f9f7d9
