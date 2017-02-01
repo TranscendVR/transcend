@@ -8,10 +8,17 @@ import Login from './components/Login';
 
 import SOCKET from '../socket';
 
+import { whoami } from '../redux/reducers/auth';
+
+// Dispatch whoami to set the user whenever you hit the home page (mostly after OAuth)
+const onHomeEnter = () => {
+  store.dispatch(whoami());
+};
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path='/' component={App} />
+      <Route path='/' component={App} onEnter={onHomeEnter} />
       <Route path='/login' component={Login} />
     </Router>
   </Provider>,

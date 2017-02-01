@@ -1,6 +1,7 @@
 const auth = require('express').Router();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 const User = require('../../db').model('users');
 
@@ -20,6 +21,14 @@ passport.deserializeUser(
   }
 );
 
+// Local login
+auth.post('/local/login', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/'
+  })(req, res, next);
+});
+
+// Local login cont.
 passport.use(new (LocalStrategy)(
   (email, password, done) => {
     User.findOne({ where: { email } })
@@ -39,13 +48,50 @@ passport.use(new (LocalStrategy)(
   }
 ));
 
-auth.get('/whoami', (req, res) => res.send(req.user));
+// Google OAuth
+auth.get('/google/login',
+  passport.authenticate('google', {
+    scope: 'email'
+  })
+);
 
-auth.post('/:strategy/login', (req, res, next) => {
-  passport.authenticate(req.params.strategy, {
-    successRedirect: '/'
-  })(req, res, next);
-});
+// Google OAuth cont.
+passport.use(
+  new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: '/api/auth/google/callback'
+  },
+  // Google will send back the token and profile
+  function (token, refreshToken, profile, done) {
+    // Google sends back info
+    const info = {
+      name: profile.displayName,
+      email: profile.emails[0].value
+    };
+    // Put info in db
+    User.findOrCreate({
+      where: {
+        googleId: profile.id
+      },
+      defaults: info
+    })
+    .spread(user => {
+      done(null, user);
+    })
+    .catch(done);
+  })
+);
+
+// Google OAuth cont. - handle the callback after Google has authenticated the user
+auth.get('/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+  })
+);
+
+auth.get('/whoami', (req, res) => res.send(req.user));
 
 auth.post('/logout', (req, res, next) => {
   req.logout();

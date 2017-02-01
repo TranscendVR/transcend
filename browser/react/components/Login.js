@@ -40,8 +40,8 @@ class Login extends React.Component {
           <button onClick={this.props.logout}>Logout</button>
         </div>
         <div>
-          <p>
-            <a target="_self" href="/auth/google">
+         <p>
+            <a target="_self" href="/api/auth/google/login">
               <span>Log in with Google</span>
             </a>
           </p>
