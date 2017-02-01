@@ -389,7 +389,8 @@ THREEx.MinecraftChar	= function(skinUrl){
   model.root	= new THREE.Object3D;
 
   var group	= new THREE.Object3D()
-  group.position.y= sizes.charH - sizes.headH
+  group.position.y= sizes.charH - sizes.headH - 1
+  group.position.z= .14;
   model.headGroup	= group
   model.root.add(model.headGroup)
 
@@ -403,6 +404,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   mapUv(geometry, 5, 24, 24, 32, 16)	// back
   var mesh	= new THREE.Mesh(geometry, material)
   mesh.position.y	= sizes.headH/2
+  mesh.rotation.y = 135;
   model.head	= mesh
   model.headGroup.add(model.head)
 
@@ -412,6 +414,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   model.helmet	= new THREE.Mesh(geometry, materialTran)
   model.headGroup.add(model.helmet)
   model.helmet.position.y	= sizes.headH/2
+  model.helmet.rotation.y	= 135;
   mapUv(geometry, 0, 48, 24, 56, 16)	// left
   mapUv(geometry, 1, 32, 24, 40, 16)	// right
   mapUv(geometry, 2, 40, 32, 48, 24)	// top
@@ -424,7 +427,9 @@ THREEx.MinecraftChar	= function(skinUrl){
   var geometry	= new THREE.CubeGeometry(sizes.bodyW, sizes.bodyH, sizes.bodyD)
   model.body	= new THREE.Mesh(geometry, material)
   model.root.add(model.body)
-  model.body.position.y	= sizes.legH + sizes.bodyH/2
+  model.body.position.y	= sizes.legH + sizes.bodyH/2 - 1
+  model.body.position.z	= .14;
+  model.body.rotation.y	= 135;
   mapUv(geometry, 0, 28, 12, 32,  0)	// left
   mapUv(geometry, 1, 16, 12, 20,  0)	// right
   mapUv(geometry, 2, 20, 16, 28, 12)	// top
@@ -438,7 +443,9 @@ THREEx.MinecraftChar	= function(skinUrl){
   model.root.add(model.armR)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.armH/2 + sizes.armW/2, 0) );
   model.armR.position.x	= -sizes.bodyW/2 - sizes.armW/2
-  model.armR.position.y	=  sizes.legH + sizes.bodyH - sizes.armW/2
+  model.armR.position.y	=  sizes.legH + sizes.bodyH - sizes.armW/2 - 1
+  model.armR.rotation.y	= 135;
+  model.armR.position.z	= .14;
   mapUv(geometry, 0, 48, 12, 52,  0)	// right
   mapUv(geometry, 1, 40, 12, 44,  0)	// left
   mapUv(geometry, 2, 44, 16, 48, 12)	// top
@@ -452,7 +459,9 @@ THREEx.MinecraftChar	= function(skinUrl){
   model.root.add(model.armL)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.armH/2 + sizes.armW/2, 0) );
   model.armL.position.x	= sizes.bodyW/2 + sizes.armW/2
-  model.armL.position.y	= sizes.legH + sizes.bodyH - sizes.armW/2
+  model.armL.position.y	= sizes.legH + sizes.bodyH - sizes.armW/2 - 1
+  model.armL.rotation.y	= 135;
+  model.armL.position.z	= .14;
   mapUv(geometry, 0, 44, 12, 40,  0)	// right
   mapUv(geometry, 1, 52, 12, 48,  0)	// left
   mapUv(geometry, 2, 44, 16, 48, 12)	// top
@@ -466,7 +475,9 @@ THREEx.MinecraftChar	= function(skinUrl){
   model.root.add(model.legR)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.legH/2, 0) );
   model.legR.position.x	= -sizes.legW/2
-  model.legR.position.y	=  sizes.legH
+  model.legR.position.y	=  sizes.legH - 1
+  model.legR.rotation.y	= 135;
+  model.legR.position.z	= .14;
   mapUv(geometry, 0,  8, 12, 12,  0)	// right
   mapUv(geometry, 1,  0, 12,  4,  0)	// left
   mapUv(geometry, 2,  4, 16,  8, 12)	// top
@@ -480,7 +491,9 @@ THREEx.MinecraftChar	= function(skinUrl){
   model.root.add(model.legL)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.legH/2, 0) );
   model.legL.position.x	= sizes.legW/2
-  model.legL.position.y	= sizes.legH
+  model.legL.position.y	= sizes.legH - 1
+  model.legL.rotation.y	= 135;
+  model.legL.position.z	= .14;
   mapUv(geometry, 0,  4, 12,  0,  0)	// left
   mapUv(geometry, 1, 12, 12,  8,  0)	// right
   mapUv(geometry, 2,  8, 16,  4, 12)	// top
@@ -1076,7 +1089,7 @@ AFRAME.registerPrimitive('a-minecraft', AFRAME.utils.extendDeep({}, AFRAME.primi
     'minecraft-body-anim': 'stand',
     'minecraft-nickname': 'John',
     'minecraft-bubble': '',
-    'minecraft-controls': {},
+    // 'minecraft-controls': {}
   },
 }));
 
@@ -1224,15 +1237,15 @@ AFRAME.registerComponent('minecraft-bubble', {
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-AFRAME.registerComponent('minecraft-controls', {
-  schema: {
-  },
-  init: function () {
-    var character = this.el.components.minecraft.character
-    this.controls	= new THREEx.MinecraftControls(character)
-    THREEx.MinecraftControls.setKeyboardInput(this.controls, ['wasd', 'arrows', 'ijkl'])
-  },
-  tick : function(now, delta){
-    this.controls.update(delta/1000,now/1000)
-  },
-});
+// AFRAME.registerComponent('minecraft-controls', {
+//   schema: {
+//   },
+//   init: function () {
+//     var character = this.el.components.minecraft.character
+//     this.controls	= new THREEx.MinecraftControls(character)
+//     THREEx.MinecraftControls.setKeyboardInput(this.controls, ['wasd', 'arrows', 'ijkl'])
+//   },
+//   tick : function(now, delta){
+//     this.controls.update(delta/1000,now/1000)
+//   },
+// });
