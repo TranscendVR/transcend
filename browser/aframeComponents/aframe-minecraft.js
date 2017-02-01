@@ -426,7 +426,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.body
   var geometry	= new THREE.CubeGeometry(sizes.bodyW, sizes.bodyH, sizes.bodyD)
   model.body	= new THREE.Mesh(geometry, material)
-  model.root.add(model.body)
+  // model.root.add(model.body)
   model.body.position.y	= sizes.legH + sizes.bodyH/2 - 1
   model.body.position.z	= .14;
   model.body.rotation.y	= 135;
@@ -440,7 +440,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.armR
   var geometry	= new THREE.CubeGeometry(sizes.armW, sizes.armH, sizes.armD)
   model.armR	= new THREE.Mesh(geometry, material)
-  model.root.add(model.armR)
+  // model.root.add(model.armR)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.armH/2 + sizes.armW/2, 0) );
   model.armR.position.x	= -sizes.bodyW/2 - sizes.armW/2
   model.armR.position.y	=  sizes.legH + sizes.bodyH - sizes.armW/2 - 1
@@ -456,7 +456,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.armL
   var geometry	= new THREE.CubeGeometry(sizes.armW, sizes.armH, sizes.armD)
   model.armL	= new THREE.Mesh(geometry, material)
-  model.root.add(model.armL)
+  // model.root.add(model.armL)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.armH/2 + sizes.armW/2, 0) );
   model.armL.position.x	= sizes.bodyW/2 + sizes.armW/2
   model.armL.position.y	= sizes.legH + sizes.bodyH - sizes.armW/2 - 1
@@ -472,7 +472,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.legR
   var geometry	= new THREE.CubeGeometry(sizes.legW, sizes.legH, sizes.legD)
   model.legR	= new THREE.Mesh(geometry, material)
-  model.root.add(model.legR)
+  // model.root.add(model.legR)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.legH/2, 0) );
   model.legR.position.x	= -sizes.legW/2
   model.legR.position.y	=  sizes.legH - 1
@@ -488,7 +488,7 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.legL
   var geometry	= new THREE.CubeGeometry(sizes.legW, sizes.legH, sizes.legD)
   model.legL	= new THREE.Mesh(geometry, material)
-  model.root.add(model.legL)
+  // model.root.add(model.legL)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.legH/2, 0) );
   model.legL.position.x	= sizes.legW/2
   model.legL.position.y	= sizes.legH - 1
@@ -1045,7 +1045,8 @@ THREEx.MinecraftNickname	= function(character){
     });
     var sprite		= new THREE.Sprite( material );
     this.object3d	= sprite
-    sprite.position.y	= 1.15
+    sprite.position.y	= .150
+    sprite.position.z	= .150
     // add sprite to the character
     character.root.add(this.object3d)
   }

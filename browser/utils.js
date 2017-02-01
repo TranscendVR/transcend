@@ -3,11 +3,11 @@ export function putUserOnDOM (user) {
   const avatar = document.createElement('a-minecraft');
   scene.appendChild(avatar);
   avatar.setAttribute('id', user.id);
-  avatar.setAttribute('minecraft-nickname', 'Test');
+  avatar.setAttribute('minecraft-nickname', user.color);
   avatar.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png');
   avatar.setAttribute('material', 'color', user.color);
   avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
-  avatar.setAttribute('rotation', `${user.xrot} ${user.yrot + 180} ${user.zrot}`);
+  avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
   return avatar;
 }
 
