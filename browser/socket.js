@@ -50,15 +50,28 @@ socket.on('usersUpdated', users => {
   store.dispatch(receiveUsers(fromJS(users)));
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
-    const otherAvatar = document.getElementById(user.get('id'));
-    // If a user's avatar is NOT on the DOM already, add it
-    // Convert it back to a normal JS object so we can use putUserOnDOM function as is
-    if (otherAvatar === null) {
-      putUserOnDOM(user.toJS());
-    } else {
-      // If a user's avatar is already on the DOM, update it
-      otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
-      otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+    // Pull the path off the URL, stripping forward slashes
+    // For example, "localhost:1337/sean" would return "sean"
+    // If we are at the root path, we instead received "root"
+    // These values are passed up as "scene" in the user tick and correspond to the names of react components and a-scenes
+    const currentScene = window.location.pathname.replace(/\//g, '') || 'root';
+    // If the user is on the current scene, add or update the user
+    if (user.get('scene') === currentScene) {
+      const otherAvatar = document.getElementById(user.get('id'));
+      // If a user's avatar is NOT on the DOM already, add it
+      // Convert it back to a normal JS object so we can use putUserOnDOM function as is
+      if (otherAvatar === null) {
+        putUserOnDOM(user.toJS());
+      } else {
+        // If a user's avatar is already on the DOM, update it
+        otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+        otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+      }
+    } else { // If the user is not on the scene, make sure the user is not on the DOM
+      const otherAvatar = document.getElementById(user.get('id'));
+      if (otherAvatar) {
+        otherAvatar.parentNode.removeChild(otherAvatar);
+      }
     }
   });
 });
@@ -66,7 +79,9 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
+  const scene = document.getElementById('scene');
   const avatarToBeRemoved = document.getElementById(userId);
+  scene.remove(avatarToBeRemoved); // Remove from scene
   avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
 });
 
