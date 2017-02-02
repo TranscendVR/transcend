@@ -6,11 +6,6 @@ import { login, logout } from '../../redux/reducers/auth';
 /* ----------------- COMPONENT ------------------ */
 
 class Login extends React.Component {
-  constructor (props) {
-    super(props);
-    this.onLoginSubmit = this.onLoginSubmit.bind(this);
-  }
-
   // Set the background style & size for just this component
   componentDidMount () {
     document.body.style.background = 'url(/images/background.png) no-repeat top center fixed';
@@ -26,7 +21,7 @@ class Login extends React.Component {
   render () {
     return (
       <div className="login-div">
-        <form onSubmit={this.onLoginSubmit}>
+        <form onSubmit={this.props.login}>
           <div className="form-group">
             <input
               name="email"
@@ -58,19 +53,15 @@ class Login extends React.Component {
       </div>
     );
   }
-
-  onLoginSubmit (event) {
-    event.preventDefault();
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    this.props.login(email, password);
-  }
 }
 
 /* ----------------- CONTAINER ------------------ */
 
 const mapDispatch = dispatch => ({
-  login (email, password) {
+  login (event) {
+    event.preventDefault();
+    const email = event.target.email.value;
+    const password = event.target.password.value;
     dispatch(login(email, password));
   },
   logout () {

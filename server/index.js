@@ -38,6 +38,7 @@ require('./socket')(io);
 app.use(express.static(resolve(__dirname, '../browser/app.html')));
 app.use(express.static(resolve(__dirname, '../browser/stylesheets')));
 app.use(express.static(resolve(__dirname, '../public')));
+app.use(express.static(resolve(__dirname, '../node_modules/font-awesome')));
 
 // Routes
 app.use('/api', require('./api'));
