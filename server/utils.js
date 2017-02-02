@@ -5,7 +5,7 @@ function User (id) {
   this.id = id;
   this.color = randomcolor();
   this.x = 0;
-  this.y = 1.6;
+  this.y = 1.4;
   this.z = 5;
   this.xrot = 0;
   this.yrot = 0;

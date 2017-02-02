@@ -351,7 +351,7 @@ THREEx.MinecraftChar	= function(skinUrl){
     map		: texture,
     transparent	: true,
     depthWrite	: false,
-    side		: THREE.DoubleSide
+    side		: THREE.FrontSide
   })
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -387,10 +387,10 @@ THREEx.MinecraftChar	= function(skinUrl){
   // - height of full character is 1
   var model	= this;
   model.root	= new THREE.Object3D;
+  model.rootBody = new THREE.Object3D;
 
   var group	= new THREE.Object3D()
-  group.position.y= sizes.charH - sizes.headH - 1
-  group.position.z= .14;
+  group.position.y= sizes.charH - sizes.headH - .9
   model.headGroup	= group
   model.root.add(model.headGroup)
 
@@ -426,9 +426,8 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.body
   var geometry	= new THREE.CubeGeometry(sizes.bodyW, sizes.bodyH, sizes.bodyD)
   model.body	= new THREE.Mesh(geometry, material)
-  // model.root.add(model.body)
-  model.body.position.y	= sizes.legH + sizes.bodyH/2 - 1
-  model.body.position.z	= .14;
+  model.rootBody.add(model.body)
+  model.body.position.y	= sizes.legH + sizes.bodyH/2 - .9
   model.body.rotation.y	= 135;
   mapUv(geometry, 0, 28, 12, 32,  0)	// left
   mapUv(geometry, 1, 16, 12, 20,  0)	// right
@@ -440,12 +439,11 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.armR
   var geometry	= new THREE.CubeGeometry(sizes.armW, sizes.armH, sizes.armD)
   model.armR	= new THREE.Mesh(geometry, material)
-  // model.root.add(model.armR)
+  model.rootBody.add(model.armR)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.armH/2 + sizes.armW/2, 0) );
   model.armR.position.x	= -sizes.bodyW/2 - sizes.armW/2
-  model.armR.position.y	=  sizes.legH + sizes.bodyH - sizes.armW/2 - 1
+  model.armR.position.y	=  sizes.legH + sizes.bodyH - sizes.armW/2 - .9
   model.armR.rotation.y	= 135;
-  model.armR.position.z	= .14;
   mapUv(geometry, 0, 48, 12, 52,  0)	// right
   mapUv(geometry, 1, 40, 12, 44,  0)	// left
   mapUv(geometry, 2, 44, 16, 48, 12)	// top
@@ -456,12 +454,11 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.armL
   var geometry	= new THREE.CubeGeometry(sizes.armW, sizes.armH, sizes.armD)
   model.armL	= new THREE.Mesh(geometry, material)
-  // model.root.add(model.armL)
+  model.rootBody.add(model.armL)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.armH/2 + sizes.armW/2, 0) );
   model.armL.position.x	= sizes.bodyW/2 + sizes.armW/2
-  model.armL.position.y	= sizes.legH + sizes.bodyH - sizes.armW/2 - 1
+  model.armL.position.y	= sizes.legH + sizes.bodyH - sizes.armW/2 - .9
   model.armL.rotation.y	= 135;
-  model.armL.position.z	= .14;
   mapUv(geometry, 0, 44, 12, 40,  0)	// right
   mapUv(geometry, 1, 52, 12, 48,  0)	// left
   mapUv(geometry, 2, 44, 16, 48, 12)	// top
@@ -472,12 +469,11 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.legR
   var geometry	= new THREE.CubeGeometry(sizes.legW, sizes.legH, sizes.legD)
   model.legR	= new THREE.Mesh(geometry, material)
-  // model.root.add(model.legR)
+  model.rootBody.add(model.legR)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.legH/2, 0) );
   model.legR.position.x	= -sizes.legW/2
-  model.legR.position.y	=  sizes.legH - 1
+  model.legR.position.y	=  sizes.legH - .9
   model.legR.rotation.y	= 135;
-  model.legR.position.z	= .14;
   mapUv(geometry, 0,  8, 12, 12,  0)	// right
   mapUv(geometry, 1,  0, 12,  4,  0)	// left
   mapUv(geometry, 2,  4, 16,  8, 12)	// top
@@ -488,12 +484,11 @@ THREEx.MinecraftChar	= function(skinUrl){
   // build model.legL
   var geometry	= new THREE.CubeGeometry(sizes.legW, sizes.legH, sizes.legD)
   model.legL	= new THREE.Mesh(geometry, material)
-  // model.root.add(model.legL)
+  model.rootBody.add(model.legL)
   geometry.applyMatrix( new THREE.Matrix4().makeTranslation(0, -sizes.legH/2, 0) );
   model.legL.position.x	= sizes.legW/2
-  model.legL.position.y	= sizes.legH - 1
+  model.legL.position.y	= sizes.legH - .9
   model.legL.rotation.y	= 135;
-  model.legL.position.z	= .14;
   mapUv(geometry, 0,  4, 12,  0,  0)	// left
   mapUv(geometry, 1, 12, 12,  8,  0)	// right
   mapUv(geometry, 2,  8, 16,  4, 12)	// top
@@ -574,88 +569,7 @@ THREEx.MinecraftChar.skinWellKnownUrls	= {
   'theflash'		: 'images/theflash.png',
   'woody'			: 'images/woody.png',
 }
-var THREEx	= THREEx	|| {}
 
-THREEx.MinecraftBubble	= function(character){
-  var _this = this
-  //////////////////////////////////////////////////////////////////////////////////
-  //		update functions						//
-  //////////////////////////////////////////////////////////////////////////////////
-
-  var onRenderFcts= [];
-  this.update	= function(delta, now){
-    onRenderFcts.forEach(function(updateFct){
-      updateFct(delta, now)
-    })
-  }.bind(this)
-
-  //////////////////////////////////////////////////////////////////////////////////
-  //		Say								//
-  //////////////////////////////////////////////////////////////////////////////////
-  this._object3D	= null
-  this._createdAt	= null
-  this.expireAfter= 10.0
-  this.update	= function(delta, now){
-    // if there is no say at the moment, do nothing
-    if( _this._createdAt === null )	return
-    // if the say sprite isnt old enougth to timeout, do nothing
-    var sayAge	= (Date.now() - _this._createdAt)/1000.0
-    if( sayAge < _this.expireAfter )		return
-    // remove the say sprite
-    _this.clear()
-  }
-  this.clear	= function(){
-    if( this._object3D === null )	return
-    character.root.remove(this._object3D)
-    this._object3D	= null
-    this._createdAt	= null
-  }
-  this.set	= function(text){
-    if( this._object3D )	this.clear()
-    // update for timer
-    this._createdAt	= Date.now()
-    // build the texture
-    var canvas	= buildChatBubble(text);
-    var texture	= new THREE.Texture(canvas)
-    texture.needsUpdate	= true
-    // build the sprite itself
-    var material	= new THREE.SpriteMaterial({
-      map			: texture,
-      useScreenCoordinates	: false
-    });
-    var sprite		= new THREE.Sprite( material );
-    this._object3D	= sprite
-    sprite.scale.multiplyScalar(4)
-    sprite.position.y	= 1.5
-    // add sprite to the character
-    character.root.add(this._object3D)
-  }
-  return
-
-  function buildChatBubble(text) {
-    // create the canvas
-    var canvas	= document.createElement("canvas");
-    var context	= canvas.getContext("2d");
-    canvas.width	= 1024;
-    canvas.height	= 512;
-    // center the origin
-    context.translate( canvas.width/2, canvas.height/2 );
-    // measure text
-    var fontSize	= 24;
-    context.font	= "bolder "+fontSize+"px Verdana";
-    var fontH	= fontSize;
-    var fontW	= context.measureText(text).width;
-    // build the background
-    context.fillStyle = "rgba(255,255,255,0.3)";
-    var scale	= 1.2;
-    context.fillRect(-fontW*scale/2,-fontH*scale/1.3,fontW*scale,fontH*scale)
-    // display the text
-    context.fillStyle = "rgba(0,0,0,0.7)";
-    context.fillText(text, -fontW/2, 0);
-    // return the canvas element
-    return canvas;
-  };
-}
 var THREEx	= THREEx || {};
 
 THREEx.createMinecraftCharBodyAnimations	= function(character){
@@ -1045,7 +959,7 @@ THREEx.MinecraftNickname	= function(character){
     });
     var sprite		= new THREE.Sprite( material );
     this.object3d	= sprite
-    sprite.position.y	= .150
+    sprite.position.y	= .25
     sprite.position.z	= .150
     // add sprite to the character
     character.root.add(this.object3d)
@@ -1089,7 +1003,7 @@ AFRAME.registerPrimitive('a-minecraft', AFRAME.utils.extendDeep({}, AFRAME.primi
     'minecraft-head-anim': 'still',
     'minecraft-body-anim': 'stand',
     'minecraft-nickname': 'John',
-    'minecraft-bubble': '',
+    // 'minecraft-bubble': '',
     // 'minecraft-controls': {}
   },
 }));
@@ -1102,27 +1016,32 @@ AFRAME.registerComponent('minecraft', {
   schema: {
     skinUrl: {
       type: 'string',
-      default : ''
+      default: ''
     },
     wellKnownSkin: {
       type: 'string',
-      default : ''
+      default: ''
     },
-    heightMeter : {
-      default : 1.6
+    heightMeter: {
+      default: 1.6
+    },
+    component: {
+      default: 'head'
     }
   },
   init: function () {
-    var character	= new THREEx.MinecraftChar()
-    this.character = character
+    const character = new THREEx.MinecraftChar();
+    this.character = character;
+    console.log(this.data);
 
-    this.el.object3D.add( character.root )
+    this.data.component === 'head' ? this.el.object3D.add(character.root) : this.el.object3D.add(character.rootBody);
     // this.el.setObject3D('superRoot', character.root);
   },
   update: function () {
     if( Object.keys(this.data).length === 0 )       return
     var character = this.character
     character.root.scale.set(1,1,1).multiplyScalar(this.data.heightMeter)
+    character.rootBody.scale.set(1,1,1).multiplyScalar(1.6)
 
     if( this.data.skinUrl ){
       character.loadSkin(this.data.skinUrl)
@@ -1215,23 +1134,23 @@ AFRAME.registerComponent('minecraft-nickname', {
 //		Code Separator
 //////////////////////////////////////////////////////////////////////////////
 
-AFRAME.registerComponent('minecraft-bubble', {
-  schema: {
-    type: 'string',
-    default : 'Hello world.',
-  },
-  init: function () {
-    var character = this.el.components.minecraft.character
-    this.bubble	= new THREEx.MinecraftBubble(character);
-  },
-  update: function () {
-    if( Object.keys(this.data).length === 0 )       return
-    this.bubble.set(this.data);
-  },
-  tick : function(now, delta){
-    this.bubble.update(delta/1000,now/1000)
-  },
-});
+// AFRAME.registerComponent('minecraft-bubble', {
+//   schema: {
+//     type: 'string',
+//     default : 'Hello world.',
+//   },
+//   init: function () {
+//     var character = this.el.components.minecraft.character
+//     this.bubble	= new THREEx.MinecraftBubble(character);
+//   },
+//   update: function () {
+//     if( Object.keys(this.data).length === 0 )       return
+//     this.bubble.set(this.data);
+//   },
+//   tick : function(now, delta){
+//     this.bubble.update(delta/1000,now/1000)
+//   },
+// });
 
 
 //////////////////////////////////////////////////////////////////////////////

@@ -12,6 +12,8 @@ const User = db.define('users', {
       notEmpty: true
     }
   },
+  // For Google OAuth
+  googleId: Sequelize.STRING,
   // OAuth -> users may or may not have passwords.
   password_digest: Sequelize.STRING,
   password: Sequelize.VIRTUAL
