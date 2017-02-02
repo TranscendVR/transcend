@@ -1,3 +1,4 @@
+require('dotenv').config();
 const http = require('http');
 const server = http.createServer();
 const express = require('express');
@@ -5,6 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const { resolve } = require('path');
 const chalk = require('chalk');
+const passport = require('passport');
 
 if (process.env.NODE_ENV !== 'production') {
   // Logging middleware (dev only)
@@ -12,9 +14,19 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
+// Set up session middleware
+app.use(require('cookie-session')({
+  name: 'session',
+  keys: [process.env.SESSION_SECRET || 'an insecure secret key']
+}));
+
 // Body parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// Authentication middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Setting up socket.io
 const socketio = require('socket.io');
@@ -24,10 +36,12 @@ require('./socket')(io);
 
 // Serve static files
 app.use(express.static(resolve(__dirname, '../browser/app.html')));
-app.use(express.static(resolve(__dirname, '../browser/favicon/favicon.ico')));
+app.use(express.static(resolve(__dirname, '../browser/stylesheets')));
 app.use(express.static(resolve(__dirname, '../public')));
+app.use(express.static(resolve(__dirname, '../node_modules/font-awesome')));
 
-// Our custom routes will go here
+// Routes
+app.use('/api', require('./api'));
 
 // Send index.html for anything else
 app.get('/*', (req, res) => {

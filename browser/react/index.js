@@ -8,17 +8,26 @@ import Sean from './components/Sean';
 import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
-
+import Login from './components/Login';
 import SOCKET from '../socket';
+
+import { whoami } from '../redux/reducers/auth';
+
+// Dispatch whoami to set the user whenever you hit the home page
+// Primary purpose right now is to set user right after local/OAuth login
+const onHomeEnter = () => {
+  store.dispatch(whoami());
+};
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path='/' component={App} />
+      <Route path='/' component={App} onEnter={onHomeEnter} />
       <Route path='/sean' component={Sean} />
       <Route path='/beth' component={Beth} />
       <Route path='/yoonah' component={Yoonah} />
       <Route path='/joey' component={Joey} />
+      <Route path='/login' component={Login} />
     </Router>
   </Provider>,
   document.getElementById('react-app')

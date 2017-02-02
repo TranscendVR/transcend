@@ -48,7 +48,7 @@ socket.on('createUser', user => {
 });
 
 // After the server generates an immutable map of all users other than the client's own
-//   avatar, 
+//   avatar,
 socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
   // For each existing user that the backend sends us, put on the DOM
