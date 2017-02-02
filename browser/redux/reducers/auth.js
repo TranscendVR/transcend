@@ -1,5 +1,6 @@
 import { Map } from 'immutable';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 
 /* --------------- INITIAL STATE --------------- */
 
@@ -18,8 +19,8 @@ export const authenticated = user => ({
 export const login = (username, password) => {
   return dispatch =>
     axios.post('/api/auth/local/login', { username, password })
-    .then(() => dispatch(whoami()))
-    .catch(() => dispatch(whoami()));
+    .then(() => browserHistory.push('/'))
+    .catch(err => console.log(err.message));
 };
 
 export const logout = () =>

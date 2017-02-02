@@ -17,6 +17,12 @@ class Login extends React.Component {
     document.body.style.backgroundSize = 'cover';
   }
 
+  // Remove background style & size when this component unmounts
+  componentWillUnmount () {
+    document.body.style.background = '';
+    document.body.style.backgroundSize = '';
+  }
+
   render () {
     return (
       <div className="login-div">
