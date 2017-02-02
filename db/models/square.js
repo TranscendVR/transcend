@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../index');
 
 // square is a room or shared space (like the hallway or main room)
-const Square = db.define('square', {
+const Square = db.define('squares', {
   // This will be the Room name that is displayed for Users
   name: {
     type: Sequelize.STRING,
