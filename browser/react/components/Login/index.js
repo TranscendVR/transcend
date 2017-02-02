@@ -1,10 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Radium from 'radium';
 
-import { login, logout } from '../../redux/reducers/auth';
+import { login, logout } from '../../../redux/reducers/auth';
+
+import styles from './styles';
 
 /* ----------------- COMPONENT ------------------ */
 
+@Radium
 class Login extends React.Component {
   // Set the background style & size for just this component
   componentDidMount () {
@@ -20,23 +24,25 @@ class Login extends React.Component {
 
   render () {
     return (
-      <div className="login-div">
+      <div style={styles.container}>
         <form onSubmit={this.props.login}>
           <div className="form-group">
             <input
+              key="name"
               name="email"
               type="email"
               placeholder="email"
-              className="form-control"
+              style={styles.formControl}
               required
             />
           </div>
           <div className="form-group">
             <input
+              key="password"
               name="password"
               type="password"
               placeholder="password"
-              className="form-control"
+              style={styles.formControl}
               required
             />
           </div>

@@ -1,4 +1,4 @@
-.login-div {
+/*.login-div {
   position: relative;
   height: 300px;
   width: 320px;
@@ -8,9 +8,9 @@
   background-color: rgba(25, 25, 25, 0.75);
   box-shadow: 0px 10px 60px -5px #000;
   text-align: center;
-}
+}*/
 
-.login-div .form-control {
+/*.form-control {
   padding: 10px 20px;
   display: block;
   margin: 15px auto;
@@ -19,16 +19,16 @@
   border: 2px solid rgba(255, 255, 255, 0);
   overflow: hidden;
   transition: all 0.5s ease-in-out;
-}
+}*/
 
-.login-div .form-control:focus {
+/*.form-control:focus {
   outline: 0;
   border: 2px solid rgba(255, 255, 255, 0.5);
   background: rgba(0, 0, 0, 0);
   opacity: 0.6;
-}
+}*/
 
-.login-div input {
+input {
   display: inline-block;
   padding-top: 20px;
   font-size: 14px;
