@@ -16,3 +16,15 @@ export function addFirstPersonProperties (avatar) {
   avatar.setAttribute('look-controls', true);
   avatar.setAttribute('wasd-controls', true);
 }
+
+// creates an array of x and z coordinates that can be mapped over to create rows of chairs
+export function createArray (num) {
+  const arr = [];
+  for (let i = 1; i <= Math.abs(num); i++) {
+    for (let j = 1; j <= Math.abs(num); j++) {
+      if (num > 0) arr.push([i, j]);
+      else arr.push([i * -1, j]);
+    }
+  }
+  return arr;
+}

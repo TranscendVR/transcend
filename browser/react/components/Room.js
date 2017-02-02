@@ -9,9 +9,9 @@ export default (props) => (
 
     <a-entity id="ceiling"
               geometry={`primitive: plane; width:${props.floorWidth}; height:${props.floorHeight}`}
-              rotation="-90 0 0"
+              rotation="90 0 0"
               position={`0, ${props.wallHeight}, 0`}
-              material={`color: ${props.floorColor}`}/>
+              material={`color: ${props.ceilingColor}`}/>
 
     <a-entity id="back-wall"
               geometry={`primitive: plane; width:${props.floorWidth}; height:${props.wallHeight}`}
