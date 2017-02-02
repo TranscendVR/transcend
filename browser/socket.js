@@ -2,7 +2,7 @@
 
 import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
-window.socket = io.connect();
+window.socket = io.connect(window.location.origin);
 
 import { fromJS } from 'immutable';
 import store from './redux/store';
@@ -12,17 +12,27 @@ import { putUserOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
 import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
+// When the socket connection with the server is established, join the Socket.io room based on the URL
+socket.on('connect', () => {
+  console.log('You\'ve made a persistent two-way connection to the server!');
+  socket.emit('joinRoom', window.location);
+});
+
+// Upon joining a Socket.io room, the server emits the 'initWebRTC' event. This event listerer triggers a function that tells the clients
+//   in the same socket.io room to begin advertising WebRTC availability. By using a Socket.io room for signaling WebRTC p2p connections,
+//   voice should now correspond with scenes.
+//   There may still be some issues around WebRTC connections persisting after moving between scenes.
+socket.on('initWebRTC', () => {
+  console.log('After joining room, initializing webRTC');
+  setupLocalMedia();
+});
+
 // `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
 // on the user that the scene belongs to, so that only that scene can be manipulated
 // by them.
 // The other users will get the updated position via sockets.
 
 // This is the person who connected
-socket.on('connect', () => {
-  console.log('You\'ve made a persistent two-way connection to the server!');
-  setupLocalMedia();
-});
-
 socket.on('createUser', user => {
   const avatar = putUserOnDOM(user);
   addFirstPersonProperties(avatar);
@@ -99,3 +109,8 @@ socket.on('iceCandidate', setIceCandidate);
 
 // Removes all peer connections and audio Elements from the DoM
 socket.on('disconnect', disconnectUser);
+
+
+export function joinRoom (room) {
+  socket.join(room);
+}

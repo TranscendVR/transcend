@@ -17,7 +17,16 @@ module.exports = io => {
     socket.channels = {};
     sockets[socket.id] = socket;
 
+    socket.on('joinRoom', (winLoc) => {
+      const myRoom = winLoc.pathname;
+      console.log(`Appending to socket? ${myRoom}`);
+      socket.join(myRoom);
+      console.log(`${socket.id} has joined the room ${myRoom}`);
+      socket.emit('initWebRTC');
+    });
+
     // This will send all of the current users to the user that just connected
+    // TODO: Only return the list of people in the current scene
     socket.on('getOthers', () => {
       const allUsers = store.getState().users;
       socket.emit('getOthersCallback', getOtherUsers(allUsers, socket.id));
@@ -81,7 +90,7 @@ module.exports = io => {
     });
 
     // Removes a user from a channel and tells all other users to discontinue their connection with them
-    function part (channel) {
+    function part(channel) {
       console.log(`[${socket.id}] part`);
 
       if (!(channel in socket.channels)) {
