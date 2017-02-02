@@ -69,8 +69,6 @@ class Login extends React.Component {
 
 /* ----------------- CONTAINER ------------------ */
 
-// const mapState = () => ({});
-
 const mapDispatch = dispatch => ({
   login (email, password) {
     dispatch(login(email, password));

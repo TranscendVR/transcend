@@ -46,8 +46,6 @@
     "immutable": "^3.8.1",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
-    "passport-github2": "^0.1.10",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
     "pg": "^6.1.2",

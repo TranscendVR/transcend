@@ -1,3 +1,4 @@
+require('dotenv').config();
 const http = require('http');
 const server = http.createServer();
 const express = require('express');
@@ -6,7 +7,6 @@ const bodyParser = require('body-parser');
 const { resolve } = require('path');
 const chalk = require('chalk');
 const passport = require('passport');
-require('dotenv').config();
 
 if (process.env.NODE_ENV !== 'production') {
   // Logging middleware (dev only)
