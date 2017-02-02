@@ -48,24 +48,47 @@ socket.on('createUser', user => {
 });
 
 // After the server generates an immutable map of all users other than the client's own
-//   avatar,
+//   avatar, loop through the map, and pass the users to putUserOnDOM, which checks to
+//   see if the other user is in the same room, and if they are, perform the initial
+//   render of the other user's avatar. Once the initial render is complete, the client
+//   emits two events:
+//     --haveGottenOthers: an event that bounces to the server and immediately back to
+//       instruct the user's avatar to begin broadcating real-time updates to the server.
+//       While this likely seems unneccesary, the intention of this ping-pong is to provide
+//       a hook for the server to throttle the frequency of client updates to the server.
+//     --readyToReceiveUpdates: an event that tells the server to begin sending a
+//       feed of updates of the User immutable map to this client to update the DOM nodes
+//       representing the other users' avatars in real-time. This only occurs after
+//       the initial render of the users is complete, which should avoid potential jenk
+//       when joining a room with many avatars.
+// TODO: Evaluate if the 'haveGottenOthers' and 'startTick' events should be eliminated and
+//   replaced with events that allow the server to broadcast throttling instructions at any
+//   time and not just when a client enters a room.
 socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
-  // For each existing user that the backend sends us, put on the DOM
   Object.keys(users).forEach(user => {
     putUserOnDOM(users[user]);
   });
-  // This goes to the server, and then goes to `publish-location` to tell the `tick` to start
   socket.emit('haveGottenOthers');
-  // This goes to the server, and then back to the function with the setInterval
-  // Needed an intermediary for between when the other components are put on the DOM
-  // and the start of the interval loop
   socket.emit('readyToReceiveUpdates');
 });
 
-// Using a filtered users array, this updates the position & rotation of every other user
+// Once the client subscribes to updates via 'ready to receive updates' the server emits
+//   the 'usersUpdated' event every time the server's immutable map of users is updated. The
+//   server filters out the user's own avatar, but all other filtering
+//   is currently performed on the client. The users object is reconverted into an immutable
+//   object to be stored in client-side Redux. Once the user has been re-retrieved from the
+//   client-side Redux store, the room name is stripped from the URL and used to perform
+//   local filtering of users to only show those that are in the same room. If the user is
+//   in the same room, the user's avatar is either added to the DOM (if they just joined the
+//   room) or the existing DOM node of the user is updated. If the user was not in the update,
+//   the client assumes that the user has left the room and deletes the avatar.
+// TODO: Is immutable needed here if we are only effectively caching the last server update?
+// TODO: Replace client-side filtering with server-side filtering
+// TODO: Consider creating explicit remove-client events fired by the server to allow the
+//   server to emit smaller payloads that only include the users that actually changed since
+//   last update.
 socket.on('usersUpdated', users => {
-  // Convert users to Immutable structure before sending to store
   store.dispatch(receiveUsers(fromJS(users)));
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
@@ -77,12 +100,9 @@ socket.on('usersUpdated', users => {
     // If the user is on the current scene, add or update the user
     if (user.get('scene') === currentScene) {
       const otherAvatar = document.getElementById(user.get('id'));
-      // If a user's avatar is NOT on the DOM already, add it
-      // Convert it back to a normal JS object so we can use putUserOnDOM function as is
       if (otherAvatar === null) {
         putUserOnDOM(user.toJS());
       } else {
-        // If a user's avatar is already on the DOM, update it
         otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
         otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
       }

@@ -46,15 +46,24 @@ module.exports = io => {
       socket.emit('getOthersCallback', getOtherUsers(allUsers, socket.id));
     });
 
-    // This is a check to ensure that all of the existing users exist on the DOM
-    // before pushing updates to the backend
+    // After the client perform the initial render of the avatars of all other
+    //   users in the same room, it emits 'haveGottenOthers' to provide a
+    //   'currently unused' lifecycle hook that allows the server the ability
+    //   to potentially throttle the client's rate of updates to the server.
+    // Note that the startTick event listener is located in the publish-location
+    //   A-Frame component located at /browser/aframeComponents/publish-location.js
     socket.on('haveGottenOthers', () => {
       socket.emit('startTick');
     });
 
-    // readyToReceiveUpdates is a check to make sure existing users have loaded
-    // for the new user
-    // Once they have, then the backend starts pushing updates to the frontend
+    // readyToReceiveUpdates is an event that tells the server to begin sending a
+    //   feed of updates of the User immutable to this client to update the DOM nodes
+    //   representing the other users' avatars in real-time. This only occurs after
+    //   the initial render of the users is complete, which should avoid potential jenk
+    //   when joining a room with many avatars.
+    // TODO: modify getOtherUsers to only return
+    // TODO: Consider implementing separate immutable maps per room in the redux store
+    //   so that the subscribe only fires for users in the same room.
     socket.on('readyToReceiveUpdates', () => {
       store.subscribe(() => {
         const allUsers = store.getState().users;
@@ -62,13 +71,20 @@ module.exports = io => {
       });
     });
 
-    // This will update a user's position when they move, and send it to everyone
-    // except the specific scene's user
+    // When a user updates their position, cast the update as an immutable map, and update
+    //   the server-side Redux store. This will trigger the subscriptions created for each
+    //   client in the event handler for 'readyToReceiveUpdates'
     socket.on('tick', userData => {
       userData = Map(userData);
       store.dispatch(updateUserData(userData));
     });
 
+    // When a socket disconnects, invoke the 'removeUserAndEmit' thunk, which removes the user
+    //   associated with the socket from the redux store and broadcast the 'removeUser' to all
+    //   clients. Then do some black-magic to remove the user from socket.channels, which has
+    //   something to do with WebRTC (perhaps signalling???) Then delete the disconnected socket
+    //   from the sockets array.
+    // TODO: Perhaps the broadcast i
     socket.on('disconnect', () => {
       store.dispatch(removeUserAndEmit(socket));
       console.log(chalk.magenta(`${socket.id} has disconnected`));
@@ -104,7 +120,7 @@ module.exports = io => {
     });
 
     // Removes a user from a channel and tells all other users to discontinue their connection with them
-    function part(channel) {
+    function part (channel) {
       console.log(`[${socket.id}] part`);
 
       if (!(channel in socket.channels)) {
