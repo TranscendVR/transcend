@@ -11,50 +11,52 @@ class Login extends React.Component {
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
+  // Set the background style & size for just this component
+  componentDidMount () {
+    document.body.style.background = 'url(/images/background.png) no-repeat top center fixed';
+    document.body.style.backgroundSize = 'cover';
+  }
+
   render () {
     return (
-      <div>
+      <div className="login-div">
         <form onSubmit={this.onLoginSubmit}>
           <div className="form-group">
-            <label>email</label>
             <input
               name="email"
               type="email"
+              placeholder="email"
               className="form-control"
               required
             />
           </div>
           <div className="form-group">
-            <label>password</label>
             <input
               name="password"
               type="password"
+              placeholder="password"
               className="form-control"
               required
             />
           </div>
-          <button type="submit">Log In</button>
+          <button className="login-button" type="submit">Log In</button>
         </form>
+        <p className="or-divider">or</p>
         <div>
-          <button onClick={this.props.logout}>Logout</button>
+        <a target="_self" href="/api/auth/google/login" className="login-with-google">
+          <span className="icon fa fa-google"></span>
+          Log in with Google
+        </a>
         </div>
-        <div>
-         <p>
-            <a target="_self" href="/api/auth/google/login">
-              <span>Log in with Google</span>
-            </a>
-          </p>
-        </div>
+        <a href="#" onClick={this.props.logout} className="logout">Log Out</a>
       </div>
     );
   }
 
   onLoginSubmit (event) {
-    console.log('Login submitted');
     event.preventDefault();
     const email = event.target.email.value;
     const password = event.target.password.value;
-    console.log(email, password);
     this.props.login(email, password);
   }
 }
