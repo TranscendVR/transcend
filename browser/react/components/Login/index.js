@@ -46,16 +46,20 @@ class Login extends React.Component {
               required
             />
           </div>
-          <button className="login-button" type="submit">Log In</button>
+          <button style={styles.loginButton} type="submit">Log In</button>
         </form>
-        <p className="or-divider">or</p>
+        <div style={styles.orDividerLineDiv}>
+          <div style={styles.orDividerLineBefore}></div>
+          <p style={styles.orDivider}>or</p>
+          <div style={styles.orDividerLineAfter}></div>
+        </div>
         <div>
-        <a target="_self" href="/api/auth/google/login" className="login-with-google">
-          <span className="icon fa fa-google"></span>
+        <a target="_self" href="/api/auth/google/login" style={styles.loginWithGoogle}>
+          <span className="fa fa-google" style={styles.loginWithGoogleIcon}></span>
           Log in with Google
         </a>
         </div>
-        <a href="#" onClick={this.props.logout} className="logout">Log Out</a>
+        <a href="#" onClick={this.props.logout} style={styles.logout}>Log Out</a>
       </div>
     );
   }
