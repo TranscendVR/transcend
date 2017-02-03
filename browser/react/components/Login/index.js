@@ -1,10 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Radium from 'radium';
 
-import { login, logout } from '../../redux/reducers/auth';
+import { login, logout } from '../../../redux/reducers/auth';
+
+import styles from './styles';
 
 /* ----------------- COMPONENT ------------------ */
 
+@Radium
 class Login extends React.Component {
   // Set the background style & size for just this component
   componentDidMount () {
@@ -20,36 +24,42 @@ class Login extends React.Component {
 
   render () {
     return (
-      <div className="login-div">
+      <div style={styles.container}>
         <form onSubmit={this.props.login}>
           <div className="form-group">
             <input
+              key="name"
               name="email"
               type="email"
               placeholder="email"
-              className="form-control"
+              style={styles.formControl}
               required
             />
           </div>
           <div className="form-group">
             <input
+              key="password"
               name="password"
               type="password"
               placeholder="password"
-              className="form-control"
+              style={styles.formControl}
               required
             />
           </div>
-          <button className="login-button" type="submit">Log In</button>
+          <button style={styles.loginButton} type="submit">Log In</button>
         </form>
-        <p className="or-divider">or</p>
+        <div style={styles.orDividerLineDiv}>
+          <div style={styles.orDividerLineBefore}></div>
+          <p style={styles.orDivider}>or</p>
+          <div style={styles.orDividerLineAfter}></div>
+        </div>
         <div>
-        <a target="_self" href="/api/auth/google/login" className="login-with-google">
-          <span className="icon fa fa-google"></span>
+        <a target="_self" href="/api/auth/google/login" style={styles.loginWithGoogle}>
+          <span className="fa fa-google" style={styles.loginWithGoogleIcon}></span>
           Log in with Google
         </a>
         </div>
-        <a href="#" onClick={this.props.logout} className="logout">Log Out</a>
+        <a href="#" onClick={this.props.logout} style={styles.logout}>Log Out</a>
       </div>
     );
   }
