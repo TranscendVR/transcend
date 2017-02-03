@@ -27,11 +27,11 @@ ReactDOM.render(
         <IndexRoute component={Login} />
         <Route path='/vr' component={App} onEnter={onHomeEnter} >
           <IndexRoute component={Lobby} />
-          <Route path='/lobby' component={Lobby} />
-          <Route path='/sean' component={Sean} />
-          <Route path='/beth' component={Beth} />
-          <Route path='/yoonah' component={Yoonah} />
-          <Route path='/joey' component={Joey} />
+          <Route path='lobby' component={Lobby} />
+          <Route path='sean' component={Sean} />
+          <Route path='beth' component={Beth} />
+          <Route path='yoonah' component={Yoonah} />
+          <Route path='joey' component={Joey} />
         </Route>
         <Route path='/login' component={Login} />
       </Route>
