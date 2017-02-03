@@ -69,8 +69,10 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const avatarToBeRemoved = document.getElementById(userId);
-  avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
+  const headToBeRemoved = document.getElementById(userId);
+  headToBeRemoved.parentNode.removeChild(headToBeRemoved);
+  const bodyToBeRemoved = document.getElementById(`${userId}-body`);
+  bodyToBeRemoved.parentNode.removeChild(bodyToBeRemoved); // Remove from DOM
 });
 
 // Adds a Peer to our DoM as their own Audio Element

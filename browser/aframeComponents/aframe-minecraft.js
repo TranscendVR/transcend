@@ -1,14 +1,12 @@
 import AFRAME from 'aframe';
 
-var THREEx = THREEx || {};
+let THREEx = THREEx || {};
 
-THREEx.createAnimation	= function(opts){
+THREEx.createAnimation = function (opts) {
   return new THREEx.Animation(opts);
 }
 
-//////////////////////////////////////////////////////////////////////////////////
-//		Constructor							//
-//////////////////////////////////////////////////////////////////////////////////
+//    Constructor       //
 
 /**
 * handle an animation
@@ -16,46 +14,44 @@ THREEx.createAnimation	= function(opts){
 * @name THREEx.Animation
 * @class
 */
-THREEx.Animation	= function(){
+THREEx.Animation = function () {
   // update function
-  this._updateFcts= [];
-  this.update	= function(delta, now){
-    this._updateFcts.forEach(function(updateFct){
-      updateFct(delta, now)
-    })
-  }.bind(this)
+  this._updateFcts = [];
+  this.update = function (delta, now) {
+    this._updateFcts.forEach(function (updateFct) {
+      updateFct(delta, now);
+    });
+  }.bind(this);
   // init stuff
-  this._keyframes		= new Array;
-  this._totalTime		= null;
-  this._onUpdate		= null;
-  this._onCapture		= function(position){};
-  this._initialPos	= {};
-  this._propertyTweens	= {};
-}
+  this._keyframes = [];
+  this._totalTime = null;
+  this._onUpdate = null;
+  this._onCapture = function (position) {};
+  this._initialPos = {};
+  this._propertyTweens = {};
+};
 
 
 /**
 * Destructor
 */
-THREEx.Animation.prototype.destroy	= function(){
+THREEx.Animation.prototype.destroy = function () {
   this.stop();
 };
 
 
-//////////////////////////////////////////////////////////////////////////////////
-//		setup								//
-//////////////////////////////////////////////////////////////////////////////////
+//    setup         //
 
 /**
 * @param {Number} duration the duration of this keyframe validity in seconds
 * @param {Object} position list of properties involved in the animations
 */
-THREEx.Animation.prototype.pushKeyframe	= function(duration, position){
+THREEx.Animation.prototype.pushKeyframe = function (duration, position) {
   this._keyframes.push({
-    duration	: duration,
-    position	: position
+    duration: duration,
+    position: position
   });
-  return this;	// for chained API
+  return this;  // for chained API
 };
 
 /**
@@ -63,154 +59,146 @@ THREEx.Animation.prototype.pushKeyframe	= function(duration, position){
 *
 * @param {function} fn the update callback
 */
-THREEx.Animation.prototype.onUpdate	= function(fn){
-  this._onUpdate	= fn
-  return this;	// for chained API
-}
+THREEx.Animation.prototype.onUpdate = function (fn) {
+  this._onUpdate = fn;
+  return this;  // for chained API
+};
 
 /**
 * Set the Capture callback
 *
 * @param {function} fn the update callback
 */
-THREEx.Animation.prototype.onCapture	= function(fn){
-  this._onCapture	= fn
-  return this;	// for chained API
-}
+THREEx.Animation.prototype.onCapture = function (fn) {
+  this._onCapture = fn;
+  return this;  // for chained API
+};
 
 /**
 * Set propertyTweens
 *
 * @param {function} fn the update callback
 */
-THREEx.Animation.prototype.propertyTweens	= function(propertyTweens){
-  this._propertyTweens	= propertyTweens;
-  return this;	// for chained API
-}
+THREEx.Animation.prototype.propertyTweens = function (propertyTweens) {
+  this._propertyTweens = propertyTweens;
+  return this; // for chained API
+};
 
 /**
 * get the total animation duration
 *
 * @returns {Number} the duration of the whole animation
 */
-THREEx.Animation.prototype.duration	= function(){
-  if( this._keyframes.length === 0 )	return 0;
-  var lastKeyframe	= this._keyframes[this._keyframes.length - 1];
+THREEx.Animation.prototype.duration = function () {
+  if (this._keyframes.length === 0) return 0;
+  const lastKeyframe = this._keyframes[this._keyframes.length - 1];
   return lastKeyframe._endTime;
 };
 
-
-//////////////////////////////////////////////////////////////////////////////////
-//		interpolation							//
-//////////////////////////////////////////////////////////////////////////////////
+//    interpolation         //
 
 /**
 * build a interpolated position
 *
 * @param {Number} age amount of seconds since the animation started
 */
-THREEx.Animation.prototype._buildPosition	= function(age){
+THREEx.Animation.prototype._buildPosition = function (age) {
   // compute the deltatime
-  var delta	= age % this.duration();
+  const delta = age % this.duration();
+  let baseFrame;
+  let frameIdx;
   // find baseFrame based on delta
-  for(var frameIdx = 0; frameIdx < this._keyframes.length; frameIdx++){
-    var baseFrame	= this._keyframes[frameIdx];
-    if( delta <  baseFrame._startTime )	continue;
-    if( delta >= baseFrame._endTime )	continue;
+  for (frameIdx = 0; frameIdx < this._keyframes.length; frameIdx++) {
+    baseFrame = this._keyframes[frameIdx];
+    if (delta < baseFrame._startTime) continue;
+    if (delta >= baseFrame._endTime) continue;
     break;
   }
   // sanity check - the baseFrame has to be known
-  console.assert( frameIdx !== this._keyframes.length );
+  console.assert(frameIdx !== this._keyframes.length);
   // compute some variables
-  var timeOffset	= delta - baseFrame._startTime;
-  var timePercent	= timeOffset / baseFrame.duration;
-  var nextFrame	= this._keyframes[ (frameIdx+1) % this._keyframes.length ];
+  const timeOffset = delta - baseFrame._startTime;
+  const timePercent = timeOffset / baseFrame.duration;
+  const nextFrame = this._keyframes[ (frameIdx + 1) % this._keyframes.length ];
 
-  //console.log("delta", delta)
-  //console.log("frameIdx", frameIdx)
-  //console.log("timeOffset", timeOffset)
-  //console.log("timePercent", timePercent)
+  // console.log("delta", delta)
+  // console.log("frameIdx", frameIdx)
+  // console.log("timeOffset", timeOffset)
+  // console.log("timePercent", timePercent)
 
-  var basePosition= baseFrame.position;
-  var nextPosition= nextFrame.position;
+  let basePosition = baseFrame.position;
+  const nextPosition = nextFrame.position;
 
   // zero this._initialPos if age > baseFrame.duration - it wont be usefull anymore
-  if( age > baseFrame.duration && this._initialPos )	this._initialPos= null;
+  if (age > baseFrame.duration && this._initialPos) this._initialPos = null;
   // if frameIdx === 0 and there is a this._initialPos, use it as basePosition
-  if( frameIdx === 0 && this._initialPos )	basePosition	= this._initialPos;
+  if (frameIdx === 0 && this._initialPos) basePosition = this._initialPos;
 
   // compute the result based on the linear interpolation between the two frames based on time offset within the frame
-  var result	= {};
-  for( var property in baseFrame.position ){
+  const result = {};
+  for (const property in baseFrame.position) {
     // check the property exists
-    console.assert( nextPosition[property]	!== undefined );
-    console.assert( basePosition[property]	!== undefined );
+    console.assert(nextPosition[property] !== undefined);
+    console.assert(basePosition[property] !== undefined);
     // linear interpolation between the values
-    var baseValue	= basePosition[property];
-    var nextValue	= nextPosition[property];
+    const baseValue = basePosition[property];
+    const nextValue = nextPosition[property];
     // define propertyTween for this property - default to linear interpolation
-    var propertyTween	= this._propertyTweens[property] || function(baseValue, nextValue, timePercent){
-      return (1-timePercent) * baseValue + timePercent * nextValue;
-    }
+    const propertyTween = this._propertyTweens[property] || function (baseValue, nextValue, timePercent) {
+      return (1 - timePercent) * baseValue + timePercent * nextValue;
+    };
     // compute the actual result
-    result[property]= propertyTween(baseValue, nextValue, timePercent);
+    result[property] = propertyTween(baseValue, nextValue, timePercent);
   }
   // return the result
   return result;
 };
 
-//////////////////////////////////////////////////////////////////////////////////
-//										//
-//////////////////////////////////////////////////////////////////////////////////
-
 /**
 * Start the animation
 */
-THREEx.Animation.prototype.start	= function(){
+THREEx.Animation.prototype.start = function () {
   // update _startTime and _endTime
-  this._totalTime	= 0;
-  this._keyframes.forEach(function(keyframe){
-    keyframe._startTime	= this._totalTime;
-    this._totalTime		+= keyframe.duration;
-    keyframe._endTime	= this._totalTime;
+  this._totalTime = 0;
+  this._keyframes.forEach(function (keyframe) {
+    keyframe._startTime = this._totalTime;
+    this._totalTime += keyframe.duration;
+    keyframe._endTime = this._totalTime;
   }.bind(this));
 
   // get this._initialPos from this._onCapture()
   // - the initial position is the position when the animation started.
   // - it will be used as basePosition during the first keyframe of the animation
   // - it is optional. the user may not define it
-  this._initialPos= Object.create(this._keyframes[0].position)
+  this._initialPos = Object.create(this._keyframes[0].position);
   this._onCapture(this._initialPos);
 
   // init the loop callback
-  var startDate	= Date.now()/1000;
-  var duration	= this.duration();
-  this._$loopCb	= function(){
-    var age		= Date.now()/1000 - startDate;
-    var position	= this._buildPosition(age)
-    this._onUpdate(position)
-  }.bind(this)
-  this._updateFcts.push(this._$loopCb)
-}
+  const startDate = Date.now() / 1000;
+  this._$loopCb = function () {
+    const age = Date.now() / 1000 - startDate;
+    const position = this._buildPosition(age);
+    this._onUpdate(position);
+  }.bind(this);
+  this._updateFcts.push(this._$loopCb);
+};
 
 /**
 * test if the animation is running or not
 *
 * @returns {boolean} return true if the animation is running, false otherwise
 */
-THREEx.Animation.prototype.isRunning	= function(){
-  return this._$loopCb	? true : false;
+THREEx.Animation.prototype.isRunning = function () {
+  return !!this._$loopCb;
 };
 
 /**
 * Stop the animation
 */
-THREEx.Animation.prototype.stop	= function(){
-  this._$loopCb	&& this._updateFcts.splice(this._updateFcts.indexOf(this._$loopCb),1)
-  this._$loopCb	= null;
-}
-var THREEx	= THREEx || {};
-
+THREEx.Animation.prototype.stop = function () {
+  this._$loopCb && this._updateFcts.splice(this._updateFcts.indexOf(this._$loopCb), 1);
+  this._$loopCb = null;
+};
 
 /**
 * create a THREEx.Animations
@@ -218,9 +206,9 @@ var THREEx	= THREEx || {};
 * @name THREEx.createAnimations
 * @class
 */
-THREEx.createAnimations	= function(){
+THREEx.createAnimations = function () {
   return new THREEx.Animations();
-}
+};
 
 /**
 * handle multiple THREEx.Animation mutually exclusive
@@ -228,22 +216,20 @@ THREEx.createAnimations	= function(){
 * @name THREEx.Animations
 * @class
 */
-THREEx.Animations	= function(){
-  this._animations	= {};
-  this._currentAnim	= null;
-  this._animationName	= null;
-}
+THREEx.Animations = function () {
+  this._animations = {};
+  this._currentAnim = null;
+  this._animationName = null;
+};
 
 /**
 * Destructor
 */
-THREEx.Animations.prototype.destroy	= function(){
-  this._currentAnim	&& this._currentAnim.destroy();
-}
+THREEx.Animations.prototype.destroy = function () {
+  this._currentAnim && this._currentAnim.destroy();
+};
 
-//////////////////////////////////////////////////////////////////////////////////
-//										//
-//////////////////////////////////////////////////////////////////////////////////
+//            //
 
 /**
 * Add an animation
@@ -251,13 +237,13 @@ THREEx.Animations.prototype.destroy	= function(){
 * @param {String} name the name of the animation to add
 * @param {THREEx.Animation} animation the THREEx.Animation to add
 */
-THREEx.Animations.prototype.add	= function(name, animation){
-  console.assert( animation instanceof THREEx.Animation );
-  this._animations[name]	= animation;
-  return this;	// for chained api
+THREEx.Animations.prototype.add = function (name, animation) {
+  console.assert(animation instanceof THREEx.Animation);
+  this._animations[name] = animation;
+  return this;  // for chained api
 };
 
-THREEx.Animations.prototype.list	= function(){
+THREEx.Animations.prototype.list = function () {
   return this._animations;
 };
 
@@ -266,29 +252,27 @@ THREEx.Animations.prototype.list	= function(){
 *
 * @returns {String[]} list of the animations names
 */
-THREEx.Animations.prototype.names	= function(){
+THREEx.Animations.prototype.names = function () {
   return Object.keys(this._animations);
 };
 
-//////////////////////////////////////////////////////////////////////////////////
-//										//
-//////////////////////////////////////////////////////////////////////////////////
+//                    //
 
 /**
 * Start a animation. If an animation is already running, it is stopped
 *
 * @param {string} animationName the name of the animation
 */
-THREEx.Animations.prototype.start	= function(animationName){
+THREEx.Animations.prototype.start = function (animationName) {
   // if this animation is already the current one, do nothing
-  if( this._animationName === animationName )	return this;
+  if (this._animationName === animationName) return this;
   // stop current animation
-  if( this.isRunning() )	this.stop();
-  console.assert( this._animations[animationName] !== undefined, "unknown animation name: "+animationName)
-  this._animationName	= animationName;
-  this._currentAnim	= this._animations[animationName];
+  if (this.isRunning()) this.stop();
+  console.assert(this._animations[animationName] !== undefined, 'unknown animation name: ' + animationName);
+  this._animationName = animationName;
+  this._currentAnim = this._animations[animationName];
   this._currentAnim.start();
-  return this;	// for chained API
+  return this;  // for chained API
 };
 
 /**
@@ -296,47 +280,43 @@ THREEx.Animations.prototype.start	= function(animationName){
 *
 * @returns {boolean} true if an animation is running, false otherwise
 */
-THREEx.Animations.prototype.isRunning	= function(){
-  return this._currentAnim ? true : false;
-}
+THREEx.Animations.prototype.isRunning = function () {
+  return !!this._currentAnim;
+};
 
 
 /**
 * rendering update function
 */
-THREEx.Animations.prototype.update	= function(delta, now){
-  if( this.isRunning() === false )	return
-  this._currentAnim.update(delta, now)
-}
+THREEx.Animations.prototype.update = function (delta, now) {
+  if (this.isRunning() === false) return;
+  this._currentAnim.update(delta, now);
+};
 
-THREEx.Animations.prototype.animationName	= function(){
+THREEx.Animations.prototype.animationName = function () {
   return this._animationName;
-}
+};
 
 /**
 * Stop the running animation if any
 */
-THREEx.Animations.prototype.stop	= function(){
-  this._currentAnim	&& this._currentAnim.destroy();
-  this._currentAnim	= null;
-  this._animationName	= null;
-  return this;	// for chained API
-}
-var THREEx	= THREEx || {};
+THREEx.Animations.prototype.stop = function () {
+  this._currentAnim && this._currentAnim.destroy();
+  this._currentAnim = null;
+  this._animationName = null;
+  return this;  // for chained API
+};
 
 /**
 * [ description]
 * @param  {[type]} skinUrl [description]
 * @return {[type]}         [description]
 */
-THREEx.MinecraftChar	= function(skinUrl){
+THREEx.MinecraftChar	= function (skinUrl) {
   this.baseUrl = './';
   // set default arguments values
   skinUrl	= skinUrl || (THREEx.MinecraftChar.baseUrl + "images/jetienne.png")
 
-  //////////////////////////////////////////////////////////////////////////////////
-  //		comment								//
-  //////////////////////////////////////////////////////////////////////////////////
   var texture	= new THREE.Texture
   texture.magFilter	= THREE.NearestFilter;
   texture.minFilter	= THREE.NearestFilter;
@@ -570,7 +550,6 @@ THREEx.MinecraftChar.skinWellKnownUrls	= {
   'woody'			: 'images/woody.png',
 }
 
-var THREEx	= THREEx || {};
 
 THREEx.createMinecraftCharBodyAnimations	= function(character){
   return new THREEx.MinecraftCharBodyAnimations(character);
@@ -766,65 +745,7 @@ THREEx.MinecraftCharBodyAnimations	= function(character){
 }
 
 THREEx.MinecraftCharBodyAnimations.prototype	= Object.create(THREEx.Animations.prototype);
-var THREEx	= THREEx || {};
 
-THREEx.createMinecraftCharHeadAnimations	= function(character){
-  return new THREEx.MinecraftCharHeadAnimations(character);
-}
-
-THREEx.MinecraftCharHeadAnimations	= function(character){
-  var animations	= this;
-  // call parent ctor
-  THREEx.Animations.call(this)
-
-  var tweenAngle	= function(baseValue, nextValue, timePercent){
-    if( nextValue - baseValue >  Math.PI )	nextValue	-= Math.PI*2;
-    if( nextValue - baseValue < -Math.PI )	nextValue	+= Math.PI*2;
-    return (1-timePercent) * baseValue + timePercent * nextValue;
-  }
-
-
-  var onUpdate	= function(position){
-    character.headGroup.rotation.x	= position.headRotationX;
-    character.headGroup.rotation.y	= position.headRotationY
-  };
-  var onCapture	= function(position){
-    position.headRotationX	= character.headGroup.rotation.x;
-    position.headRotationY	= character.headGroup.rotation.y;
-  };
-  var propTweens	= {
-    headRotationX	: tweenAngle,
-    headRotationY	: tweenAngle
-  };
-
-
-  // Setup 'still' animation
-  animations.add('still'	, THREEx.createAnimation().pushKeyframe(0.5, {
-    headRotationX	: 0,
-    headRotationY	: 0
-  }).propertyTweens(propTweens).onCapture(onCapture).onUpdate(onUpdate));
-
-  // Setup 'no' animation
-  animations.add('no'	, THREEx.createAnimation().pushKeyframe(0.5, {
-    headRotationX	: 0,
-    headRotationY	: +Math.PI/6
-  }).pushKeyframe(0.5, {
-    headRotationX	: 0,
-    headRotationY	: -Math.PI/6
-  }).propertyTweens(propTweens).onCapture(onCapture).onUpdate(onUpdate));
-
-  // Setup 'yes' animation
-  animations.add('yes'	, THREEx.createAnimation().pushKeyframe(0.4, {
-    headRotationY	: 0,
-    headRotationX	: +Math.PI/8
-  }).pushKeyframe(0.4, {
-    headRotationX	: -Math.PI/8,
-    headRotationY	: 0
-  }).propertyTweens(propTweens).onCapture(onCapture).onUpdate(onUpdate));
-}
-
-THREEx.MinecraftCharHeadAnimations.prototype	= Object.create(THREEx.Animations.prototype);
-var THREEx	= THREEx || {};
 
 
 THREEx.MinecraftControls	= function(character, input){
@@ -937,7 +858,6 @@ THREEx.MinecraftControls.setKeyboardInput = function(controls, mappings){
   })
   return controls
 }
-var THREEx	= THREEx	|| {}
 
 THREEx.MinecraftNickname	= function(character){
   this.object3d	= null;
@@ -1032,7 +952,6 @@ AFRAME.registerComponent('minecraft', {
   init: function () {
     const character = new THREEx.MinecraftChar();
     this.character = character;
-    console.log(this.data);
 
     this.data.component === 'head' ? this.el.object3D.add(character.root) : this.el.object3D.add(character.rootBody);
     // this.el.setObject3D('superRoot', character.root);
@@ -1048,29 +967,6 @@ AFRAME.registerComponent('minecraft', {
     }else if( this.data.wellKnownSkin ){
       character.loadWellKnownSkin(this.data.wellKnownSkin)
     }
-  },
-});
-
-
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-AFRAME.registerComponent('minecraft-head-anim', {
-  schema: {
-    type: 'string',
-    default : 'yes',
-  },
-  init: function () {
-    var character = this.el.components.minecraft.character
-    this.headAnims	= new THREEx.MinecraftCharHeadAnimations(character);
-  },
-  tick : function(now, delta){
-    this.headAnims.update(delta/1000,now/1000)
-  },
-  update: function () {
-    if( Object.keys(this.data).length === 0 )       return
-    console.assert( this.headAnims.names().indexOf(this.data) !== -1 )
-    this.headAnims.start(this.data);
   },
 });
 
@@ -1129,29 +1025,6 @@ AFRAME.registerComponent('minecraft-nickname', {
     this.nickName.set(this.data);
   },
 });
-
-//////////////////////////////////////////////////////////////////////////////
-//		Code Separator
-//////////////////////////////////////////////////////////////////////////////
-
-// AFRAME.registerComponent('minecraft-bubble', {
-//   schema: {
-//     type: 'string',
-//     default : 'Hello world.',
-//   },
-//   init: function () {
-//     var character = this.el.components.minecraft.character
-//     this.bubble	= new THREEx.MinecraftBubble(character);
-//   },
-//   update: function () {
-//     if( Object.keys(this.data).length === 0 )       return
-//     this.bubble.set(this.data);
-//   },
-//   tick : function(now, delta){
-//     this.bubble.update(delta/1000,now/1000)
-//   },
-// });
-
 
 //////////////////////////////////////////////////////////////////////////////
 //		Code Separator
