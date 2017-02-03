@@ -13,6 +13,3 @@ npm-debug.log
 
 # env vars
 .env
-
-# ignore the threex folder for now
-threex.minecraft/*
