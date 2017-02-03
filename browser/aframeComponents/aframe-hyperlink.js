@@ -1,4 +1,8 @@
 /* globals AFRAME, sessionStorage, THREE, URLSearchParams */
+
+// This file was imported from Eric Layton's aframe-link-demo
+// https://github.com/321C4/aframe-link-demo
+
 (function () {
   // Do not log in production.
   var debug = window.location.protocol !== 'https:';
@@ -18,9 +22,7 @@
         default: ''
       },
 
-      /**
-       * Called once when component is attached.
-       */
+      // init binds this, creates event listeners for click and grip that both trigger the href handler, and setups the highlight effect.
       init: function () {
         this.handler = this.handler.bind(this);
         this.el.addEventListener('click', this.handler);
@@ -36,12 +38,15 @@
         this.el.removeEventListener('gripdown', this.handler);
       },
 
+      // This is the logic that triggers the href to load
       handler: function () {
         var url = this.data;
         this.el.emit('navigate', url);
         window.location.href = url;
       },
 
+      // setupHighlight creates a transluscent blue glow that is 20% larger than the shape with the href in all directions
+      //   It is generated when the href component inits and is only visible when a mouse hovers over the entity with the href.
       setupHighlight: function () {
         // Clone mesh and set up highlighter material.
         var mesh = this.el.object3DMap.mesh;
@@ -82,6 +87,8 @@
     scene.addEventListener(event, callback);
   };
 
+  // persistActiveVRDisplaysIDs takes an array of displays as an argument and saves an array of strings containing the
+  // display.displayID attribute of each display to sessionStorage as a variable named activeVRDisplaysIDs
   var persistActiveVRDisplaysIDs = function (displays) {
     displays = displays || [];
     var activeVRDisplaysIDs = JSON.stringify(displays.map(function (display) {
@@ -94,6 +101,8 @@
   var sceneLoaded = function (scene, displays) {
     var shouldPresent = false;
 
+
+    // window beforeunload sets sessionStorage.vrNavigation to !!(navigator.activeVRDisplays && navigator.activeVRDisplays.length)
     if (sessionStorage.vrNavigation === 'true') {
       shouldPresent = true;
       delete sessionStorage.vrNavigation;
