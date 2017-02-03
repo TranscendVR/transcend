@@ -26,3 +26,5 @@
 <a-entity light="type: directional; intensity: 0.4" position="10 30 -25"></a-entity>
 
 #f9f7d9
+
+python convert_obj_three.py -i infile.obj -o outfile.js [-m "morphfiles*.obj"] [-c "morphcolors*.obj"] [-a center|centerxz|top|bottom|none] [-s smooth|flat] [-t ascii|binary] [-d invert|normal] [-b] [-e]

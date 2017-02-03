@@ -14,7 +14,10 @@ export default function App (props) {
           <img id="podium" src="/img/fullstack.png"/>
           <img id="floorText" src="/img/hardwood.jpg"/>
           <a-mixin id="chair-part" geometry="primitive: box" material="color: brown"></a-mixin>
+          <a-asset-item id="courage" src="../../public/img/puppy/courage_apply.dae"/>
         </a-assets>
+
+        <a-entity collada-model="#courage"></a-entity>
 
         {/* Chairs */}
         {
