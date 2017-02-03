@@ -95,12 +95,18 @@ socket.on('usersUpdated', users => {
     const currentScene = window.location.pathname.replace(/\//g, '') || 'root';
     // If the user is on the current scene, add or update the user
     if (user.get('scene') === currentScene) {
-      const otherAvatar = document.getElementById(user.get('id'));
-      if (otherAvatar === null) {
+      const avatarHead = document.getElementById(user.get('id'));
+      const avatarBody = document.getElementById(`${user.get('id')}-body`);
+      // If a user's avatar is NOT on the DOM already, add it
+      // Convert it back to a normal JS object so we can use putUserOnDOM function as is
+      if (avatarHead === null) {
         putUserOnDOM(user.toJS());
       } else {
-        otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
-        otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+        // If a user's avatar is already on the DOM, update it
+        avatarHead.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+        avatarHead.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+        avatarBody.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+        avatarBody.setAttribute('rotation', `0 ${user.get('yrot')} 0`);
       }
     } else { // If the user is not on the scene, make sure the user is not on the DOM
       const otherAvatar = document.getElementById(user.get('id'));
@@ -118,9 +124,12 @@ socket.on('usersUpdated', users => {
 socket.on('removeUser', userId => {
   console.log('Removing user.');
   const scene = document.getElementById('scene');
-  const avatarToBeRemoved = document.getElementById(userId);
-  scene.remove(avatarToBeRemoved);
-  avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved);
+  const headToBeRemoved = document.getElementById(userId);
+  const bodyToBeRemoved = document.getElementById(`${userId}-body`);
+  scene.remove(headToBeRemoved);
+  scene.remove(bodyToBeRemoved);
+  headToBeRemoved.parentNode.removeChild(headToBeRemoved);
+  bodyToBeRemoved.parentNode.removeChild(bodyToBeRemoved); // Remove from DOM
 });
 
 // Adds a Peer to our DoM as their own Audio Element

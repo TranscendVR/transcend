@@ -7,14 +7,20 @@
 export function putUserOnDOM (user) {
   if (user.scene === window.location.pathname.replace(/\//g, '') || 'root') {
     const scene = document.getElementById('scene');
-    const avatar = document.createElement('a-entity');
-    scene.appendChild(avatar);
-    avatar.setAttribute('id', user.id);
-    avatar.setAttribute('geometry', 'primitive', 'box');
-    avatar.setAttribute('material', 'color', user.color);
-    avatar.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
-    avatar.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
-    return avatar;
+    const head = document.createElement('a-minecraft');
+    const body = document.createElement('a-minecraft');
+    scene.appendChild(head);
+    scene.appendChild(body);
+    head.setAttribute('id', user.id);
+    body.setAttribute('id', `${user.id}-body`);
+    head.setAttribute('minecraft-nickname', user.color);
+    head.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png;');
+    body.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png;  component: body; heightMeter: 0.4');
+    head.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
+    body.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
+    head.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
+    body.setAttribute('rotation', `0 ${user.yrot} 0`);
+    return head;
   }
 }
 

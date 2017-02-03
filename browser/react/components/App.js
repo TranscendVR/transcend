@@ -1,7 +1,7 @@
 import React from 'react';
-import { leaveChatRoom } from '../../webRTC/client.js';
 import '../../aframeComponents/scene-load';
 import '../../aframeComponents/aframe-hyperlink';
+import '../../aframeComponents/aframe-minecraft';
 
 export default function App (props) {
   return (
