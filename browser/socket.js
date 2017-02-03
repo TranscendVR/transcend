@@ -17,8 +17,6 @@ import { joinChatRoom, disconnectUser, addPeerConn, removePeerConn, setRemoteAns
 //   based on the URL
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
-  joinChatRoom(window.location.pathname);
-  // socket.emit('joinRoom', window.location);
 });
 
 // Upon joining a Socket.io room, the server emits the 'initWebRTC' event. This event
