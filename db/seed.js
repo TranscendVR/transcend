@@ -1,8 +1,13 @@
 const db = require('./index');
 
 const seedUsers = () => db.Promise.map([
-  { name: 'Omri Bernstein', email: 'codejesus@fullstack.com', password: '1234' },
-  { name: 'Barack Obama', email: 'bmoney@whitehouse.gov', password: '1234' }
+  { name: 'Omri Bernstein', displayName: 'Omri', email: 'codejesus@fullstack.com', password: '1234' },
+  { name: 'Barack Obama', displayName: 'Barack', email: 'bmoney@whitehouse.gov', password: '1234' },
+  { name: 'Joey Darbyshire', displayName: 'HeadForFeet', email: 'joey@transcend.vr', password: '1234' },
+  { name: 'Sean McBride', displayName: 'OfficerMcLineChef', email: 'sean@transcend.vr', password: '1234' },
+  { name: 'Yoo-Nah Park', displayName: 'TheChair', email: 'yoo-nah@transcend.vr', password: '1234' },
+  { name: 'Beth Qiang', displayName: 'AnotherRaceCondition', email: 'beth@transcend.vr', password: '1234' },
+  { name: 'Eliot Sfiwbdflkuwsjkdfhweioj', displayName: 'TheNextOgdenMorrow', email: 'eliot@transcend.vr', password: '1234' }
 ], user => db.model('users').create(user));
 
 db.didSync

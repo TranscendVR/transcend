@@ -5,7 +5,7 @@ export default (props) => (
     <a-entity id="floor"
               geometry={`primitive: plane; width:${props.floorWidth}; height:${props.floorHeight}`}
               rotation="-90 0 0"
-              material={`color: ${props.floorColor}`}/>
+              material={`src: ${props.floorTexture}; repeat: ${props.floorWidth}`}/>
 
     <a-entity id="ceiling"
               geometry={`primitive: plane; width:${props.floorWidth}; height:${props.floorHeight}`}

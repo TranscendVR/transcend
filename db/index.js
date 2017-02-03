@@ -23,7 +23,7 @@ require('./models');
 // Sync the db, creating it if necessary
 function sync (force = process.env.NODE_ENV === 'testing', retries = 0, maxRetries = 5) {
   return db.sync({ force })
-    .then(ok => console.log(`Synced models to db ${url}`))
+    .then(ok => console.log(chalk.blue(`Synced models to db ${url}`)))
     .catch(fail => {
       // Don't do this auto-create nonsense in prod, or if we've retried too many times
       if (process.env.NODE_ENV === 'production' || retries > maxRetries) {
@@ -35,7 +35,7 @@ function sync (force = process.env.NODE_ENV === 'testing', retries = 0, maxRetri
         return;
       }
       // Otherwise, do this autocreate nonsense
-      console.log(`${retries ? `[retry ${retries}]` : ''} Creating database ${name}...`);
+      console.log(chalk.blue(`${retries ? `[retry ${retries}]` : ''} Creating database ${name}...`));
       return new Promise((resolve, reject) =>
         require('child_process').exec(`createdb "${name}"`, resolve)
       ).then(() => sync(true, retries + 1));

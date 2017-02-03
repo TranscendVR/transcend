@@ -12,6 +12,7 @@ export default function App (props) {
         <a-assets>
           <img id="slide" src="/img/class.png"/>
           <img id="podium" src="/img/fullstack.png"/>
+          <img id="floorText" src="/img/hardwood.jpg"/>
           <a-mixin id="chair-part" geometry="primitive: box" material="color: brown"></a-mixin>
         </a-assets>
 
@@ -44,10 +45,13 @@ export default function App (props) {
               floorHeight="50"
               wallHeight="25"
               wallColor="#f9f7d9"
-              floorColor="#868686"
+              floorColor=""
+              floorTexture="#floorText"
               ceilingColor="#998403"/>
       </a-scene>
     </div>
   );
 }
+
+//#868686
 
