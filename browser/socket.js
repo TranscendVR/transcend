@@ -50,15 +50,18 @@ socket.on('usersUpdated', users => {
   store.dispatch(receiveUsers(fromJS(users)));
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
-    const otherAvatar = document.getElementById(user.get('id'));
+    const avatarHead = document.getElementById(user.get('id'));
+    const avatarBody = document.getElementById(`${user.get('id')}-body`);
     // If a user's avatar is NOT on the DOM already, add it
     // Convert it back to a normal JS object so we can use putUserOnDOM function as is
-    if (otherAvatar === null) {
+    if (avatarHead === null) {
       putUserOnDOM(user.toJS());
     } else {
       // If a user's avatar is already on the DOM, update it
-      otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
-      otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+      avatarHead.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+      avatarHead.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+      avatarBody.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+      avatarBody.setAttribute('rotation', `0 ${user.get('yrot')} 0`);
     }
   });
 });
@@ -66,8 +69,10 @@ socket.on('usersUpdated', users => {
 // Remove a user's avatar when they disconnect from the server
 socket.on('removeUser', userId => {
   console.log('Removing user.');
-  const avatarToBeRemoved = document.getElementById(userId);
-  avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
+  const headToBeRemoved = document.getElementById(userId);
+  headToBeRemoved.parentNode.removeChild(headToBeRemoved);
+  const bodyToBeRemoved = document.getElementById(`${userId}-body`);
+  bodyToBeRemoved.parentNode.removeChild(bodyToBeRemoved); // Remove from DOM
 });
 
 // Adds a Peer to our DoM as their own Audio Element
