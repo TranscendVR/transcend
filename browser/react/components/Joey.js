@@ -3,7 +3,7 @@ import React from 'react';
 import '../../aframeComponents/scene-load';
 import '../../aframeComponents/aframe-hyperlink';
 
-export default function Joey(props) {
+export default function Joey (props) {
   return (
     <div style={{ width: '100%', height: '100%' }}>
       <a-scene id="scene" class="joey" scene-load>

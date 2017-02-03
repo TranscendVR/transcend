@@ -2,12 +2,14 @@ import React from 'react';
 
 import '../../aframeComponents/scene-load';
 import '../../aframeComponents/aframe-hyperlink';
-import { joinRoom } from '../../socket.js';
+import { leaveChatRoom } from '../../webRTC/client.js';
 
 export default class Sean extends React.Component {
-  componentDidMount () {
-    joinRoom('sean');
+  componentWillUnmount () {
+    console.log('leaving the chat room');
+    leaveChatRoom('sean');
   }
+
   render () {
     return (
       <div style={{ width: '100%', height: '100%' }}>
