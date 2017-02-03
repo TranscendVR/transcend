@@ -26,7 +26,7 @@ export default class Sean extends React.Component {
         <a-collada-model src="#disk-pack" position="0.2 0 -7.65" rotation="0 270"></a-collada-model>
         <a-collada-model src="#punch-reader" position="7 0 -5" rotation="0 180"></a-collada-model>
         <a-entity position="-10 1 -1">
-          <a-entity class='clickable' geometry="primitive: sphere; radius:0.3;" rotation="0 200 0" material="color: green; opacity: 1; roughness: 0.8" href="/"></a-entity>
+          <a-entity class='clickable' geometry="primitive: sphere; radius:0.3;" rotation="0 200 0" material="color: green; opacity: 1; roughness: 0.8" href="/vr"></a-entity>
           <a-entity geometry="primitive: sphere" class="highlight" visible="false" radius="0.35" rotation="0 0 0" material="color: #0000ff; opacity: 0.6; roughness: 1; metalness: 0.5;"></a-entity>
           <a-entity geometry="primitive: box;" id="shadow" position="0 -1 0" material="color: #000; opacity: 1;" rotation="0 0 0" scale="0.4 1 0.4"></a-entity>
         </a-entity>
