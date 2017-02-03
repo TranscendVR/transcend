@@ -12,7 +12,7 @@ export function putUserOnDOM (user) {
   head.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
   body.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
   head.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
-  head.setAttribute('rotation', `0 ${user.yrot} 0`);
+  body.setAttribute('rotation', `0 ${user.yrot} 0`);
   return head;
 }
 

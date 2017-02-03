@@ -337,6 +337,7 @@ THREEx.MinecraftChar = function (skinUrl) {
 
   //    define size constant    //
   const sizes = {};
+  sizes.cameraMod = 0.8;
   sizes.charH = 1;
   sizes.pixRatio = 1 / 32;
 
@@ -369,7 +370,7 @@ THREEx.MinecraftChar = function (skinUrl) {
   model.rootBody = new THREE.Object3D();
 
   const group = new THREE.Object3D();
-  group.position.y = sizes.charH - sizes.headH - 1;
+  group.position.y = sizes.charH - sizes.headH - sizes.cameraMod;
   model.headGroup = group;
   model.root.add(model.headGroup);
 
@@ -406,7 +407,7 @@ THREEx.MinecraftChar = function (skinUrl) {
   geometry = new THREE.CubeGeometry(sizes.bodyW, sizes.bodyH, sizes.bodyD);
   model.body = new THREE.Mesh(geometry, material);
   model.rootBody.add(model.body);
-  model.body.position.y = sizes.legH + sizes.bodyH / 2 - 1;
+  model.body.position.y = sizes.legH + sizes.bodyH / 2 - sizes.cameraMod;
   model.body.rotation.y = 135;
   mapUv(geometry, 0, 28, 12, 32, 0); // left
   mapUv(geometry, 1, 16, 12, 20, 0); // right
@@ -421,7 +422,7 @@ THREEx.MinecraftChar = function (skinUrl) {
   model.rootBody.add(model.armR);
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -sizes.armH / 2 + sizes.armW / 2, 0));
   model.armR.position.x = -sizes.bodyW / 2 - sizes.armW / 2;
-  model.armR.position.y = sizes.legH + sizes.bodyH - sizes.armW / 2 - 1;
+  model.armR.position.y = sizes.legH + sizes.bodyH - sizes.armW / 2 - sizes.cameraMod;
   model.armR.rotation.y = 135;
   mapUv(geometry, 0, 48, 12, 52, 0); // right
   mapUv(geometry, 1, 40, 12, 44, 0); // left
@@ -436,7 +437,7 @@ THREEx.MinecraftChar = function (skinUrl) {
   model.rootBody.add(model.armL);
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -sizes.armH / 2 + sizes.armW / 2, 0));
   model.armL.position.x = sizes.bodyW / 2 + sizes.armW / 2;
-  model.armL.position.y = sizes.legH + sizes.bodyH - sizes.armW / 2 - 1;
+  model.armL.position.y = sizes.legH + sizes.bodyH - sizes.armW / 2 - sizes.cameraMod;
   model.armL.rotation.y = 135;
   mapUv(geometry, 0, 44, 12, 40, 0); // right
   mapUv(geometry, 1, 52, 12, 48, 0); // left
@@ -451,7 +452,7 @@ THREEx.MinecraftChar = function (skinUrl) {
   model.rootBody.add(model.legR);
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -sizes.legH / 2, 0));
   model.legR.position.x = -sizes.legW / 2;
-  model.legR.position.y = sizes.legH - 1;
+  model.legR.position.y = sizes.legH - sizes.cameraMod;
   model.legR.rotation.y = 135;
   mapUv(geometry, 0, 8, 12, 12, 0); // right
   mapUv(geometry, 1, 0, 12, 4, 0); // left
@@ -466,7 +467,7 @@ THREEx.MinecraftChar = function (skinUrl) {
   model.rootBody.add(model.legL);
   geometry.applyMatrix(new THREE.Matrix4().makeTranslation(0, -sizes.legH / 2, 0));
   model.legL.position.x = sizes.legW / 2;
-  model.legL.position.y = sizes.legH - 1;
+  model.legL.position.y = sizes.legH - sizes.cameraMod;
   model.legL.rotation.y = 135;
   mapUv(geometry, 0, 4, 12, 0, 0); // left
   mapUv(geometry, 1, 12, 12, 8, 0); // right
