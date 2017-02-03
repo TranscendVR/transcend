@@ -2,11 +2,12 @@
 
 // This file was imported from Eric Layton's aframe-link-demo
 // https://github.com/321C4/aframe-link-demo
+import { browserHistory } from 'react-router';
 
 (function () {
   // Do not log in production.
   var debug = window.location.protocol !== 'https:';
-  var log = debug ? console.log.bind(console) : function () {};
+  var log = debug ? console.log.bind(console) : function () { };
 
   var registerComponent = function () {
     if (typeof AFRAME === 'undefined') {
@@ -41,8 +42,10 @@
       // This is the logic that triggers the href to load
       handler: function () {
         var url = this.data;
-        this.el.emit('navigate', url);
-        window.location.href = url;
+        // this.props.history.push(url);
+        browserHistory.push(url);
+        // this.el.emit('navigate', url);
+        // window.location.href = url;
       },
 
       // setupHighlight creates a transluscent blue glow that is 20% larger than the shape with the href in all directions
@@ -55,9 +58,9 @@
         }
         var clone = mesh.clone();
         clone.material = new THREE.MeshBasicMaterial({
-            color: 0x0000ff,
-            transparent: true,
-            opacity: 0.3
+          color: 0x0000ff,
+          transparent: true,
+          opacity: 0.3
         });
         clone.scale.set(1.2, 1.2, 1.2);
         clone.visible = false;
@@ -124,9 +127,9 @@
       var qsVrMode = qsGetClean('vr-mode');
 
       if ((qs.has('vr') && qsVr !== 'false' && qsVr !== '0') ||
-          (qs.has('vr-display-name-filter') && qsVrDisplayNameFilter !== '') ||
-          (qs.has('vr-display-id') && qsVrDisplayId !== '') ||
-          (qs.has('vr-mode') && qsVrMode !== 'mono')) {
+        (qs.has('vr-display-name-filter') && qsVrDisplayNameFilter !== '') ||
+        (qs.has('vr-display-id') && qsVrDisplayId !== '') ||
+        (qs.has('vr-mode') && qsVrMode !== 'mono')) {
         shouldPresent = true;
 
         var displayId;
@@ -158,9 +161,9 @@
           persistActiveVRDisplaysIDs(displays);
         }
       } else if (qs.has('vr') ||
-                 qs.has('vr-display-name-filter') ||
-                 qs.has('vr-display-id') ||
-                 qs.has('vr-mode')) {
+        qs.has('vr-display-name-filter') ||
+        qs.has('vr-display-id') ||
+        qs.has('vr-mode')) {
         shouldPresent = false;
       }
     }
