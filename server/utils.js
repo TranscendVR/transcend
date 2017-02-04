@@ -10,7 +10,7 @@ function User (id) {
   this.xrot = 0;
   this.yrot = 0;
   this.zrot = 0;
-  this.scene = '';
+  this.scene = '';  // VR scene
 }
 
 // Create a user given the socket ID

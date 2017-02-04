@@ -68,8 +68,8 @@ module.exports = io => {
 
     // When a socket disconnects, invoke the 'removeUserAndEmit' thunk, which removes the user
     //   associated with the socket from the redux store and broadcast the 'removeUser' to all
-    //   clients. Then do some black-magic to remove the user from socket.rooms, which has
-    //   something to do with WebRTC (perhaps signalling???) Then delete the disconnected socket
+    //   clients. Check to see if the user is connected to a chatroom (socket room + WebRTC P2P),
+    //   and if they are, trigger a disconnect. Then delete the disconnected socket
     //   from the sockets object.
     // TODO: Perhaps the broadcast only needs to be emitted to a specific room
     socket.on('disconnect', () => {
@@ -82,17 +82,16 @@ module.exports = io => {
       delete sockets[socket.id];
     });
 
-    // Connects a new user to a room and emits to all other users to initiate a new RTCPeerConnection with them
-    // A client emits the joinChatRoom event to the server immediately after establishing a conenction
-    //   and establishing a local audio feed. The even passes the window.location.pathname attribute
-    //   to relate chat rooms to A-Scenes. After making sure that a user isn't somehow already in the
-    //   chat room, the chat room is added as an object literal to the rooms object with a key equal
-    //   to the room parameter. The rooms object represents the complete state of all chat rooms in the
-    //   app and all users within each chat room. If there are other users located in the chat room,
-    //   the new user and all users already in the room are sent the 'addPeer' event. The new user is
-    //   told to create an offer, which establishes the peer-to-peer connection. Finally, the room is
-    //   set as the user's room in socket.currentChatRoom and the user is added to the roster of users in
-    //   the chat room in the rooms object.
+    // A client emits the joinChatRoom event to the server after the componentDidMount hook of a react
+    //   component of a VR environment fires and establishing a local audio feed. The event passes the
+    //   name provided by the VR environment to relate chat rooms to A-Scenes. After making sure that a
+    //   user isn't somehow already in the chat room, the chat room is added as an object literal to the
+    //   rooms object with a key equal to the room parameter. The rooms object represents the complete
+    //   state of all chat rooms in the app and all users within each chat room. If there are other
+    //   users located in the chat room, the new user and all users already in the room are sent the
+    //   'addPeer' event. The new user is told to create an offer, which establishes the peer-to-peer
+    //   connection. Finally, the room is set as the user's room in socket.currentChatRoom and the user
+    //   is added to the roster of users in the chat room in the rooms object.
     socket.on('joinChatRoom', function (room) {
       console.log(`[${socket.id}] join ${room}`);
       if (!(room in rooms)) {
@@ -107,7 +106,11 @@ module.exports = io => {
       socket.currentChatRoom = room;
     });
 
-    // leaveChatRoom clears the user from the rooms object and wipes the user's socket.currentChatRoom.
+    // A client emits the leaveChatRoom event to the server after the comonentWillUnmount hook of a react
+    //   component of a VR environment. It leaves the socket.io room of a Chat Room, removes the user
+    //   from the rooms object representing all state across all chat rooms, wipes the user's
+    //   socket.currentChatRoom, and tells all clients to tear town their WebRTC connections to the
+    //   person leaving the room.
     function leaveChatRoom () {
       const room = socket.currentChatRoom;
       console.log(`[${socket.id}] leaveChatRoom ${room}`);

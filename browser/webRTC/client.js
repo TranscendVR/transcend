@@ -13,23 +13,21 @@ let localMediaStream = null; // Our microphone
 let peers = {}; // keep track of our peer connections, indexed by peer_id (aka socket.io id)
 let peerMediaElements = {};  // keep track of our <audio> tags, indexed by peer_id
 
-// setupLocalMedia retrieves the socket.io object to use for WebRTC signaling.
-//   If the microphone audio stream is already active, the client immediately
-//   invokes 'joinChatRoom' to join the room DEFAULT_ROOM and exits the function.
-//   If the microphone audio stream is not yet active, the client checks for the correct
-//   vendor prefix for getUserMedia and then invokes getUserMedia to obtain an audio stream.
-//   Once the stream is active, it's saved to the external variable localMediaStream and
-//   set as the srcObject of the AUDIO tag of ID localAudio. The AUDIO tag is muted to keep
-//   the user from getting headaches hearing themselves. Finally, the client invokes
-//   'joinChatRoom' to join the room DEFAULT_ROOM.
+
+
+// When a "Reactified" A-Frame Scene hits the componentDidMount lifecycle hook, it calls
+//   the joinChatRoom function, passing in a unique string matching the name of the React
+//   component (e.g. /vr/joey/ passes in 'joey'). First, joinChatRoom checks to see if the
+//   microphone audio stream is already active, and if it is, it immediately
+//   invokes the 'joinChatRoom' socket event to the server, which triggers the client to
+//   join the socket.io room matching the string passed in. It then also instructs the
+//   clients in the same VR scene / socket.io room to initiate WebRTC peer-to-peer connections
+//   for voice. If the microphone audio stream was instead not yet active, the client invokes
+//   getUserMedia to obtain an audio stream, saves the stream to the external var localMediaStream,
+//   and sets the stream as the srcObject of an AUDIO tag of ID localAudio, which is immediately
+//   muted. Finally, the client invokes 'joinChatRoom' as above.
 // If the user decides not to share their microphone, they are presented with an error
 //   informing them that voice is unavailable.
-//
-// TODO: Use an actual meaningful room name.
-
-// joinChatRoom emits the 'join' event with the socket.io room that the
-//   user ID associated with the socket should join and then user for
-//   WebRTC signalling.
 
 export function joinChatRoom (room, errorback) {
   if (!room) {
@@ -60,9 +58,10 @@ export function joinChatRoom (room, errorback) {
     });
 }
 
-
-
-// Don't need this yet, but might in the future
+// When a "Reactified" A-Frame Scene hits the componentWillUnmount lifecycle hook, it calls
+//   the leaveChatRoom function, passing in a unique string matching the name of the React
+//   component (e.g. /vr/joey/ passes in 'joey'). This triggers server-side logic to leave
+//   the matching socket.io room and tear down existing WebRTC connections.
 export function leaveChatRoom (room) {
   signalingSocket.emit('leaveChatRoom', room);
 }

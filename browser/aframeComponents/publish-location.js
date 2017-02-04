@@ -10,7 +10,6 @@ let hasGottenOthers = false;
 
 export default AFRAME.registerComponent('publish-location', {
   tick: function () {
-    // console.log(window.location.href);
     socket.on('startTick', () => hasGottenOthers = true);
     if (hasGottenOthers) {
       const el = this.el;
