@@ -14,10 +14,22 @@ export default function App (props) {
           <img id="podium" src="/img/fullstack.png"/>
           <img id="floorText" src="/img/hardwood.jpg"/>
           <a-mixin id="chair-part" geometry="primitive: box" material="color: brown"></a-mixin>
-          <a-asset-item id="courage" src="../../public/img/puppy/courage_apply.dae"/>
+          <a-asset-item id="frog" src="/img/frog1.dae"></a-asset-item>
         </a-assets>
 
-        <a-entity collada-model="#courage"></a-entity>
+        {/* Lighting */}
+        <a-entity light="type: ambient; color: #ffffe0" position="0 0 0"></a-entity>
+        <a-entity light="type: directional; intensity: 0.4" position="0 25 -25"></a-entity>
+
+        {/* Room: contains walls, floor, ceiling */}
+        <Room floorWidth="50"
+              floorHeight="50"
+              wallHeight="25"
+              wallColor="#f9f7d9"
+              floorColor=""
+              floorTexture="#floorText"
+              ceilingColor="#998403"/>
+
 
         {/* Chairs */}
         {
@@ -31,10 +43,6 @@ export default function App (props) {
           ))
         }
 
-        {/* Lighting */}
-        <a-entity light="type: ambient; color: #ffffe0" position="0 0 0"></a-entity>
-        <a-entity light="type: directional; intensity: 0.4" position="0 25 -25"></a-entity>
-
         {/* Projection Screen */}
          <a-entity id="screen" geometry="primitive: plane; height: 15; width: 20"
                 material="src: #slide" position="0 8.5 -24"></a-entity>
@@ -43,18 +51,11 @@ export default function App (props) {
         <a-entity id="podium" geometry="primitive: box; depth: 1; height: 3; width: 6"
                 material="src: #podium" position="12.5 0.5 -21"></a-entity>
 
-        {/* Room: contains walls, floor, ceiling */}
-        <Room floorWidth="50"
-              floorHeight="50"
-              wallHeight="25"
-              wallColor="#f9f7d9"
-              floorColor=""
-              floorTexture="#floorText"
-              ceilingColor="#998403"/>
+        <a-collada-model src="#frog" scale="5 5 5" position="0 0 -5"></a-collada-model>
+
       </a-scene>
     </div>
   );
 }
 
-//#868686
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
 import { Router, Route, browserHistory } from 'react-router';
-import App from './components/App';
+import MainRoom from './components/MainRoom';
 import Login from './components/Login';
 
 import SOCKET from '../socket';
@@ -19,7 +19,7 @@ const onHomeEnter = () => {
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path='/' component={App} onEnter={onHomeEnter} />
+      <Route path='/' component={MainRoom} onEnter={onHomeEnter} />
       <Route path='/login' component={Login} />
     </Router>
   </Provider>,
