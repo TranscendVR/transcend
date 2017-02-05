@@ -8,7 +8,7 @@ import { fromJS } from 'immutable';
 import store from './redux/store';
 import { receiveUsers } from './redux/reducers/user-reducer';
 
-import { putUserOnDOM, addFirstPersonProperties } from './utils';
+import { putUserOnDOM, putUserBodyOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
 import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
@@ -35,6 +35,7 @@ socket.on('getOthersCallback', users => {
   // For each existing user that the backend sends us, put on the DOM
   Object.keys(users).forEach(user => {
     putUserOnDOM(users[user]);
+    putUserBodyOnDOM(users[user]);
   });
   // This goes to the server, and then goes to `publish-location` to tell the `tick` to start
   socket.emit('haveGottenOthers');
@@ -48,6 +49,7 @@ socket.on('getOthersCallback', users => {
 socket.on('usersUpdated', users => {
   // Convert users to Immutable structure before sending to store
   store.dispatch(receiveUsers(fromJS(users)));
+  
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
     const avatarHead = document.getElementById(user.get('id'));
@@ -55,7 +57,9 @@ socket.on('usersUpdated', users => {
     // If a user's avatar is NOT on the DOM already, add it
     // Convert it back to a normal JS object so we can use putUserOnDOM function as is
     if (avatarHead === null) {
-      putUserOnDOM(user.toJS());
+      const userObj = user.toJS();
+      putUserOnDOM(userObj);
+      putUserBodyOnDOM(userObj);
     } else {
       // If a user's avatar is already on the DOM, update it
       avatarHead.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
