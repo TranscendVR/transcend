@@ -1,6 +1,3 @@
-// WebRTC Logic for Client
-
-
 /** You should probably use a different stun server doing commercial stuff **/
 /** Also see: https://gist.github.com/zziuni/3741933 **/
 const ICE_SERVERS = [
@@ -13,19 +10,11 @@ let localMediaStream = null; // Our microphone
 let peers = {}; // keep track of our peer connections, indexed by peer_id (aka socket.io id)
 let peerMediaElements = {};  // keep track of our <audio> tags, indexed by peer_id
 
-
-
-// When a "Reactified" A-Frame Scene hits the componentDidMount lifecycle hook, it calls
-//   the joinChatRoom function, passing in a unique string matching the name of the React
-//   component (e.g. /vr/joey/ passes in 'joey'). First, joinChatRoom checks to see if the
-//   microphone audio stream is already active, and if it is, it immediately
-//   invokes the 'joinChatRoom' socket event to the server, which triggers the client to
-//   join the socket.io room matching the string passed in. It then also instructs the
-//   clients in the same VR scene / socket.io room to initiate WebRTC peer-to-peer connections
-//   for voice. If the microphone audio stream was instead not yet active, the client invokes
-//   getUserMedia to obtain an audio stream, saves the stream to the external var localMediaStream,
-//   and sets the stream as the srcObject of an AUDIO tag of ID localAudio, which is immediately
-//   muted. Finally, the client invokes 'joinChatRoom' as above.
+// Called by an A-Frame Room's componentDidMount hook, the joinChatRoom function asks the user
+//   for access to their audio stream (if needed), and then emits the 'joinChatRoom' event which
+//   causes the server to:
+//   --Join the client to a socket.io room matching the string passed in.
+//   --Instructs all clients in the same room to initiate WebRTC peer-to-peer voice connections
 // If the user decides not to share their microphone, they are presented with an error
 //   informing them that voice is unavailable.
 
@@ -43,25 +32,27 @@ export function joinChatRoom (room, errorback) {
   }
   navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
   console.log('Requesting access to local audio / video inputs');
-  navigator.getUserMedia({ 'audio': true, 'video': false }, function (stream) {
-    console.log('Access granted to audio');
-    localMediaStream = stream;
-    const audioEl = document.getElementById('localAudio');
-    audioEl.muted = true;
-    audioEl.srcObject = stream;
-    signalingSocket.emit('joinChatRoom', room);
-  },
-    function () { /* user denied access to a/v */
+  navigator.getUserMedia({ 'audio': true, 'video': false },
+    // On Success
+    function (stream) {
+      console.log('Access granted to audio');
+      localMediaStream = stream;
+      const audioEl = document.getElementById('localAudio');
+      audioEl.muted = true;
+      audioEl.srcObject = stream;
+      signalingSocket.emit('joinChatRoom', room);
+    },
+    // On Failure... likely because user denied access to a/v
+    function () {
       console.log('Access denied for audio/video');
       window.alert('You chose not to provide access to your microphone, so real-time voice chat is unavailable.');
       if (errorback) errorback();
     });
 }
 
-// When a "Reactified" A-Frame Scene hits the componentWillUnmount lifecycle hook, it calls
-//   the leaveChatRoom function, passing in a unique string matching the name of the React
-//   component (e.g. /vr/joey/ passes in 'joey'). This triggers server-side logic to leave
-//   the matching socket.io room and tear down existing WebRTC connections.
+// Called by a A-Frame Room's componentWillUnmount lifecycle hook, it leaveChatRoom
+//   triggers server-side logic to leave the matching socket.io room and tear down
+//   existing WebRTC connections.
 export function leaveChatRoom (room) {
   signalingSocket.emit('leaveChatRoom', room);
 }
@@ -99,9 +90,8 @@ export function addPeerConn (config) {
     }
   };
 
-  // When we recieve a remote audio stream from the peer, create an audio tag and append it to the
-  //   body tag of the DOM. Set the audio tag with an ID equal to the peerID, set it to autoplay,
-  //   and save the audio stream to the peerMediaElements object
+  // When we recieve a peer's WebRTC stream, add an audio tag to the DOM with
+  //   an ID equal to the peerID, and set it to autoplay.
   peerConnection.onaddstream = function (event) {
     console.log('onAddStream', event);
     const remoteAudio = document.createElement('audio');
@@ -109,7 +99,7 @@ export function addPeerConn (config) {
     bodyTag.appendChild(remoteAudio);
     remoteAudio.setAttribute('id', peerId);
     remoteAudio.setAttribute('autoplay', 'autoplay');
-    peerMediaElements[peerId] = remoteAudio;
+    peerMediaElements[peerId] = remoteAudio; // array of the all peer WebRTC streams
     remoteAudio.srcObject = event.stream;
   };
   /* Add our local stream */

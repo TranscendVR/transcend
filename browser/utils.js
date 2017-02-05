@@ -1,8 +1,5 @@
-// putUserOnDom checks to see if another user's avatar is in the same world as the
-//   player. If they are, it creates an A-Entity for their avatar, adds it to the
-//   room's A-Scene as a DOM node, and sets the attribues of the A-Entity to the
-//   location, rotation, and look of the attributes in the user object.
-// Returns the DOM node of the avatar if one was added.
+// putUserOnDom performs local filtering to make sure the user is in the same
+//   A-Frame room and perfoms an initial render of their avatar if they are
 export function putUserOnDOM (user) {
   console.log(`Putting user ${user} on the DOM`);
   if (user.scene === window.location.pathname.replace(/\//g, '') || 'root') {
