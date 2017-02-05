@@ -5,7 +5,7 @@ window.socket = io.connect(window.location.origin);
 import { fromJS } from 'immutable';
 import store from './redux/store';
 import { receiveUsers } from './redux/reducers/user-reducer';
-import { putUserOnDOM, addFirstPersonProperties } from './utils';
+import { putUserOnDOM, putUserBodyOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
 import { disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
@@ -33,6 +33,7 @@ socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
   Object.keys(users).forEach(user => {
     putUserOnDOM(users[user]);
+    putUserBodyOnDOM(users[user]);
   });
   socket.emit('haveGottenOthers');
   socket.emit('readyToReceiveUpdates');
@@ -45,6 +46,7 @@ socket.on('getOthersCallback', users => {
 //   on the state of the client's DOM.
 socket.on('usersUpdated', users => {
   store.dispatch(receiveUsers(fromJS(users)));
+
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
     // Pull the path off the URL, stripping forward slashes
@@ -59,10 +61,12 @@ socket.on('usersUpdated', users => {
       // console.log(`Attempting to update ${user.get('id')}-body`);
       // If a user's avatar is NOT on the DOM already, add it
       // Convert it back to a normal JS object so we can use putUserOnDOM function as is
-      if (avatarHead === null || avatarBody === null) {
-        putUserOnDOM(user.toJS());
+      if (avatarHead === null) {
+        const userObj = user.toJS();
+        putUserOnDOM(userObj);
+        putUserBodyOnDOM(userObj);
       } else {
-        // If a user's avatar is already on the DOM, update the head and body
+        // If a user's avatar is already on the DOM, update it
         avatarHead.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
         avatarHead.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
         avatarBody.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
@@ -87,7 +91,7 @@ function removeUser (userId) {
   }
   if (bodyToBeRemoved) {
     scene.remove(bodyToBeRemoved);
-    bodyToBeRemoved.parentNode.removeChild(bodyToBeRemoved); 
+    bodyToBeRemoved.parentNode.removeChild(bodyToBeRemoved);
   }
 }
 socket.on('removeUser', userId => removeUser(userId));
