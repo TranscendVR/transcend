@@ -9,7 +9,7 @@ export default class Sean extends React.Component {
   }
 
   componentWillUnmount () {
-    leaveChatRoom('sean');
+    leaveChatRoom();
   }
 
   render () {
