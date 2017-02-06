@@ -1,9 +1,12 @@
 const chalk = require('chalk');
 const { Map } = require('immutable');
 const store = require('./redux/store');
+
 const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redux/reducers/user-reducer');
+const { addRoom, addSocket, removeSocket } = require('./redux/reducers/room-reducer');
+
 const { getOtherUsers } = require('./utils');
-const rooms = {}; // nested object respresenting state of all chat rooms and all users within each chat room.
+const rooms = {}; // nested object representing state of all chat rooms and all users within each chat room.
 const sockets = {}; // Stores all sockets with key of the socket.id
 
 module.exports = io => {
@@ -63,14 +66,15 @@ module.exports = io => {
     //   connetions with the person entering the room.
     socket.on('joinChatRoom', function (room) {
       console.log(`[${socket.id}] join ${room}`);
-      if (!(room in rooms)) {
-        rooms[room] = {};
+      if (!(store.getState().rooms.has(room))) {
+        console.log(`Adding ${room} to state`);
+        store.dispatch(addRoom(room));
       }
-      for (const id in rooms[room]) {
-        rooms[room][id].emit('addPeer', { 'peer_id': socket.id, 'should_create_offer': false });
-        socket.emit('addPeer', { 'peer_id': id, 'should_create_offer': true });
-      }
-      rooms[room][socket.id] = socket;
+      store.getState().rooms.get(room).valueSeq().forEach(peer => {
+        peer.emit('addPeer', { 'peer_id': socket.id, 'should_create_offer': false });
+        socket.emit('addPeer', { 'peer_id': peer.id, 'should_create_offer': true });
+      });
+      store.dispatch(addSocket(room, socket));
       socket.join(room);
       socket.currentChatRoom = room;
     });
@@ -81,11 +85,12 @@ module.exports = io => {
       const room = socket.currentChatRoom;
       console.log(`[${socket.id}] leaveChatRoom ${room}`);
       socket.leave(room);
-      delete rooms[room][socket.id];
-      for (const id in rooms[room]) {
-        rooms[room][id].emit('removePeer', { 'peer_id': socket.id });
-        socket.emit('removePeer', { 'peer_id': id });
-      }
+      store.dispatch(removeSocket(room, socket));
+      store.getState().rooms.get(room).valueSeq().forEach(peer => {
+        peer.emit('removePeer', { 'peer_id': socket.id });
+        socket.emit('removePeer', { 'peer_id': peer.id });
+      });
+      socket.currentChatRoom = null;
     }
     socket.on('leaveChatRoom', (room) => leaveChatRoom(room));
 

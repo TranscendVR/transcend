@@ -2,9 +2,11 @@ const { createStore, applyMiddleware, combineReducers } = require('redux');
 const thunkMiddleware = require('redux-thunk').default;
 
 const { userReducer } = require('./reducers/user-reducer');
+const { roomReducer } = require('./reducers/room-reducer');
 
 const rootReducer = combineReducers({
-  users: userReducer
+  users: userReducer,
+  rooms: roomReducer
 });
 
 const store = createStore(
