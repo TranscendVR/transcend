@@ -2,6 +2,8 @@ import React from 'react';
 
 export default (props) => (
   <a-entity>
+    <a-entity light="type: ambient; color: #ffffe0" position="0 0 0"></a-entity>
+
     <a-entity id="floor"
               geometry={`primitive: plane; width:${props.floorWidth}; height:${props.floorHeight}`}
               rotation="-90 0 0"

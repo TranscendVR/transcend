@@ -19,7 +19,6 @@ export default class Lobby extends React.Component {
     return (
       <a-entity id="room" position="0 0 0">
         {/* Lighting */}
-        <a-entity light="type: ambient; color: #ffffe0" position="0 0 0"></a-entity>
         <a-entity light="type: directional; intensity: 0.4" position="0 25 -25"></a-entity>
 
         {/* Room: contains walls, floor, ceiling */}
