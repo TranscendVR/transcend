@@ -10,7 +10,7 @@ export default class Yoonah extends React.Component {
   }
 
   componentWillUnmount () {
-    leaveChatRoom('yoonah');
+    leaveChatRoom();
   }
 
   render () {
