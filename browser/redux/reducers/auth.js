@@ -19,7 +19,7 @@ export const authenticated = user => ({
 export const login = (username, password) => {
   return dispatch =>
     axios.post('/api/auth/local/login', { username, password })
-    .then(() => browserHistory.push('/'))
+    .then(() => browserHistory.push('/vr'))
     .catch(err => console.log(err.message));
 };
 

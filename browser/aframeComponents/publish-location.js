@@ -20,7 +20,8 @@ export default AFRAME.registerComponent('publish-location', {
         z: el.getAttribute('position').z,
         xrot: el.getAttribute('rotation').x,
         yrot: el.getAttribute('rotation').y,
-        zrot: el.getAttribute('rotation').z
+        zrot: el.getAttribute('rotation').z,
+        scene: window.location.pathname.replace(/\//g, '') || 'root' // returns the room name or root if the lobby
       });
     }
   }
