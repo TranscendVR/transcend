@@ -9,7 +9,7 @@ export default class Lobby extends React.Component {
   }
 
   componentWillUnmount () {
-    leaveChatRoom('lobby');
+    leaveChatRoom();
   }
   render () {
     return (

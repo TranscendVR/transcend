@@ -68,8 +68,8 @@ export function joinChatRoom (room, errorback) {
 // Called by a A-Frame Room's componentWillUnmount lifecycle hook, it leaveChatRoom
 //   triggers server-side logic to leave the matching socket.io room and tear down
 //   existing WebRTC connections.
-export function leaveChatRoom (room) {
-  signalingSocket.emit('leaveChatRoom', room);
+export function leaveChatRoom () {
+  signalingSocket.emit('leaveChatRoom');
 }
 
 // accepts conifg

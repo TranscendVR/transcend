@@ -9,7 +9,7 @@ export default class Joey extends React.Component {
   }
 
   componentWillUnmount () {
-    leaveChatRoom('joey');
+    leaveChatRoom();
   }
   render () {
     return (
