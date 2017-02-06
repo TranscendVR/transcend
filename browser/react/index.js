@@ -9,7 +9,6 @@ import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
-import MainRoom from './components/MainRoom';
 import Login from './components/Login';
 import SOCKET from '../socket';
 
