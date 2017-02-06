@@ -3,7 +3,7 @@ const { Map } = require('immutable');
 const store = require('./redux/store');
 
 const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redux/reducers/user-reducer');
-const { addRoom, addSocket, removeSocket } = require('./redux/reducers/room-reducer');
+const { addRoom, addSocketToRoom, removeSocketFromRoom } = require('./redux/reducers/room-reducer');
 
 const { getOtherUsers } = require('./utils');
 const sockets = {}; // Stores all sockets with key of the socket.id
@@ -71,7 +71,7 @@ module.exports = io => {
         peer.emit('addPeer', { 'peer_id': socket.id, 'should_create_offer': false });
         socket.emit('addPeer', { 'peer_id': peer.id, 'should_create_offer': true });
       });
-      store.dispatch(addSocket(room, socket));
+      store.dispatch(addSocketToRoom(room, socket));
       socket.join(room);
       socket.currentChatRoom = room;
     });
@@ -83,7 +83,7 @@ module.exports = io => {
       if (room) {
         console.log(`[${socket.id}] leaveChatRoom ${room}`);
         socket.leave(room);
-        store.dispatch(removeSocket(room, socket));
+        store.dispatch(removeSocketFromRoom(room, socket));
         store.getState().rooms.get(room).valueSeq().forEach(peer => {
           peer.emit('removePeer', { 'peer_id': socket.id });
           socket.emit('removePeer', { 'peer_id': peer.id });

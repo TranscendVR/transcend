@@ -7,8 +7,8 @@ const initialState = Map({});
 /* --------------- ACTIONS --------------- */
 
 const ADD_ROOM = 'ADD_ROOM';
-const ADD_SOCKET = 'ADD_SOCKET';
-const REMOVE_SOCKET = 'REMOVE_SOCKET';
+const ADD_SOCKET_TO_ROOM = 'ADD_SOCKET_TO_ROOM';
+const REMOVE_SOCKET_TO_ROOM = 'REMOVE_SOCKET_TO_ROOM';
 
 /* --------------- ACTION CREATORS --------------- */
 
@@ -19,23 +19,21 @@ const addRoom = room => {
   };
 };
 
-const addSocket = (room, socket) => {
+const addSocketToRoom = (room, socket) => {
   return {
-    type: ADD_SOCKET,
+    type: ADD_SOCKET_TO_ROOM,
     room,
     socket
   };
 };
 
-const removeSocket = (room, socket) => {
+const removeSocketFromRoom = (room, socket) => {
   return {
-    type: REMOVE_SOCKET,
+    type: REMOVE_SOCKET_TO_ROOM,
     room,
     socket
   };
 };
-
-/* --------------- THUNK ACTION CREATORS --------------- */
 
 /* --------------- REDUCER --------------- */
 
@@ -43,9 +41,9 @@ const roomReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ROOM:
       return state.set(action.room, Map({}));
-    case ADD_SOCKET:
+    case ADD_SOCKET_TO_ROOM:
       return state.setIn([action.room, action.socket.id], action.socket);
-    case REMOVE_SOCKET:
+    case REMOVE_SOCKET_TO_ROOM:
       return state.deleteIn([action.room, action.socket.id]);
     default:
       return state;
@@ -55,7 +53,7 @@ const roomReducer = (state = initialState, action) => {
 
 module.exports = {
   addRoom,
-  addSocket,
-  removeSocket,
+  addSocketToRoom,
+  removeSocketFromRoom,
   roomReducer
 };
