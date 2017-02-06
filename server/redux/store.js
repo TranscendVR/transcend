@@ -3,7 +3,7 @@ const thunkMiddleware = require('redux-thunk').default;
 
 const { userReducer } = require('./reducers/user-reducer');
 const { roomReducer } = require('./reducers/room-reducer');
-const { socketReducer } = require('./reducers/room-reducer');
+const { socketReducer } = require('./reducers/socket-reducer');
 
 const rootReducer = combineReducers({
   users: userReducer,

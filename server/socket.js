@@ -4,9 +4,9 @@ const store = require('./redux/store');
 
 const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redux/reducers/user-reducer');
 const { addRoom, addSocketToRoom, removeSocketFromRoom } = require('./redux/reducers/room-reducer');
+const { addSocket, removeSocket } = require('./redux/reducers/socket-reducer');
 
 const { getOtherUsers } = require('./utils');
-const sockets = {}; // Stores all sockets with key of the socket.id
 
 module.exports = io => {
   io.on('connection', socket => {
@@ -14,7 +14,7 @@ module.exports = io => {
     // When a socket client establishes a conenction, create and persist a user
     //   for the client and return the user upon receipt of the sceneLoad event
     store.dispatch(createAndEmitUser(socket));
-    sockets[socket.id] = socket;
+    store.dispatch(addSocket(socket));
 
     // getOthers returns all users other the the user associated with the socket
     //   client that made the request.
@@ -56,7 +56,7 @@ module.exports = io => {
       console.log(chalk.magenta(`${socket.id} has disconnected`));
       leaveChatRoom();
       console.log(`[${socket.id}] disconnected`);
-      delete sockets[socket.id];
+      store.dispatch(removeSocket(socket));
     });
 
     // joinChatRoom joins a socket.io room and tells all clients in that room to establish a WebRTC
@@ -100,9 +100,9 @@ module.exports = io => {
       const peerId = config.peer_id;
       const iceCandidate = config.ice_candidate;
       console.log(`[${socket.id}] relaying ICE candidate to [${peerId}] ${iceCandidate}`);
-
-      if (peerId in sockets) {
-        sockets[peerId].emit('iceCandidate', { 'peer_id': socket.id, 'ice_candidate': iceCandidate });
+      const sockets = store.getState().sockets;
+      if (sockets.has(peerId)) {
+        sockets.get(peerId).emit('iceCandidate', { 'peer_id': socket.id, 'ice_candidate': iceCandidate });
       }
     });
 
@@ -111,9 +111,10 @@ module.exports = io => {
       const peerId = config.peer_id;
       const sessionDescription = config.session_description;
       console.log(`[${socket.id}] relaying session description to [${peerId}] ${sessionDescription}`);
+      const sockets = store.getState().sockets;
 
-      if (peerId in sockets) {
-        sockets[peerId].emit('sessionDescription', { 'peer_id': socket.id, 'session_description': sessionDescription });
+      if (sockets.has(peerId)) {
+        sockets.get(peerId).emit('sessionDescription', { 'peer_id': socket.id, 'session_description': sessionDescription });
       }
     });
   });
