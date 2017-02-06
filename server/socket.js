@@ -52,9 +52,7 @@ module.exports = io => {
     socket.on('disconnect', () => {
       store.dispatch(removeUserAndEmit(socket));
       console.log(chalk.magenta(`${socket.id} has disconnected`));
-      if (socket.currentChatRoom) {
-        leaveChatRoom(socket.currentChatRoom);
-      }
+      leaveChatRoom(socket.currentChatRoom);
       console.log(`[${socket.id}] disconnected`);
       delete sockets[socket.id];
     });
@@ -79,12 +77,16 @@ module.exports = io => {
     //   connections with the person leaving the room.
     function leaveChatRoom () {
       const room = socket.currentChatRoom;
-      console.log(`[${socket.id}] leaveChatRoom ${room}`);
-      socket.leave(room);
-      delete rooms[room][socket.id];
-      for (const id in rooms[room]) {
-        rooms[room][id].emit('removePeer', { 'peer_id': socket.id });
-        socket.emit('removePeer', { 'peer_id': id });
+      if (room) {
+        console.log(`[${socket.id}] leaveChatRoom ${room}`);
+        socket.leave(room);
+        delete rooms[room][socket.id];
+        for (const id in rooms[room]) {
+          rooms[room][id].emit('removePeer', { 'peer_id': socket.id });
+          socket.emit('removePeer', { 'peer_id': id });
+        }
+      } else {
+        console.log('Not currently in room, so nothing to leave');
       }
     }
     socket.on('leaveChatRoom', (room) => leaveChatRoom(room));
