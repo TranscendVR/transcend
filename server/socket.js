@@ -52,7 +52,7 @@ module.exports = io => {
     socket.on('disconnect', () => {
       store.dispatch(removeUserAndEmit(socket));
       console.log(chalk.magenta(`${socket.id} has disconnected`));
-      leaveChatRoom(socket.currentChatRoom);
+      leaveChatRoom();
       console.log(`[${socket.id}] disconnected`);
       delete sockets[socket.id];
     });
@@ -89,7 +89,7 @@ module.exports = io => {
         console.log('Not currently in room, so nothing to leave');
       }
     }
-    socket.on('leaveChatRoom', (room) => leaveChatRoom(room));
+    socket.on('leaveChatRoom', () => leaveChatRoom());
 
     // If any user is an Ice Candidate, tells other users to set up a ICE connection with them
     socket.on('relayICECandidate', function (config) {

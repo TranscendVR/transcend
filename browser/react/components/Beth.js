@@ -9,7 +9,7 @@ export default class Beth extends React.Component {
   }
 
   componentWillUnmount () {
-    leaveChatRoom('beth');
+    leaveChatRoom();
   }
   render () {
     return (
