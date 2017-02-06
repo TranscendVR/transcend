@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Radium from 'radium';
-
 import { login, logout } from '../../../redux/reducers/auth';
-
 import styles from './styles';
 
 /* ----------------- COMPONENT ------------------ */

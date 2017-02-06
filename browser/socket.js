@@ -1,74 +1,100 @@
 /* global socket */
-
 import io from 'socket.io-client';
 // All A-Frame components need access to the socket instance
-window.socket = io.connect();
-
+window.socket = io.connect(window.location.origin);
 import { fromJS } from 'immutable';
 import store from './redux/store';
 import { receiveUsers } from './redux/reducers/user-reducer';
-
-import { putUserOnDOM, addFirstPersonProperties } from './utils';
+import { putUserOnDOM, putUserBodyOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
-import { setupLocalMedia, disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
+import { disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
-// `publish-location`, `camera`, `look-controls`, `wasd-controls` are set only
-// on the user that the scene belongs to, so that only that scene can be manipulated
-// by them.
-// The other users will get the updated position via sockets.
-
-// This is the person who connected
 socket.on('connect', () => {
   console.log('You\'ve made a persistent two-way connection to the server!');
-  setupLocalMedia();
 });
 
+// Render the user returned by the server, add first person attributes (camera, controls,
+//   and ticks pushed to server), then get other users in the scene
 socket.on('createUser', user => {
   const avatar = putUserOnDOM(user);
   addFirstPersonProperties(avatar);
   socket.emit('getOthers');
 });
 
-// When someone connects initially, this will get any other users already there
+// Perform an initial render the other users' avatars (after local filtering) and emit the following:
+//     --haveGottenOthers: an event that causes the server to emit the startTick event, which causes
+//       this client's publish-location components to begin broadcating real-time updates to the server.
+//       While this likely seems unneccesary, the intention of this ping-pong is to provide
+//       a hook for the server to throttle the frequency of client updates to the server.
+//     --readyToReceiveUpdates: an event that tells the server to begin sending the ticks of other
+//       users' avatars to this client. This only occurs after the initial render of the users is
+//       complete, which should avoid potential jenk when joining a room with many avatars.
 socket.on('getOthersCallback', users => {
   console.log('Checking to see if anyone is here');
-  // For each existing user that the backend sends us, put on the DOM
   Object.keys(users).forEach(user => {
     putUserOnDOM(users[user]);
+    putUserBodyOnDOM(users[user]);
   });
-  // This goes to the server, and then goes to `publish-location` to tell the `tick` to start
   socket.emit('haveGottenOthers');
-  // This goes to the server, and then back to the function with the setInterval
-  // Needed an intermediary for between when the other components are put on the DOM
-  // and the start of the interval loop
   socket.emit('readyToReceiveUpdates');
 });
 
-// Using a filtered users array, this updates the position & rotation of every other user
+// Once subscribed via 'readyToReceiveUpdates,' the server emits 'usersUpdated' with an array
+//   of all users other than the client's user to allow the client to render/update the avatars.
+//   Currently, clients must perform local filtering to determine if an avatar is in the same
+//   room. The users' avatar components (body and head) are added, updated, or deleted depending
+//   on the state of the client's DOM.
 socket.on('usersUpdated', users => {
-  // Convert users to Immutable structure before sending to store
   store.dispatch(receiveUsers(fromJS(users)));
+
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
-    const otherAvatar = document.getElementById(user.get('id'));
-    // If a user's avatar is NOT on the DOM already, add it
-    // Convert it back to a normal JS object so we can use putUserOnDOM function as is
-    if (otherAvatar === null) {
-      putUserOnDOM(user.toJS());
-    } else {
-      // If a user's avatar is already on the DOM, update it
-      otherAvatar.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
-      otherAvatar.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+    // Pull the path off the URL, stripping forward slashes
+    // For example, "localhost:1337/sean" would return "sean"
+    // If we are at the root path, we instead received "root"
+    // These values are passed up as "scene" in the user tick and correspond to the names of react components and a-scenes
+    const currentScene = window.location.pathname.replace(/\//g, '') || 'root';
+    // If the user is on the current scene, add or update the user's head and body
+    const avatarHead = document.getElementById(user.get('id'));
+    const avatarBody = document.getElementById(`${user.get('id')}-body`);
+    if (user.get('scene') === currentScene) {
+      // console.log(`Attempting to update ${user.get('id')}-body`);
+      // If a user's avatar is NOT on the DOM already, add it
+      // Convert it back to a normal JS object so we can use putUserOnDOM function as is
+      if (avatarHead === null) {
+        const userObj = user.toJS();
+        putUserOnDOM(userObj);
+        putUserBodyOnDOM(userObj);
+      } else {
+        // If a user's avatar is already on the DOM, update it
+        avatarHead.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+        avatarHead.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+        avatarBody.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
+        avatarBody.setAttribute('rotation', `0 ${user.get('yrot')} 0`);
+      }
+    } else { // If the user is not on the scene, make sure the user is not on the DOM
+      if (avatarHead || avatarBody) removeUser(user.get('id'));
     }
   });
 });
 
-// Remove a user's avatar when they disconnect from the server
-socket.on('removeUser', userId => {
-  console.log('Removing user.');
-  const avatarToBeRemoved = document.getElementById(userId);
-  avatarToBeRemoved.parentNode.removeChild(avatarToBeRemoved); // Remove from DOM
-});
+// Remove the avatar of userID from the A-Frame scene and DOM.
+function removeUser (userId) {
+  console.log('Removing user ', userId);
+  const scene = document.getElementById('scene');
+  const headToBeRemoved = document.getElementById(userId);
+  console.log(`Attempting to remove ${userId}-body`);
+  const bodyToBeRemoved = document.getElementById(`${userId}-body`);
+  if (headToBeRemoved) {
+    scene.remove(headToBeRemoved);
+    headToBeRemoved.parentNode.removeChild(headToBeRemoved);
+  }
+  if (bodyToBeRemoved) {
+    scene.remove(bodyToBeRemoved);
+    bodyToBeRemoved.parentNode.removeChild(bodyToBeRemoved);
+  }
+}
+socket.on('removeUser', userId => removeUser(userId));
 
 // Adds a Peer to our DoM as their own Audio Element
 socket.on('addPeer', addPeerConn);

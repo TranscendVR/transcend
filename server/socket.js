@@ -1,37 +1,38 @@
 const chalk = require('chalk');
 const { Map } = require('immutable');
-
 const store = require('./redux/store');
 const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redux/reducers/user-reducer');
 const { getOtherUsers } = require('./utils');
-
-const channels = {};
-const sockets = {};
+const rooms = {}; // nested object respresenting state of all chat rooms and all users within each chat room.
+const sockets = {}; // Stores all sockets with key of the socket.id
 
 module.exports = io => {
   io.on('connection', socket => {
     console.log(chalk.yellow(`${socket.id} has connected`));
-
-    // New user enters; create new user and new user appears for everyone else
+    // When a socket client establishes a conenction, create and persist a user
+    //   for the client and return the user upon receipt of the sceneLoad event
     store.dispatch(createAndEmitUser(socket));
-    socket.channels = {};
     sockets[socket.id] = socket;
 
-    // This will send all of the current users to the user that just connected
+    // getOthers returns all users other the the user associated with the socket
+    //   client that made the request.
     socket.on('getOthers', () => {
       const allUsers = store.getState().users;
       socket.emit('getOthersCallback', getOtherUsers(allUsers, socket.id));
     });
 
-    // This is a check to ensure that all of the existing users exist on the DOM
-    // before pushing updates to the backend
+    // Currently unused lifecycle hook that occurs after a client perform the initial
+    //   render of all of the avatars but before starting to emit avatar updates to
+    //   the server. This is intended to be used to allow the server the ability
+    //   to potentially throttle the client's rate of updates to the server.
+    // Note that the startTick event listener is located in the publish-location
+    //   A-Frame component located at /browser/aframeComponents/publish-location.js
     socket.on('haveGottenOthers', () => {
       socket.emit('startTick');
     });
 
-    // readyToReceiveUpdates is a check to make sure existing users have loaded
-    // for the new user
-    // Once they have, then the backend starts pushing updates to the frontend
+    // readyToReceiveUpdates sends the position of all users except the client's own
+    //   whenever the server's store updates.
     socket.on('readyToReceiveUpdates', () => {
       store.subscribe(() => {
         const allUsers = store.getState().users;
@@ -39,66 +40,54 @@ module.exports = io => {
       });
     });
 
-    // This will update a user's position when they move, and send it to everyone
-    // except the specific scene's user
+    // On each tick update from a client, update the store, which trigger the subscriptions created for each
+    //   client in the event handler for 'readyToReceiveUpdates'
     socket.on('tick', userData => {
       userData = Map(userData);
       store.dispatch(updateUserData(userData));
     });
 
+    // When a socket disconnects, removes the user from the store, broadcast 'removeUser' to all
+    //   clients, and remove the socket from any socket.io rooms or WebRTC P2P connections
     socket.on('disconnect', () => {
       store.dispatch(removeUserAndEmit(socket));
       console.log(chalk.magenta(`${socket.id} has disconnected`));
-      for (const channel in socket.channels) {
-        part(channel);
+      if (socket.currentChatRoom) {
+        leaveChatRoom(socket.currentChatRoom);
       }
       console.log(`[${socket.id}] disconnected`);
       delete sockets[socket.id];
     });
 
-    // Connects a new user to a channel and emits to all other users to initiate a new RTCPeerConnection with them
-    socket.on('join', function (config) {
-      console.log(`[${socket.id}] join ${config}`);
-      const channel = config.channel;
-      // const userdata = config.userdata;
-
-      if (channel in socket.channels) {
-        console.log(`[${socket.id}] ERROR: already joined ${channel}`);
-        return;
+    // joinChatRoom joins a socket.io room and tells all clients in that room to establish a WebRTC
+    //   connetions with the person entering the room.
+    socket.on('joinChatRoom', function (room) {
+      console.log(`[${socket.id}] join ${room}`);
+      if (!(room in rooms)) {
+        rooms[room] = {};
       }
-
-      if (!(channel in channels)) {
-        channels[channel] = {};
-      }
-
-      for (const id in channels[channel]) {
-        channels[channel][id].emit('addPeer', { 'peer_id': socket.id, 'should_create_offer': false });
+      for (const id in rooms[room]) {
+        rooms[room][id].emit('addPeer', { 'peer_id': socket.id, 'should_create_offer': false });
         socket.emit('addPeer', { 'peer_id': id, 'should_create_offer': true });
       }
-
-      channels[channel][socket.id] = socket;
-      socket.channels[channel] = channel;
+      rooms[room][socket.id] = socket;
+      socket.join(room);
+      socket.currentChatRoom = room;
     });
 
-    // Removes a user from a channel and tells all other users to discontinue their connection with them
-    function part (channel) {
-      console.log(`[${socket.id}] part`);
-
-      if (!(channel in socket.channels)) {
-        console.log(`[${socket.id}] ERROR: not in ${channel}`);
-        return;
-      }
-
-      delete socket.channels[channel];
-      delete channels[channel][socket.id];
-
-      for (const id in channels[channel]) {
-        channels[channel][id].emit('removePeer', { 'peer_id': socket.id });
+    // leaveChatRoom leaves the current socket.io room and tells all clients to tear down WebRTC
+    //   connections with the person leaving the room.
+    function leaveChatRoom () {
+      const room = socket.currentChatRoom;
+      console.log(`[${socket.id}] leaveChatRoom ${room}`);
+      socket.leave(room);
+      delete rooms[room][socket.id];
+      for (const id in rooms[room]) {
+        rooms[room][id].emit('removePeer', { 'peer_id': socket.id });
         socket.emit('removePeer', { 'peer_id': id });
       }
     }
-
-    socket.on('part', part);
+    socket.on('leaveChatRoom', (room) => leaveChatRoom(room));
 
     // If any user is an Ice Candidate, tells other users to set up a ICE connection with them
     socket.on('relayICECandidate', function (config) {
