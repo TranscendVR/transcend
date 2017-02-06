@@ -6,7 +6,6 @@ const { createAndEmitUser, updateUserData, removeUserAndEmit } = require('./redu
 const { addRoom, addSocket, removeSocket } = require('./redux/reducers/room-reducer');
 
 const { getOtherUsers } = require('./utils');
-const rooms = {}; // nested object representing state of all chat rooms and all users within each chat room.
 const sockets = {}; // Stores all sockets with key of the socket.id
 
 module.exports = io => {
