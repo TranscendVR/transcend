@@ -66,7 +66,8 @@ module.exports = io => {
         console.log(`Adding ${room} to state`);
         store.dispatch(addRoom(room));
       }
-      store.getState().rooms.get(room).valueSeq().forEach(peer => {
+      const roomOnState = store.getState().rooms.get(room);
+      roomOnState.valueSeq().forEach(peer => {
         peer.emit('addPeer', { 'peer_id': socket.id, 'should_create_offer': false });
         socket.emit('addPeer', { 'peer_id': peer.id, 'should_create_offer': true });
       });
@@ -83,7 +84,8 @@ module.exports = io => {
         console.log(`[${socket.id}] leaveChatRoom ${room}`);
         socket.leave(room);
         store.dispatch(removeSocketFromRoom(room, socket));
-        store.getState().rooms.get(room).valueSeq().forEach(peer => {
+        const roomOnState = store.getState().rooms.get(room);
+        roomOnState.valueSeq().forEach(peer => {
           peer.emit('removePeer', { 'peer_id': socket.id });
           socket.emit('removePeer', { 'peer_id': peer.id });
         });

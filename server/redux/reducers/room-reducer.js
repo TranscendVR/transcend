@@ -8,7 +8,7 @@ const initialState = Map({});
 
 const ADD_ROOM = 'ADD_ROOM';
 const ADD_SOCKET_TO_ROOM = 'ADD_SOCKET_TO_ROOM';
-const REMOVE_SOCKET_TO_ROOM = 'REMOVE_SOCKET_TO_ROOM';
+const REMOVE_SOCKET_FROM_ROOM = 'REMOVE_SOCKET_FROM_ROOM';
 
 /* --------------- ACTION CREATORS --------------- */
 
@@ -29,7 +29,7 @@ const addSocketToRoom = (room, socket) => {
 
 const removeSocketFromRoom = (room, socket) => {
   return {
-    type: REMOVE_SOCKET_TO_ROOM,
+    type: REMOVE_SOCKET_FROM_ROOM,
     room,
     socket
   };
@@ -43,7 +43,7 @@ const roomReducer = (state = initialState, action) => {
       return state.set(action.room, Map({}));
     case ADD_SOCKET_TO_ROOM:
       return state.setIn([action.room, action.socket.id], action.socket);
-    case REMOVE_SOCKET_TO_ROOM:
+    case REMOVE_SOCKET_FROM_ROOM:
       return state.deleteIn([action.room, action.socket.id]);
     default:
       return state;
