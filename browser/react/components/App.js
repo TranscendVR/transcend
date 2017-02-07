@@ -12,7 +12,7 @@ export default function App (props) {
     //   direct child of a-scene.
     <div style={{ width: '100%', height: '100%' }}>
       {!props.isLoaded ? (
-      <div id="loadScreen" style={{ width: '100%', height: '100%', background: 'green', display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
+      <div id="loadScreen" style={{ width: '100%', height: '100%', background: '#72C8F1', display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
         <InitialLoading/>
       </div>
       )
