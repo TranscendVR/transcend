@@ -1,17 +1,8 @@
 import React from 'react';
-import store from '../../redux/store';
-import { setAsLoaded } from '../../redux/reducers/config-reducer';
 
 export default function AssetLoader (props) {
   return (
-    <a-assets timeout="60000" ref={(node) => {
-      if (node) { // Ref runs will run a second time without passing in a node if this is not here
-        node.addEventListener('loaded', (evt) => {
-          console.log('Asset Loading completed ', evt);
-          store.dispatch(setAsLoaded());
-        });
-      }
-    }}>
+    <a-assets timeout="60000" >
       {/* Sean's Room assets */}
       <a-asset-item id="IBM-360" src="/sean/console.dae"></a-asset-item>
       <a-asset-item id="terminal-typewriter" src="/sean/teletype.dae"></a-asset-item>
