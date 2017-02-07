@@ -17,7 +17,7 @@ export default class Lobby extends React.Component {
 
   render () {
     return (
-      <a-entity id="room" position="0 0 0">
+      <a-entity>
         {/* Lighting */}
         <a-entity light="type: directional; intensity: 0.4" position="0 25 -25"></a-entity>
 
@@ -26,7 +26,7 @@ export default class Lobby extends React.Component {
               floorHeight="50"
               wallHeight="25"
               wallColor="#f9f7d9"
-              floorColor=""
+              floorColor="gray"
               floorTexture="#floorText"
               ceilingColor="#998403"/>
 
@@ -39,12 +39,12 @@ export default class Lobby extends React.Component {
         {/* Chairs */}
         {
           createArray(10).map((el) => (
-            <Chair x={`${el[0]}`} y='0' z={`${-12.5 + el[1]}`} key={`${el[0] + ',' + el[1]}`} />
+            <Chair x={`${el[0]}`} y="0" z={`${-12.5 + el[1]}`} key={`${el[0] + ',' + el[1]}`} />
           ))
         }
         {
           createArray(-10).map((el) => (
-            <Chair x={`${el[0]}`} y='0' z={`${-12.5 + (el[1])}`} key={`${el[0] + ',' + el[1]}`} />
+            <Chair x={`${el[0]}`} y="0" z={`${-12.5 + (el[1])}`} key={`${el[0] + ',' + el[1]}`} />
           ))
         }
 

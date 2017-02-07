@@ -15,7 +15,7 @@ export default class Sean extends React.Component {
 
   render () {
     return (
-      <a-entity id="room" position="0 0 0">
+      <a-entity>
         <a-collada-model src="#IBM-360" position="-2 0 -8" rotation="0 270"></a-collada-model>
         <a-collada-model src="#terminal-typewriter" position="-2.6 0 -0.7"></a-collada-model>
         <a-collada-model src="#tape-drive" position="-1.3 0 -7" rotation="0 270"></a-collada-model>

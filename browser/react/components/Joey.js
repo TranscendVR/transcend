@@ -14,7 +14,7 @@ export default class Joey extends React.Component {
   }
   render () {
     return (
-      <a-entity id="room" position="0 0 0">
+      <a-entity>
         <Room floorWidth="50"
               floorHeight="50"
               wallHeight="25"
