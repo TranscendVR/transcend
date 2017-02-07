@@ -57,6 +57,9 @@ class Login extends React.Component {
           Log in with Google
         </a>
         </div>
+        <div>
+        <a href="#" onClick={this.props.signup} style={styles.logout}>Sign Up</a>
+        </div>
         <a href="#" onClick={this.props.logout} style={styles.logout}>Log Out</a>
       </div>
     );

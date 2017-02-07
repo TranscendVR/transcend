@@ -21,6 +21,13 @@ passport.deserializeUser(
   }
 );
 
+// Local signup
+auth.post('/local/signup', (req, res, next) => {
+  User.create(req.body)
+  .then(user => res.status(201).json(user))
+  .catch(next);
+});
+
 // Local login
 auth.post('/local/login', (req, res, next) => {
   passport.authenticate('local', {
