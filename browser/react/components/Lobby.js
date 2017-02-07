@@ -15,7 +15,7 @@ export default class Lobby extends React.Component {
     leaveChatRoom();
   }
 
-  render() {
+  render () {
     return (
       <a-entity id="room" position="0 0 0">
         {/* Lighting */}
@@ -56,7 +56,6 @@ export default class Lobby extends React.Component {
         <a-entity id="podium" geometry="primitive: box; depth: 1; height: 3; width: 6"
                 material="src: #podium" position="12.5 0.5 -21"></a-entity>
 
-        <a-collada-model src="#frog" scale="5 5 5" position="0 0 -5"></a-collada-model>
       </a-entity>
     );
   }
