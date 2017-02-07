@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function AssetLoader (props) {
   return (
-    <a-assets timeout="10000">
+    <a-assets timeout="60000" >
       {/* Sean's Room assets */}
       <a-asset-item id="IBM-360" src="/sean/console.dae"></a-asset-item>
       <a-asset-item id="terminal-typewriter" src="/sean/teletype.dae"></a-asset-item>

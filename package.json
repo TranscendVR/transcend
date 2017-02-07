@@ -47,6 +47,7 @@
     "express": "^4.14.0",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
+    "material-ui": "^0.16.7",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
