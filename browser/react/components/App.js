@@ -2,7 +2,7 @@ import React from 'react';
 import '../../aframeComponents/scene-load';
 import '../../aframeComponents/aframe-minecraft';
 import AssetLoader from './AssetLoader';
-import InitialLoading from './InitialLoading';
+import LoadingSpinner from './LoadingSpinner';
 
 export default function App (props) {
   console.log('props ', props);
@@ -12,9 +12,7 @@ export default function App (props) {
     //   direct child of a-scene.
     <div style={{ width: '100%', height: '100%' }}>
       {!props.isLoaded ? (
-      <div id="loadScreen" style={{ width: '100%', height: '100%', backgroundImage: 'url(/images/background.png)', display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'center' }}>
-        <InitialLoading/>
-      </div>
+        <LoadingSpinner/>
       )
       : null
       }
