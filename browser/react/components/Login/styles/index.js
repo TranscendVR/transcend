@@ -18,7 +18,6 @@ export default {
     width: '210px',
     fontSize: '14px',
     textAlign: 'center',
-    textTransform: 'uppercase',
     color: '#FFF',
     background: 'rgba(255, 255, 255, 0.15)',
     border: '2px solid rgba(255, 255, 255, 0)',
