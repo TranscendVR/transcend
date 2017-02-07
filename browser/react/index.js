@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
 import App from './components/App';
 import Sean from './components/Sean';
 import Beth from './components/Beth';
@@ -26,7 +26,7 @@ ReactDOM.render(
       <Route path="/" onEnter={onHomeEnter} >
         <IndexRoute component={Login} />
         <Route path="/vr" component={App} >
-          <IndexRoute component={Lobby} />
+          <IndexRedirect to="lobby" />
           <Route path="lobby" component={Lobby} />
           <Route path="sean" component={Sean} />
           <Route path="beth" component={Beth} />

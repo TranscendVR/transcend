@@ -1,6 +1,7 @@
 import React from 'react';
 import { joinChatRoom, leaveChatRoom } from '../../webRTC/client.js';
 import Teleporter from './Teleporter';
+import Room from './Room';
 
 export default class Beth extends React.Component {
 
@@ -13,10 +14,15 @@ export default class Beth extends React.Component {
   }
   render () {
     return (
-      <a-entity id="room" position="0 0 0">
+      <a-entity position="0 0 0">
+        <Room floorWidth="50"
+              floorHeight="50"
+              wallHeight="25"
+              wallColor="yellow"
+              floorColor=""
+              floorTexture="#floorText"
+              ceilingColor="#998403"/>
         <Teleporter x="-10" y="1" z="-1" color="green" href="/vr" />
-        <a-entity geometry="primitive: plane; width:80; height:80;" position="2 0 -4" rotation="-90 0 0" material="color:#444444;"></a-entity>
-        <a-sky src="#beth-background"></a-sky>
       </a-entity>
     );
   }
