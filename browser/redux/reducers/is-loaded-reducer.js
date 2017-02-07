@@ -1,10 +1,3 @@
-
-/* --------------- INITIAL STATE --------------- */
-
-const initialState = {
-  isLoaded: false
-};
-
 /* --------------- ACTIONS --------------- */
 
 export const SET_AS_LOADED = 'SET_AS_LOADED';
@@ -19,13 +12,11 @@ export const setAsLoaded = () => {
 
 /* --------------- REDUCER --------------- */
 
-export default function configReducer (state = initialState, action) {
+export default function configReducer (state = false, action) {
   switch (action.type) {
 
     case SET_AS_LOADED:
-      return {
-        isLoaded: true
-      };
+      return true;
 
     default:
       return state;

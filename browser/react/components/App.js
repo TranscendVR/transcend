@@ -7,7 +7,6 @@ import LoadingSpinner from './LoadingSpinner';
 const style = { 'width': '100%', 'height': '100%' };
 
 export default function App (props) {
-  console.log('props ', props);
   return (
     // AssetLoader is a stateless component containing the a-assets for all of the React components
     //   rendered via props.children. It must reside here because A-Frame requires a-assets to a

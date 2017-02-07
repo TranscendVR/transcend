@@ -2,7 +2,7 @@ import App from '../components/App';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
-  isLoaded: state.config.isLoaded
+  isLoaded: state.isLoaded
 });
 
 export default connect(mapStateToProps)(App);
