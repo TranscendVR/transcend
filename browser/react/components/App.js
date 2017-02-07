@@ -14,9 +14,9 @@ export default function App (props) {
     //   direct child of a-scene.
     <div style={style}>
       {!props.isLoaded ? (
-        <LoadingSpinner/>
+        <LoadingSpinner />
       )
-      : null
+        : null
       }
       <a-scene id="scene" scene-load>
         <AssetLoader />
