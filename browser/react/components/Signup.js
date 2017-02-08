@@ -1,14 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 import Radium from 'radium';
-import { login, logout } from '../../../redux/reducers/auth';
-import styles from './styles';
+import { signup } from '../../redux/reducers/auth';
+import styles from './Login/styles';
 
 /* ----------------- COMPONENT ------------------ */
 
 @Radium
-class Login extends React.Component {
+class Signup extends React.Component {
   // Set the background style & size for just this component
   componentDidMount () {
     document.body.style.background = 'url(/images/background.png) no-repeat top center fixed';
@@ -24,10 +23,30 @@ class Login extends React.Component {
   render () {
     return (
       <div style={styles.container}>
-        <form onSubmit={this.props.login}>
+        <form onSubmit={this.props.signup}>
           <div className="form-group">
             <input
               key="name"
+              name="name"
+              type="name"
+              placeholder="name"
+              style={styles.formControl}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              key="displayName"
+              name="displayName"
+              type="displayName"
+              placeholder="display name"
+              style={styles.formControl}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              key="email"
               name="email"
               type="email"
               placeholder="email"
@@ -45,23 +64,8 @@ class Login extends React.Component {
               required
             />
           </div>
-          <button style={styles.loginButton} type="submit">Log In</button>
+          <button style={styles.loginButton} type="submit">Sign Up</button>
         </form>
-        <div style={styles.orDividerLineDiv}>
-          <div style={styles.orDividerLineBefore}></div>
-          <p style={styles.orDivider}>or</p>
-          <div style={styles.orDividerLineAfter}></div>
-        </div>
-        <div>
-        <a target="_self" href="/api/auth/google/login" style={styles.loginWithGoogle}>
-          <span className="fa fa-google" style={styles.loginWithGoogleIcon}></span>
-          Log in with Google
-        </a>
-        </div>
-        <div>
-        <Link to="signup" style={styles.logout}>Sign Up</Link>
-        </div>
-        <a href="#" onClick={this.props.logout} style={styles.logout}>Log Out</a>
       </div>
     );
   }
@@ -70,15 +74,14 @@ class Login extends React.Component {
 /* ----------------- CONTAINER ------------------ */
 
 const mapDispatch = dispatch => ({
-  login (event) {
+  signup (event) {
     event.preventDefault();
+    const name = event.target.name.value;
+    const displayName = event.target.displayName.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
-    dispatch(login(email, password));
-  },
-  logout () {
-    dispatch(logout());
+    dispatch(signup(name, displayName, email, password));
   }
 });
 
-export default connect(null, mapDispatch)(Login);
+export default connect(null, mapDispatch)(Signup);

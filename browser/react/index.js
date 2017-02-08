@@ -10,6 +10,7 @@ import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
 import Login from './components/Login';
+import Signup from './components/Signup';
 import SOCKET from '../socket';
 
 import { whoami } from '../redux/reducers/auth';
@@ -34,6 +35,7 @@ ReactDOM.render(
           <Route path="joey" component={Joey} />
         </Route>
         <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
       </Route>
     </Router>
   </Provider>,
