@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
 import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
-import App from './containers/App';
+import App from './components/App';
 import Sean from './components/Sean';
 import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
