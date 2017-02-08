@@ -13,7 +13,7 @@ export default AFRAME.registerComponent('publish-location', {
     socket.on('startTick', () => hasGottenOthers = true);
     if (hasGottenOthers) {
       const el = this.el;
-      socket.emit('tick', {
+      const userPosition = {
         id: el.getAttribute('id'),
         x: el.getAttribute('position').x,
         y: el.getAttribute('position').y,
@@ -22,7 +22,10 @@ export default AFRAME.registerComponent('publish-location', {
         yrot: el.getAttribute('rotation').y,
         zrot: el.getAttribute('rotation').z,
         scene: window.location.pathname.replace(/\//g, '') || 'root' // returns the room name or root if the lobby
-      });
+      };
+      const mutebutton = document.getElementById(`mutebutton`);
+      mutebutton.setAttribute('position', `${userPosition.x} 0.1 ${userPosition.z - 1}`);
+      socket.emit('tick', userPosition);
     }
   }
 });
