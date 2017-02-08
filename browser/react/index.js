@@ -23,12 +23,8 @@ const onHomeEnter = () => {
   store.dispatch(whoami())
     .then(() => {
       let id = store.getState().auth.id;
-      console.log('ID: ', id);
       if (id) browserHistory.push('/vr');
     });
-
-  console.log('Owner ID: ', store.getState().auth.get('ownerID'));
-  console.log('Owner ID: ', store.getState().auth.get('ownerID'));
 };
 
 const confirmLogin = () => {
@@ -36,7 +32,6 @@ const confirmLogin = () => {
   store.dispatch(whoami())
     .then(() => {
       let id = store.getState().auth.id;
-      console.log('ID: ', id);
       if (id) return;
       browserHistory.push('/');
     });
