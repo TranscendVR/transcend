@@ -1,6 +1,7 @@
 import { Map } from 'immutable';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import store from '../store';
 
 /* --------------- INITIAL STATE --------------- */
 
@@ -19,6 +20,7 @@ export const authenticated = user => ({
 export const login = (username, password) => {
   return dispatch =>
     axios.post('/api/auth/local/login', { username, password })
+    .then((req) => console.log('USER IS: ', req.user))
     .then(() => browserHistory.push('/vr'))
     .catch(err => console.log(err.message));
 };

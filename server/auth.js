@@ -31,7 +31,8 @@ auth.post('/local/signup', (req, res, next) => {
 // Local login
 auth.post('/local/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/'
+    successRedirect: '/vr',
+    failureRedirect: '/login'
   })(req, res, next);
 });
 
@@ -48,6 +49,7 @@ passport.use(new (LocalStrategy)(
           if (!ok) {
             return done(null, false, { message: 'Login incorrect' });
           }
+          console.log('USER IS: ', user);
           done(null, user);
         });
     })

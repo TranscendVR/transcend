@@ -18,7 +18,6 @@ export default {
     width: '210px',
     fontSize: '14px',
     textAlign: 'center',
-    textTransform: 'uppercase',
     color: '#FFF',
     background: 'rgba(255, 255, 255, 0.15)',
     border: '2px solid rgba(255, 255, 255, 0)',
@@ -46,7 +45,6 @@ export default {
     marginRight: 'auto',
     border: 'none',
     borderRadius: '2px',
-    textTransform: 'uppercase',
     fontSize: '14px',
     transition: 'all 0.25s ease-in-out',
     ':hover': {
@@ -136,7 +134,6 @@ export default {
   },
   logout: {
     fontSize: '8px',
-    textTransform: 'uppercase',
     textDecoration: 'none',
     color: '#2F75B8'
   }
