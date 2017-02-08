@@ -24,6 +24,16 @@ class Login extends React.Component {
   render () {
     return (
       <div style={styles.container}>
+        <div>
+          <Link to="signup" style={{'textDecoration': 'none'}}>
+            <button key="signup" style={styles.signupButton}>Sign Up</button>
+          </Link>
+        </div>
+        <div style={styles.orDividerLineDiv}>
+          <div style={styles.orDividerLineBefore}></div>
+          <p style={styles.orDivider}></p>
+          <div style={styles.orDividerLineAfter}></div>
+        </div>
         <form onSubmit={this.props.login}>
           <div className="form-group">
             <input
@@ -57,9 +67,6 @@ class Login extends React.Component {
           <span className="fa fa-google" style={styles.loginWithGoogleIcon}></span>
           Log in with Google
         </a>
-        </div>
-        <div>
-        <Link to="signup" style={styles.logout}>Sign Up</Link>
         </div>
         <a href="#" onClick={this.props.logout} style={styles.logout}>Log Out</a>
       </div>
