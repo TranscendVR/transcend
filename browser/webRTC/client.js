@@ -1,3 +1,6 @@
+import store from '../redux/store';
+import { setUserMedia, addPeer, deletePeer, clearPeers } from '../redux/reducers/webrtc-reducer';
+
 /** You should probably use a different stun server doing commercial stuff **/
 /** Also see: https://gist.github.com/zziuni/3741933 **/
 const ICE_SERVERS = [
@@ -21,8 +24,6 @@ const ICE_SERVERS = [
 
 // This will be our socket connection
 let signalingSocket = null;
-let localMediaStream = null; // Our microphone
-let peers = {}; // keep track of our peer connections, indexed by peer_id (aka socket.io id)
 let peerMediaElements = {};  // keep track of our <audio> tags, indexed by peer_id
 
 // Called by an A-Frame Room's componentDidMount hook, the joinChatRoom function asks the user
@@ -34,6 +35,10 @@ let peerMediaElements = {};  // keep track of our <audio> tags, indexed by peer_
 //   informing them that voice is unavailable.
 
 export function joinChatRoom (room, errorback) {
+  // Get our microphone from the state
+  console.log(store.getState());
+  const localMediaStream = store.getState().webrtc.get('localMediaStream');
+
   if (!room) {
     console.log('No room was provided');
     return;
@@ -51,7 +56,7 @@ export function joinChatRoom (room, errorback) {
     // On Success
     function (stream) {
       console.log('Access granted to audio');
-      localMediaStream = stream;
+      store.dispatch(setUserMedia(stream));
       const audioEl = document.getElementById('localAudio');
       audioEl.muted = true;
       audioEl.srcObject = stream;
@@ -76,8 +81,9 @@ export function leaveChatRoom () {
 export function addPeerConn (config) {
   console.log('Signaling server said to add peer:', config);
   const peerId = config.peer_id;
+  const peers = store.getState().webrtc.get('peers');
   // If for some reason, this client aready is connected to the peer, return
-  if (peerId in peers) {
+  if (peers.has(peerId)) {
     console.log('Already connected to peer ', peerId);
     return;
   }
@@ -90,7 +96,6 @@ export function addPeerConn (config) {
     * eventually (supposedly), but is necessary
     * for now to get firefox to talk to chrome */
   );
-  peers[peerId] = peerConnection;
 
   // I'm not 100% sure what this does, but it sets up ice candidates ¯\_(ツ)_/¯
   peerConnection.onicecandidate = function (event) {
@@ -118,7 +123,7 @@ export function addPeerConn (config) {
     remoteAudio.srcObject = event.stream;
   };
   /* Add our local stream */
-  peerConnection.addStream(localMediaStream);
+  peerConnection.addStream(store.getState().webrtc.get('localMediaStream'));
   /* Only one side of the peer connection should create the
   * offer, the signaling server picks one to be the offerer.
   * The other user will get a 'sessionDescription' event and will
@@ -143,6 +148,7 @@ export function addPeerConn (config) {
       }
     );
   }
+  store.dispatch(addPeer(peerId, peerConnection));
 }
 
 export function removePeerConn (config) {
@@ -151,17 +157,18 @@ export function removePeerConn (config) {
   if (peerId in peerMediaElements) {
     peerMediaElements[peerId].remove();
   }
-  if (peerId in peers) {
-    peers[peerId].close();
+  const peers = store.getState().webrtc.get('peers');
+  if (peers.has(peerId)) {
+    peers.get(peerId).close();
   }
-  delete peers[peerId];
+  store.dispatch(deletePeer(peerId));
   delete peerMediaElements[config.peerId];
 }
 
 export function setRemoteAnswer (config) {
   console.log('Remote description received: ', config);
   const peerId = config.peer_id;
-  const peer = peers[peerId];
+  const peer = store.getState().webrtc.getIn(['peers', peerId]);
   const remoteDescription = config.session_description;
   console.log(config.session_description);
   const desc = new RTCSessionDescription(remoteDescription);
@@ -197,7 +204,7 @@ export function setRemoteAnswer (config) {
 }
 
 export function setIceCandidate (config) {
-  const peer = peers[config.peer_id];
+  const peer = store.getState().webrtc.getIn(['peers', config.peer_id]);
   const iceCandidate = config.ice_candidate;
   peer.addIceCandidate(new RTCIceCandidate(iceCandidate));
 }
@@ -206,9 +213,10 @@ export function disconnectUser () {
   for (const peerId in peerMediaElements) {
     peerMediaElements[peerId].remove();
   }
-  for (const peerId in peers) {
-    peers[peerId].close();
-  }
-  peers = {};
+  const peers = store.getState().webrtc.get('peers');
+  peers.valueSeq.forEach(peerConn => {
+    peerConn.close();
+  });
+  store.dispatch(clearPeers());
   peerMediaElements = {};
 }
