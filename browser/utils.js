@@ -25,7 +25,18 @@ export function putUserBodyOnDOM (user) {
   body.setAttribute('rotation', `0 ${user.yrot} 0`);
 }
 
-export function addFirstPersonProperties (avatar) {
+export function addFirstPersonProperties (avatar, user) {
+  console.log('avatar: ', avatar);
+  const scene = document.getElementById('scene');
+  const mutebutton = document.createElement('a-entity');
+  scene.appendChild(mutebutton);
+  mutebutton.setAttribute('geometry', 'primitive: box;  width: .4; height: 0.01; depth: .4');
+  mutebutton.setAttribute('id', `mutebutton`);
+  mutebutton.setAttribute('material', 'src: #microphone-unmute');
+  mutebutton.setAttribute('position', `0 0.1 ${user.z - 1}`);
+  mutebutton.setAttribute('rotation', '0 0 0');
+  mutebutton.setAttribute('mute-self', false);
+
   avatar.setAttribute('publish-location', true);
   avatar.setAttribute('camera', true);
   avatar.setAttribute('look-controls', true);
