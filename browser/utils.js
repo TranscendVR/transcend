@@ -1,5 +1,3 @@
-import store from './redux/store';
-
 // putUserOnDom performs local filtering to make sure the user is in the same
 //   A-Frame room and perfoms an initial render of their avatar if they are
 export function putUserOnDOM (user) {
@@ -9,7 +7,7 @@ export function putUserOnDOM (user) {
     const head = document.createElement('a-minecraft');
     scene.appendChild(head);
     head.setAttribute('id', user.id);
-    head.setAttribute('minecraft-nickname', store.getState().auth.displayName);
+    head.setAttribute('minecraft-nickname', user.color);
     head.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png;');
     head.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
     head.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
