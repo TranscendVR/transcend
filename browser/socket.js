@@ -17,7 +17,7 @@ socket.on('connect', () => {
 //   and ticks pushed to server), then get other users in the scene
 socket.on('createUser', user => {
   const avatar = putUserOnDOM(user);
-  addFirstPersonProperties(avatar);
+  addFirstPersonProperties(avatar, user);
   socket.emit('getOthers');
 });
 
