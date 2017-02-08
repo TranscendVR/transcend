@@ -31,10 +31,11 @@ export default class Lobby extends React.Component {
               ceilingColor="#998403"/>
 
         {/* Orbs */}
-        <Teleporter x="-10" y="1" z="-1" color="red" href="/vr/sean" />
-        <Teleporter x="-10" y="1" z="1" color="yellow" href="/vr/beth" />
-        <Teleporter x="-10" y="1" z="3" color="blue" href="/vr/joey" />
-        <Teleporter x="-10" y="1" z="5" color="purple" href="/vr/yoonah" />
+        <Teleporter x="-10" y="1" z="1" color="red" href="/vr/sean" />
+        <Teleporter x="-10" y="1" z="3" color="orange" href="/vr/beth" />
+        <Teleporter x="-10" y="1" z="5" color="blue" href="/vr/joey" />
+        <Teleporter x="-10" y="1" z="7" color="purple" href="/vr/yoonah" />
+        <Teleporter x="-10" y="1" z="9" color="aqua" href="/vr/changingroom" />
         <Teleporter x="10" y="1" z="5" color="black" href="/logout" />
 
         {/* Chairs */}

@@ -10,6 +10,7 @@ import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
 import Login from './components/Login';
+import ChangingRoom from './components/ChangingRoom';
 import SOCKET from '../socket';
 import { logout } from '../redux/reducers/auth';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -61,6 +62,7 @@ ReactDOM.render(
             <Route path="beth" component={Beth} />
             <Route path="yoonah" component={Yoonah} />
             <Route path="joey" component={Joey} />
+            <Route path="changingroom" component={ChangingRoom} />
           </Route>
         </Route>
       </Router>
