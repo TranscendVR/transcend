@@ -1,29 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import Radium from 'radium';
-import { signup } from '../../redux/reducers/auth';
-import styles from './Login/styles';
+import styles from './styles';
 
-/* ----------------- COMPONENT ------------------ */
-
-@Radium
-class Signup extends React.Component {
-  // Set the background style & size for just this component
-  componentDidMount () {
-    document.body.style.background = 'url(/images/background.png) no-repeat top center fixed';
-    document.body.style.backgroundSize = 'cover';
-  }
-
-  // Remove background style & size when this component unmounts
-  componentWillUnmount () {
-    document.body.style.background = '';
-    document.body.style.backgroundSize = '';
-  }
-
-  render () {
-    return (
+export default (props) => (
       <div style={styles.container}>
-        <form onSubmit={this.props.signup}>
+        <form onSubmit={props.signup}>
           <div className="form-group">
             <input
               key="name"
@@ -67,21 +47,5 @@ class Signup extends React.Component {
           <button style={styles.loginButton} type="submit">Sign Up</button>
         </form>
       </div>
-    );
-  }
-}
+);
 
-/* ----------------- CONTAINER ------------------ */
-
-const mapDispatch = dispatch => ({
-  signup (event) {
-    event.preventDefault();
-    const name = event.target.name.value;
-    const displayName = event.target.displayName.value;
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    dispatch(signup(name, displayName, email, password));
-  }
-});
-
-export default connect(null, mapDispatch)(Signup);

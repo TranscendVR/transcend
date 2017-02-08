@@ -9,13 +9,12 @@ import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
-import Login from './components/Login';
-import Signup from './components/Signup';
+import Home from './components/Login/index';
+import Login from './components/Login/Login';
+import Signup from './components/Login/Signup';
 import SOCKET from '../socket';
-import { logout } from '../redux/reducers/auth';
+import { logout, whoami } from '../redux/reducers/auth';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-import { whoami } from '../redux/reducers/auth';
 
 // Dispatch whoami to set the user whenever you hit the home page
 // Primary purpose right now is to set user right after local/OAuth login
@@ -48,7 +47,11 @@ ReactDOM.render(
     <MuiThemeProvider>
       <Router history={browserHistory}>
         <Route path="/" onEnter={onHomeEnter} >
-          <IndexRoute component={Login} />
+          <IndexRedirect to="/login" />
+          <Route path="/home" component={Home}>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+          </Route>
           <Route path="/logout" onEnter={bye} />
           <Route path="/vr" component={App} onEnter={confirmLogin}>
             <IndexRedirect to="lobby" />
@@ -59,15 +62,8 @@ ReactDOM.render(
             <Route path="joey" component={Joey} />
           </Route>
         </Route>
-<<<<<<< HEAD
-        <Route path="/login" component={Login} />
-        <Route path="/signup" component={Signup} />
-      </Route>
     </Router>
-=======
-      </Router>
     </MuiThemeProvider>
->>>>>>> 48102b1fc95d6a48626edf2793ae5fbaa27ea7cc
   </Provider>,
   document.getElementById('react-app')
 );
