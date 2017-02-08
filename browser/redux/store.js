@@ -5,10 +5,12 @@ import thunkMiddleware from 'redux-thunk';
 
 import userReducer from './reducers/user-reducer';
 import authReducer from './reducers/auth';
+import isLoadedReducer from './reducers/is-loaded-reducer';
 
 const rootReducer = combineReducers({
   users: userReducer,
-  auth: authReducer
+  auth: authReducer,
+  isLoaded: isLoadedReducer
 });
 
 export default createStore(
