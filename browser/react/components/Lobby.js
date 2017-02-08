@@ -35,6 +35,7 @@ export default class Lobby extends React.Component {
         <Teleporter x="-10" y="1" z="1" color="yellow" href="/vr/beth" />
         <Teleporter x="-10" y="1" z="3" color="blue" href="/vr/joey" />
         <Teleporter x="-10" y="1" z="5" color="purple" href="/vr/yoonah" />
+        <Teleporter x="10" y="1" z="5" color="black" href="/logout" />
 
         {/* Chairs */}
         {
