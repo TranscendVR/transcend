@@ -4,9 +4,9 @@ const randomcolor = require('randomcolor');
 function User (id) {
   this.id = id;
   this.color = randomcolor();
-  this.x = 0;
+  this.x = Math.random() * 30 - 15;
   this.y = 1.3;
-  this.z = 5;
+  this.z = Math.random() * 30 - 15;
   this.xrot = 0;
   this.yrot = 0;
   this.zrot = 0;
