@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 window.socket = io.connect(window.location.origin);
 import { fromJS } from 'immutable';
 import store from './redux/store';
-import { receiveUsers } from './redux/reducers/user-reducer';
+import { setCurrentUser, receiveUsers } from './redux/reducers/user-reducer';
 import { putUserOnDOM, putUserBodyOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
 import './aframeComponents/daydream-controller';
@@ -19,6 +19,7 @@ socket.on('connect', () => {
 //   and ticks pushed to server), then get other users in the scene
 socket.on('createUser', user => {
   const avatar = putUserOnDOM(user);
+  store.dispatch(setCurrentUser(user.id));
   addFirstPersonProperties(avatar, user);
   socket.emit('getOthers');
 });
@@ -49,7 +50,7 @@ socket.on('getOthersCallback', users => {
 socket.on('usersUpdated', users => {
   store.dispatch(receiveUsers(fromJS(users)));
 
-  const receivedUsers = store.getState().users;
+  const receivedUsers = store.getState().users.get('others');
   receivedUsers.valueSeq().forEach(user => {
     // Pull the path off the URL, stripping forward slashes
     // For example, "localhost:1337/sean" would return "sean"

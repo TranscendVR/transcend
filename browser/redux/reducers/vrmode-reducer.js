@@ -1,3 +1,5 @@
+import addControllerAndListeners from '../../add-controller-and-listeners';
+
 /* --------------- INITIAL STATE --------------- */
 
 const initialState = false;
@@ -11,6 +13,15 @@ export const ENABLE_VR_MODE = 'ENABLE_VR_MODE';
 export const enableVRMode = () => {
   return {
     type: ENABLE_VR_MODE
+  };
+};
+
+/* --------------- THUNK ACTION CREATORS --------------- */
+
+export const addControllerAndListenersToDOM = userId => {
+  return dispatch => {
+    addControllerAndListeners(userId);
+    dispatch(enableVRMode);
   };
 };
 

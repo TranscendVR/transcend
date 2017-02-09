@@ -2,7 +2,7 @@
 
 import AFRAME from 'aframe';
 import store from '../redux/store';
-import { enableVRMode } from '../redux/reducers/vrmode-reducer';
+import { addControllerAndListenersToDOM } from '../redux/reducers/vrmode-reducer';
 import { setAsLoaded } from '../redux/reducers/is-loaded-reducer';
 
 // This component ensures the scene loads before anything else can happen.
@@ -14,7 +14,8 @@ export default AFRAME.registerComponent('scene-load', {
     console.log('scene-load component initialized');
     store.dispatch(setAsLoaded());
     this.el.addEventListener('enter-vr', () => {
-      store.dispatch(enableVRMode());
+      const userId = store.getState().users.get('current');
+      store.dispatch(addControllerAndListenersToDOM(userId));
     });
     socket.emit('sceneLoad');
   }
