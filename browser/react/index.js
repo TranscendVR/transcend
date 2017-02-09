@@ -27,9 +27,6 @@ const onHomeEnter = () => {
       console.log('ID: ', id);
       if (id) browserHistory.push('/vr');
     });
-
-  console.log('Owner ID: ', store.getState().auth.get('ownerID'));
-  console.log('Owner ID: ', store.getState().auth.get('ownerID'));
 };
 
 const confirmLogin = () => {
