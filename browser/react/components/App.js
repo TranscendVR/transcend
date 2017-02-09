@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import '../../aframeComponents/scene-load';
 import '../../aframeComponents/aframe-minecraft';
-import AssetLoader from './AssetLoader';
+// import AssetLoader from './AssetLoader';
 import LoadingSpinner from './LoadingSpinner';
 
 /* ----------------- COMPONENT ------------------ */
@@ -21,8 +21,11 @@ function App (props) {
         : null
       }
       <a-scene id="scene" scene-load>
-        <AssetLoader />
-        {props.children}
+        {/*<AssetLoader />
+        {props.children}*/}
+
+        <a-entity id="ground" class="selectable" geometry="primitive: box; width: 100; height: 100; depth: 100" material="color: green" position="0 -50 0"></a-entity>
+        <a-sky color="blue"></a-sky>
       </a-scene>
     </div>
   );
