@@ -1,30 +1,55 @@
-export default function addControllerAndListeners () {
+export default function addControllerAndListeners (userId) {
+  const scene = document.getElementById('scene');
+
   // Take cursor off DOM
   const cursor = document.getElementById('cursor');
   if (cursor) {
-    console.log('woo');
+    scene.remove(cursor);
+    cursor.parentNode.removeChild(cursor);
   }
 
-  // put remote on DOM
-  // const you = document.getElementById('you');
-  // const remote = document.getElementById('remote');
-  // const ground = document.getElementById('ground');
-  // let intersection;
-  // let focused = false;
+  const avatar = document.getElementById(userId);
 
-  // ground.addEventListener('raycaster-intersected', function (e) {
-  //   focused = true;
-  //   intersection = e.detail.intersection.point;
-  // });
+  // Put remote on DOM
+  const remote = document.createElement('a-entity');
+  avatar.appendChild(remote);
+  remote.setAttribute('id', 'remote');
+  remote.setAttribute('daydream-controller', true);
+  remote.setAttribute('raycaster', 'objects', '.selectable');
 
-  // ground.addEventListener('raycaster-intersected-cleared', function () {
-  //   focused = false;
-  // });
+  // Put ray on DOM
+  const ray = document.createElement('a-entity');
+  remote.appendChild(ray);
+  ray.setAttribute('geometry', 'primitive: cone; radius-bottom: 0.005; radius-top: 0.001; height: 4');
+  ray.setAttribute('material', 'color: cyan');
+  ray.setAttribute('position', '0 0 -2');
+  ray.setAttribute('rotation', '-90 0 0');
 
-  // remote.addEventListener('buttondown', function (e) {
-  //   if (focused) {
-  //     console.log(`moving to ${intersection.x} 1.6 ${intersection.z}`);
-  //     you.setAttribute('position', `${intersection.x} 1.6 ${intersection.z}`);
-  //   }
-  // });
+  // Put position guide on DOM
+  const positionGuide = document.createElement('a-entity');
+  remote.appendChild(positionGuide);
+  positionGuide.setAttribute('geometry', 'primitive: sphere; radius: 0.05');
+  positionGuide.setAttribute('material', 'color: white');
+  positionGuide.setAttribute('position', '0 0 -4');
+
+  // Add event listeners to ground and remote
+  const ground = document.getElementById('ground');
+  let intersection;
+  let focused = false;
+
+  ground.addEventListener('raycaster-intersected', function (evt) {
+    focused = true;
+    intersection = evt.detail.intersection.point;
+  });
+
+  ground.addEventListener('raycaster-intersected-cleared', function () {
+    focused = false;
+  });
+
+  remote.addEventListener('buttondown', function (evt) {
+    if (focused) {
+      console.log(`moving to ${intersection.x} 1.3 ${intersection.z}`);
+      avatar.setAttribute('position', `${intersection.x} 1.3 ${intersection.z}`);
+    }
+  });
 }
