@@ -15,15 +15,26 @@ export default function addControllerAndListeners (userId) {
   avatar.appendChild(remote);
   remote.setAttribute('id', 'remote');
   remote.setAttribute('daydream-controller', true);
-  remote.setAttribute('raycaster', 'objects', '.selectable');
+  // remote.setAttribute('raycaster', 'objects', '.selectable');
 
   // Put ray on DOM
   const ray = document.createElement('a-entity');
   remote.appendChild(ray);
+  ray.setAttribute('id', 'ray');
   ray.setAttribute('geometry', 'primitive: cone; radius-bottom: 0.005; radius-top: 0.001; height: 4');
   ray.setAttribute('material', 'color: cyan');
   ray.setAttribute('position', '0 0 -2');
   ray.setAttribute('rotation', '-90 0 0');
+
+  const babyRay = document.createElement('a-entity');
+  remote.appendChild(babyRay);
+  babyRay.setAttribute('geometry', 'buffer: false; primitive: cone; radius-bottom: 0.01; radius-top: 0.005; height: 0.5');
+  babyRay.setAttribute('id', 'babyRay');
+  babyRay.setAttribute('material', 'color: white');
+  babyRay.setAttribute('position', '0 0 -0.25');
+  babyRay.setAttribute('rotation', '-90 0 0');
+
+  avatar.setAttribute('collider', true);
 
   // Put position guide on DOM
   const positionGuide = document.createElement('a-entity');
@@ -33,23 +44,19 @@ export default function addControllerAndListeners (userId) {
   positionGuide.setAttribute('position', '0 0 -4');
 
   // Add event listeners to ground and remote
-  const ground = document.getElementById('ground');
-  let intersection;
-  let focused = false;
+  // const ground = document.getElementById('ground');
 
-  ground.addEventListener('raycaster-intersected', function (evt) {
-    focused = true;
-    intersection = evt.detail.intersection.point;
-  });
+  // remote.addEventListener('buttondown', function (evt) {
+  //   remote.setAttribute('raycaster', 'objects', '.selectable');
+  //   console.log('button down');
 
-  ground.addEventListener('raycaster-intersected-cleared', function () {
-    focused = false;
-  });
+  //   const intersection = evt.detail;
+  //   console.log(intersection);
 
-  remote.addEventListener('buttondown', function (evt) {
-    if (focused) {
-      console.log(`moving to ${intersection.x} 1.3 ${intersection.z}`);
-      avatar.setAttribute('position', `${intersection.x} 1.3 ${intersection.z}`);
-    }
-  });
+    // if (focused) {
+    //   const intersection = evt.detail.intersection.point;
+    //   console.log(`moving to ${intersection.x} 1.3 ${intersection.z}`);
+    //   avatar.setAttribute('position', `${intersection.x} 1.3 ${intersection.z}`);
+    // }
+  // });
 }
