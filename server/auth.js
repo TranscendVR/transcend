@@ -24,7 +24,12 @@ passport.deserializeUser(
 // Local signup
 auth.post('/local/signup', (req, res, next) => {
   User.create(req.body)
-  .then(user => res.status(201).json(user))
+  .then(user => {
+    req.login(user, (err) => {
+      if (err) next(err);
+      else res.sendStatus(201);
+    });
+  })
   .catch(next);
 });
 

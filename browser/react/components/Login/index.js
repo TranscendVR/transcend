@@ -23,7 +23,7 @@ class Home extends React.Component {
   render () {
     return (
       <div>
-        {this.props.children}
+        {this.props.children && React.cloneElement(this.props.children, this.props)}
       </div>
     );
   }
