@@ -204,7 +204,6 @@
 
   onMouseMove: function (e) {
     if (!this.data.enabled) {return;}
-    console.log(e);
     var movementX = e.movementX ||
       e.mozMovementX ||
       e.webkitMovementX ||
