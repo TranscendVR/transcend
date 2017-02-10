@@ -66,6 +66,9 @@ export default {
       outline: 'none'
     }
   },
+  signupLink: {
+    textDecoration: 'none'
+  },
   signupButton: {
     backgroundColor: '#3FA03F',
     color: '#FFF',

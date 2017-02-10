@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default (props) => (
   <div style={props.styles.container}>
     <div>
-      <Link to="signup" style={{ 'textDecoration': 'none' }}>
+      <Link to="signup" style={props.styles.signupLink}>
         <button key="signup" style={props.styles.signupButton}>Sign Up</button>
       </Link>
     </div>
@@ -14,7 +14,7 @@ export default (props) => (
       <div style={props.styles.orDividerLineAfter}></div>
     </div>
     <form onSubmit={props.login}>
-      <div className="form-group">
+      <div>
         <input
           key="name"
           name="email"
@@ -24,7 +24,7 @@ export default (props) => (
           required
         />
       </div>
-      <div className="form-group">
+      <div>
         <input
           key="password"
           name="password"
@@ -47,7 +47,6 @@ export default (props) => (
         Log in with Google
         </a>
     </div>
-    <a href="#" onClick={props.logout} style={props.styles.logout}>Log Out</a>
   </div>
 );
 

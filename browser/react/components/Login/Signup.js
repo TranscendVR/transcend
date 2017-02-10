@@ -1,11 +1,10 @@
 import React from 'react';
 
 export default (props) => {
-  console.log('PROPS', props);
   return (
     <div style={props.styles.signUpContainer}>
       <form onSubmit={props.signup}>
-        <div className="form-group">
+        <div>
           <input
             key="name"
             name="name"
@@ -15,7 +14,7 @@ export default (props) => {
             required
           />
         </div>
-        <div className="form-group">
+        <div>
           <input
             key="displayName"
             name="displayName"
@@ -25,7 +24,7 @@ export default (props) => {
             required
           />
         </div>
-        <div className="form-group">
+        <div>
           <input
             key="email"
             name="email"
@@ -35,7 +34,7 @@ export default (props) => {
             required
           />
         </div>
-        <div className="form-group">
+        <div>
           <input
             key="password"
             name="password"
