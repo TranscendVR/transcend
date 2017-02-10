@@ -28,6 +28,7 @@
   "homepage": "https://github.com/TranscendVR/transcend#readme",
   "dependencies": {
     "aframe": "^0.4.0",
+    "aframe-text-component": "^0.4.2",
     "axios": "^0.15.3",
     "babel": "^6.5.2",
     "babel-core": "^6.22.1",
