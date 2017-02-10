@@ -28,10 +28,10 @@ export default function addControllerAndListeners (userId) {
 
   const babyRay = document.createElement('a-entity');
   remote.appendChild(babyRay);
-  babyRay.setAttribute('geometry', 'buffer: false; primitive: cone; radius-bottom: 0.01; radius-top: 0.005; height: 0.5');
+  babyRay.setAttribute('geometry', 'buffer: false; primitive: cone; radius-bottom: 0.01; radius-top: 0.005; height: 8');
   babyRay.setAttribute('id', 'babyRay');
   babyRay.setAttribute('material', 'color: white');
-  babyRay.setAttribute('position', '0 0 -0.25');
+  babyRay.setAttribute('position', '0 0 -4');
   babyRay.setAttribute('rotation', '-90 0 0');
 
   avatar.setAttribute('collider', true);

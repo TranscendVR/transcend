@@ -12,10 +12,10 @@ AFRAME.registerComponent('collider', {
 
       const vertices = mesh.geometry.vertices;
       // console.log('vertices', vertices);
-      const bottomVertex = vertices[0].clone();
-      console.log(bottomVertex);
-      const topVertex = vertices[vertices.length - 1].clone();
-      console.log(topVertex);
+      const topVertex = vertices[0].clone();
+      console.log('top', topVertex);
+      const bottomVertex = vertices[vertices.length - 1].clone();
+      console.log('bottom', bottomVertex);
 
       bottomVertex.applyMatrix4(babyRay.object3D.matrixWorld);
       topVertex.applyMatrix4(babyRay.object3D.matrixWorld);
@@ -24,12 +24,15 @@ AFRAME.registerComponent('collider', {
       const directionVector = topVertex.clone().sub(bottomVertex).normalize();
       console.log('direction', directionVector);
 
-      const raycaster = new THREE.Raycaster(bottomVertex, directionVector, 1);
-      const intersection = raycaster.intersectObjects([ground.object3D]);
+      // const raycaster = new THREE.Raycaster(bottomVertex, new THREE.Vector3(0, -1, 0), 0, 100);
+      const raycaster = new THREE.Raycaster(bottomVertex, directionVector, 0, 100);
+      const intersection = raycaster.intersectObjects([ground.object3D], true);
       console.log(intersection);
 
       if (intersection.length) {
+        const point = intersection[0].point;
         console.log(intersection[0].point);
+        this.el.setAttribute('position', `${point.x} 1.3 ${point.z}`);
       }
     });
   }
