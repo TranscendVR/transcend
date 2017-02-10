@@ -22,6 +22,7 @@ const forceSSL = function (req, res, next) {
 };
 
 if (process.env.NODE_ENV === 'production') {
+  c
   app.use(forceSSL);
 }
 
