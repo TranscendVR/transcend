@@ -4,7 +4,9 @@ export default (props) => (
   <a-entity>
     <a-entity light="type: ambient; color: #ffffe0" position="0 0 0"></a-entity>
 
-    <a-entity geometry={`primitive: plane; width:${props.floorWidth}; height:${props.floorHeight}`}
+    <a-entity id="ground"
+              geometry={`primitive: box; width:${props.floorWidth}; height:${props.floorHeight}; depth: ${props.floorDepth}`}
+              position={`0 -${props.floorDepth / 2} 0`}
               rotation="-90 0 0"
               material={`color:${props.floorColor}; src: ${props.floorTexture}; repeat:${props.floorWidth}, ${props.floorWidth} `}/>
 

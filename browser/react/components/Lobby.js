@@ -24,6 +24,7 @@ export default class Lobby extends React.Component {
         {/* Room: contains walls, floor, ceiling */}
         <Room floorWidth="50"
               floorHeight="50"
+              floorDepth="50"
               wallHeight="25"
               wallColor="#f9f7d9"
               floorColor="gray"
