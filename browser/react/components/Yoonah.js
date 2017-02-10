@@ -2,6 +2,7 @@ import React from 'react';
 import { joinChatRoom, leaveChatRoom } from '../../webRTC/client.js';
 import Teleporter from './Teleporter';
 import Room from './Room';
+import Gif from 'aframe-gif-shader'; // causing problems
 
 export default class Yoonah extends React.Component {
 
@@ -24,6 +25,7 @@ export default class Yoonah extends React.Component {
               floorTexture="#floorText"
               ceilingColor="#998403"/>
         <Teleporter x="-10" y="1" z="-1" color="green" href="/vr" />
+        <Gif position="20 10 -10"/>
       </a-entity>
     );
   }
