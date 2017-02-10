@@ -13,7 +13,6 @@ const passport = require('passport');
 // http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
 // Note that this is technically vulnerable to man-in-the-middle attacks
 const forceSSL = function (req, res, next) {
-  console.log(JSON.stringify(req.headers));
   if (req.headers['x-forwarded-proto'] !== 'https') {
     const clientIP = req.headers['x-forwarded-for'];
     const redirectTarget = ['https://', req.get('Host'), req.url].join('');
