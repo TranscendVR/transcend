@@ -37,13 +37,15 @@ const removeUser = userId => {
 
 /* --------------- THUNK ACTION CREATORS --------------- */
 
-const createAndEmitUser = socket => {
+const createAndEmitUser = (socket, user) => {
   return dispatch => {
     const userId = socket.id;
-    const user = Map(createUser(userId));
-    dispatch(addUser(user));
+    console.log('User: ', user);
+    const displayName = user.displayName;
+    const newUser = Map(createUser(userId, displayName));
+    dispatch(addUser(newUser));
     socket.on('sceneLoad', () => {
-      socket.emit('createUser', user);
+      socket.emit('createUser', newUser);
     });
   };
 };

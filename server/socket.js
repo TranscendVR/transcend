@@ -12,8 +12,12 @@ module.exports = io => {
     console.log(chalk.yellow(`${socket.id} has connected`));
     // When a socket client establishes a conenction, create and persist a user
     //   for the client and return the user upon receipt of the sceneLoad event
-    store.dispatch(createAndEmitUser(socket));
     store.dispatch(addSocket(socket));
+
+    socket.on('connectUser', (user) => {
+      console.log(user);
+      store.dispatch(createAndEmitUser(socket, user));
+    });
 
     // getOthers returns all users other the the user associated with the socket
     //   client that made the request.

@@ -1,9 +1,7 @@
-const randomcolor = require('randomcolor');
-
 // User constructor
-function User (id) {
+function User (id, displayName) {
   this.id = id;
-  this.color = randomcolor();
+  this.displayName = displayName;
   this.x = Math.random() * 30 - 15;
   this.y = 1.3;
   this.z = Math.random() * 30 - 15;
@@ -14,8 +12,9 @@ function User (id) {
 }
 
 // Create a user given the socket ID
-function createUser (id) {
-  const user = new User(id);
+function createUser (id, displayName) {
+  console.log(displayName);
+  const user = new User(id, displayName);
   return user;
 }
 

@@ -10,11 +10,9 @@ import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
 import Login from './components/Login';
-import SOCKET from '../socket';
-import { logout } from '../redux/reducers/auth';
+import { whoami, logout } from '../redux/reducers/auth';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
-import { whoami } from '../redux/reducers/auth';
+import SOCKET from '../socket';
 
 // Dispatch whoami to set the user whenever you hit the home page
 // Primary purpose right now is to set user right after local/OAuth login
@@ -22,17 +20,22 @@ const onHomeEnter = () => {
   if (store.getState().auth.id) browserHistory.push('/vr');
   store.dispatch(whoami())
     .then(() => {
-      let id = store.getState().auth.id;
-      if (id) browserHistory.push('/vr');
+      const user = store.getState().auth;
+      if (user !== null) browserHistory.push('/vr');
     });
 };
 
 const confirmLogin = () => {
-  if (store.getState().auth.id) return;
+  if (store.getState().auth !== null) return;
   store.dispatch(whoami())
     .then(() => {
-      let id = store.getState().auth.id;
-      if (id) return;
+      const user = store.getState().auth;
+      console.log('User on state: ', user);
+      if (user !== null) {
+        console.log('User Found');
+        window.socket.emit('connectUser', user);
+        return;
+      }
       browserHistory.push('/');
     });
 };
