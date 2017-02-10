@@ -18,14 +18,21 @@ export default class Yoonah extends React.Component {
     return (
       <a-entity>
         <Room floorWidth="50"
-              floorHeight="50"
-              wallHeight="25"
-              wallColor="purple"
-              floorColor=""
-              floorTexture="#floorText"
-              ceilingColor="#998403"/>
-        <Teleporter x="-10" y="1" z="-1" color="green" href="/vr" />
-        <Gif position="20 10 -10"/>
+          floorHeight="50"
+          wallHeight="25"
+          wallColor="purple"
+          floorColor=""
+          floorTexture="#floorText"
+          ceilingColor="#998403" />
+        <Teleporter
+          color="green"
+          label="Lobby"
+          href="/vr"
+          rotation="90"
+          x="-24.5" y="1" z="-3"
+          labelx="-1" labely="1"
+        />
+        <Gif position="20 10 -10" />
       </a-entity>
     );
   }
