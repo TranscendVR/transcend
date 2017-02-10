@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from './styles';
 
 export default (props) => {
   console.log('PROPS', props);
   return (
-    <div style={styles.container}>
+    <div style={props.styles.signUpContainer}>
       <form onSubmit={props.signup}>
         <div className="form-group">
           <input
@@ -12,7 +11,7 @@ export default (props) => {
             name="name"
             type="name"
             placeholder="name"
-            style={styles.formControl}
+            style={props.styles.formControl}
             required
           />
         </div>
@@ -22,7 +21,7 @@ export default (props) => {
             name="displayName"
             type="displayName"
             placeholder="display name"
-            style={styles.formControl}
+            style={props.styles.formControl}
             required
           />
         </div>
@@ -32,7 +31,7 @@ export default (props) => {
             name="email"
             type="email"
             placeholder="email"
-            style={styles.formControl}
+            style={props.styles.formControl}
             required
           />
         </div>
@@ -42,11 +41,11 @@ export default (props) => {
             name="password"
             type="password"
             placeholder="password"
-            style={styles.formControl}
+            style={props.styles.formControl}
             required
           />
         </div>
-        <button style={styles.loginButton} type="submit">Sign Up</button>
+        <button style={props.styles.loginButton} type="submit">Sign Up</button>
       </form>
     </div>
   );

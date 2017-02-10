@@ -11,6 +11,18 @@ export default {
     borderRadius: '2px',
     textAlign: 'center'
   },
+  signUpContainer: {
+    position: 'relative',
+    height: '300px',
+    width: '320px',
+    margin: '100px auto',
+    paddingTop: '20px',
+    paddingBottom: '20px',
+    backgroundColor: 'rgba(25, 25, 25, 0.75)',
+    boxShadow: '0px 10px 60px -5px #000',
+    borderRadius: '2px',
+    textAlign: 'center'
+  },
   formControl: {
     padding: '10px 20px',
     display: 'block',

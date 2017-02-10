@@ -1,18 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
-import styles from './styles';
 
 export default (props) => (
-  <div style={styles.container}>
+  <div style={props.styles.container}>
     <div>
       <Link to="signup" style={{ 'textDecoration': 'none' }}>
-        <button key="signup" style={styles.signupButton}>Sign Up</button>
+        <button key="signup" style={props.styles.signupButton}>Sign Up</button>
       </Link>
     </div>
-    <div style={styles.orDividerLineDiv}>
-      <div style={styles.orDividerLineBefore}></div>
-      <p style={styles.orDivider}></p>
-      <div style={styles.orDividerLineAfter}></div>
+    <div style={props.styles.orDividerLineDiv}>
+      <div style={props.styles.orDividerLineBefore}></div>
+      <p style={props.styles.orDivider}></p>
+      <div style={props.styles.orDividerLineAfter}></div>
     </div>
     <form onSubmit={props.login}>
       <div className="form-group">
@@ -21,7 +20,7 @@ export default (props) => (
           name="email"
           type="email"
           placeholder="email"
-          style={styles.formControl}
+          style={props.styles.formControl}
           required
         />
       </div>
@@ -31,24 +30,24 @@ export default (props) => (
           name="password"
           type="password"
           placeholder="password"
-          style={styles.formControl}
+          style={props.styles.formControl}
           required
         />
       </div>
-      <button style={styles.loginButton} type="submit">Log In</button>
+      <button style={props.styles.loginButton} type="submit">Log In</button>
     </form>
-    <div style={styles.orDividerLineDiv}>
-      <div style={styles.orDividerLineBefore}></div>
-      <p style={styles.orDivider}>or</p>
-      <div style={styles.orDividerLineAfter}></div>
+    <div style={props.styles.orDividerLineDiv}>
+      <div style={props.styles.orDividerLineBefore}></div>
+      <p style={props.styles.orDivider}>or</p>
+      <div style={props.styles.orDividerLineAfter}></div>
     </div>
     <div>
-      <a target="_self" href="/api/auth/google/login" style={styles.loginWithGoogle}>
-        <span className="fa fa-google" style={styles.loginWithGoogleIcon}></span>
+      <a target="_self" href="/api/auth/google/login" style={props.styles.loginWithGoogle}>
+        <span className="fa fa-google" style={props.styles.loginWithGoogleIcon}></span>
         Log in with Google
         </a>
     </div>
-    <a href="#" onClick={props.logout} style={styles.logout}>Log Out</a>
+    <a href="#" onClick={props.logout} style={props.styles.logout}>Log Out</a>
   </div>
 );
 
