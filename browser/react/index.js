@@ -4,10 +4,10 @@ import { Provider } from 'react-redux';
 import store from '../redux/store';
 import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
 import App from './components/App';
-import Sean from './components/Sean';
-import Beth from './components/Beth';
-import Yoonah from './components/Yoonah';
-import Joey from './components/Joey';
+// import Sean from './components/Sean';
+// import Beth from './components/Beth';
+// import Yoonah from './components/Yoonah';
+// import Joey from './components/Joey';
 import Lobby from './components/Lobby';
 import Login from './components/Login';
 import SOCKET from '../socket';
@@ -52,10 +52,10 @@ ReactDOM.render(
           <Route path="/vr" component={App} onEnter={confirmLogin}>
             <IndexRedirect to="lobby" />
             <Route path="lobby" component={Lobby} />
-            <Route path="sean" component={Sean} />
+            {/*<Route path="sean" component={Sean} />
             <Route path="beth" component={Beth} />
             <Route path="yoonah" component={Yoonah} />
-            <Route path="joey" component={Joey} />
+            <Route path="joey" component={Joey} />*/}
           </Route>
         </Route>
       </Router>

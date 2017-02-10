@@ -6,7 +6,7 @@ export default (props) => (
 
     <a-entity id="ground"
               class="selectable"
-              geometry={`primitive: plane; width:100; height:100; depth: 100`}
+              geometry={`primitive: box; width:100; height:100; depth: 100`}
               position="0 -50 0"
               rotation="-90 0 0"
               material={`color:black`}/>
