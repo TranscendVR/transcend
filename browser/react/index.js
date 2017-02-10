@@ -12,6 +12,7 @@ import Lobby from './components/Lobby';
 import Home from './components/Login/Home';
 import Login from './components/Login/Login';
 import Signup from './components/Login/Signup';
+import SOCKET from '../socket';
 import { logout, whoami } from '../redux/reducers/auth';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
