@@ -15,14 +15,16 @@ const passport = require('passport');
 const forceSSL = function (req, res, next) {
   console.log(JSON.stringify(req.headers));
   if (req.headers['x-forwarded-proto'] !== 'https') {
-    console.log('forcing SSL');
-    return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    const clientIP = req.headers['x-forwarded-for'];
+    const redirectTarget = ['https://', req.get('Host'), req.url].join('');
+    console.log(chalk.blue(`Redirecting ${clientIP} to ${redirectTarget}`));
+    return res.redirect(redirectTarget);
   }
   return next();
 };
 
 if (process.env.NODE_ENV === 'production') {
-  console.log('prod land man');
+  console.log(chalk.blue('Production Environment detected, so redirect to HTTPS'));
   app.use(forceSSL);
 }
 
