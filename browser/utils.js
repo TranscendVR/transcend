@@ -1,3 +1,5 @@
+import './aframeComponents/fps-look-controls';
+
 // putUserOnDom performs local filtering to make sure the user is in the same
 //   A-Frame room and perfoms an initial render of their avatar if they are
 export function putUserOnDOM (user) {
@@ -39,8 +41,8 @@ export function addFirstPersonProperties (avatar, user) {
 
   avatar.setAttribute('publish-location', true);
   avatar.setAttribute('camera', true);
-  avatar.setAttribute('look-controls', true);
-  avatar.setAttribute('wasd-controls', true);
+  avatar.setAttribute('fps-look-controls', true);
+  avatar.setAttribute('wasd-controls', 'sensitivity: 1');
 
   // Add and append the cursor to the player's avatar
   // The cursor is represented by a tiny ring 1/10 of a meter in front of the player
