@@ -10,6 +10,9 @@ require('aframe-text-component');
 
 export default class Lobby extends React.Component {
   componentDidMount () {
+    window.addEventListener('click', function (evt) {
+      console.log('You clicked!', evt);
+    });
     joinChatRoom('lobby');
   }
 

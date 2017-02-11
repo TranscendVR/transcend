@@ -1,3 +1,11 @@
+// This is a modified version of fps-look-controls
+// Original is at https://github.com/cemkod/aframe-fps-look-component
+// A tick function was added, which called an existing update function
+
+// This uses the experimental Pointer Lock API
+// https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API
+
+
 /**
  * Capture Mouse component.
  *
@@ -8,12 +16,12 @@
  * @param {number} [sensitivity=1] - How fast the object rotates in response to mouse
  */
 
- // To avoid recalculation at every mouse movement tick
- var PI_2 = Math.PI / 2;
+// To avoid recalculation at every mouse movement tick
+var PI_2 = Math.PI / 2;
 
 
- export default AFRAME.registerComponent('fps-look-controls', {
-  dependencies: ['position','rotation'],
+export default AFRAME.registerComponent('fps-look-controls', {
+  dependencies: ['position', 'rotation'],
 
   schema: {
     enabled: { default: true },
@@ -47,8 +55,8 @@
     this.yawObject.position.y = 10;
     this.yawObject.add(this.pitchObject);
     this.lockIsSupported = 'pointerLockElement' in document ||
-       'mozPointerLockElement' in document ||
-       'webkitPointerLockElement' in document;
+      'mozPointerLockElement' in document ||
+      'webkitPointerLockElement' in document;
   },
 
   setupHMDControls: function () {
@@ -67,17 +75,29 @@
       document.addEventListener('pointerlockerror', this.onLockError, false);
       document.addEventListener('mozpointerlockerror', this.onLockError, false);
       document.addEventListener('webkitpointerlockerror', this.onLockError, false);
-      this.canvasEl.onclick = this.captureMouse.bind(this);
+      // this.canvasEl.onclick = this.captureMouse.bind(this);
+      this.canvasEl.onclick = this.smartClick.bind(this);
     }
   },
 
   bindFunctions: function () {
     this.onMouseMoveL = this.onMouseMove.bind(this);
+    // this.onMouseClickL = this.onMouseClick.bind(this);
   },
 
   remove: function () {
     this.releaseMouse();
     this.sceneEl.removeBehavior(this);
+  },
+
+  smartClick: function (evt) {
+    console.log(document.pointerLockElement);
+    if (!document.pointerLockElement) {
+      console.log('Binding Mouse');
+      this.captureMouse.bind(this)();
+    } else {
+      console.log('And now for something completely different!', evt);
+    }
   },
 
   captureMouse: function () {
@@ -103,11 +123,13 @@
       // Pointer was just locked
       // Enable the mousemove listener
       document.addEventListener('mousemove', this.onMouseMoveL, false);
+      // document.addEventListener('click', this.onMouseClickL, false);
     } else {
       // Pointer was just unlocked
       // Disable the mousemove listener
       console.log("pointer unlock");
       document.removeEventListener('mousemove', this.onMouseMoveL, false);
+      // document.removeEventListener('click', this.onMouseClickL, false);
     }
   },
 
@@ -203,7 +225,7 @@
   },
 
   onMouseMove: function (e) {
-    if (!this.data.enabled) {return;}
+    if (!this.data.enabled) { return; }
     var movementX = e.movementX ||
       e.mozMovementX ||
       e.webkitMovementX ||
@@ -215,5 +237,27 @@
     this.yawObject.rotation.y -= movementX * 0.002 * this.data.sensitivity;
     this.pitchObject.rotation.x -= movementY * 0.002 * this.data.sensitivity;
     this.pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, this.pitchObject.rotation.x));
-  }
+  },
+
+  // onMouseClick: function (e) {
+  //   if (!this.data.enabled) { return; }
+  //   click(window.innerWidth / 2, window.innerHeight / 2);
+  //   console.log('Mouse Click', e);
+  // }
 });
+
+
+// function click (x, y) {
+//   const ev = document.createEvent('MouseEvent');
+//   const el = document.elementFromPoint(x, y);
+//   ev.initMouseEvent(
+//     'click',
+//     true /* bubble */, true /* cancelable */,
+//     window, null,
+//     x, y, 0, 0, /* coordinates */
+//     false, false, false, false, /* modifier keys */
+//     0 /* left */, null
+//   );
+//   console.log('Created Mouse Click', ev);
+//   el.dispatchEvent(ev);
+// }

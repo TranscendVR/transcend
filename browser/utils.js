@@ -53,8 +53,8 @@ export function addFirstPersonProperties (avatar, user) {
   // The cursor emits click events and fuse events (automatically emitting click after keeping cursor on something)
   const cursor = document.createElement('a-entity');
   avatar.appendChild(cursor);
-  cursor.setAttribute('cursor', 'fuse:true;');
-  cursor.setAttribute('position', '0 0 -0.1');
+  cursor.setAttribute('cursor', 'fuse: false;');
+  cursor.setAttribute('position', '0 0 -1');
   cursor.setAttribute('material', 'color: cyan; shader: flat');
   cursor.setAttribute('geometry', 'primitive: ring; radiusOuter: 0.007; radiusInner: 0.005;');
 }
