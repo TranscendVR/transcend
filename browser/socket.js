@@ -16,7 +16,7 @@ socket.on('connect', () => {
 
 // Render the user returned by the server, add first person attributes (camera, controls,
 //   and ticks pushed to server), then get other users in the scene
-socket.on('createUser', user => {
+socket.on('renderAvatar', user => {
   const avatar = putUserOnDOM(user);
   addFirstPersonProperties(avatar, user);
   socket.emit('getOthers');
