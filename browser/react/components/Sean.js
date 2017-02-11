@@ -16,13 +16,6 @@ export default class Sean extends React.Component {
   render () {
     return (
       <a-entity>
-        <a-collada-model src="#IBM-360" position="-2 0 -8" rotation="0 270"></a-collada-model>
-        <a-collada-model src="#terminal-typewriter" position="-2.6 0 -0.7"></a-collada-model>
-        <a-collada-model src="#tape-drive" position="-1.3 0 -7" rotation="0 270"></a-collada-model>
-        <a-collada-model src="#tape-drive" position="-0.4 0 -7" rotation="0 270"></a-collada-model>
-        <a-collada-model src="#disk-pack" position="-0.65 0 -7.65" rotation="0 270"></a-collada-model>
-        <a-collada-model src="#disk-pack" position="0.2 0 -7.65" rotation="0 270"></a-collada-model>
-        <a-collada-model src="#punch-reader" position="7 0 -5" rotation="0 180"></a-collada-model>
         <Room floorWidth="50"
           floorHeight="50"
           wallHeight="25"
