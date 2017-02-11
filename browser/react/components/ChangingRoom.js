@@ -6,15 +6,15 @@ import Room from './Room';
 
 export default class Sean extends React.Component {
 
-  componentDidMount() {
+  componentDidMount () {
     joinChatRoom('changingroom');
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     leaveChatRoom();
   }
 
-  render() {
+  render () {
     return (
       <a-entity>
         <Room floorWidth="50"
