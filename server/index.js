@@ -8,6 +8,25 @@ const { resolve } = require('path');
 const chalk = require('chalk');
 const passport = require('passport');
 
+// Custom Middleware to redirect HTTP to https using request headers appended
+// By one of Heroku's AWS ELB instances.
+// http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/x-forwarded-headers.html
+// Note that this is technically vulnerable to man-in-the-middle attacks
+const forceSSL = function (req, res, next) {
+  if (req.headers['x-forwarded-proto'] !== 'https') {
+    const clientIP = req.headers['x-forwarded-for'];
+    const redirectTarget = ['https://', req.get('Host'), req.url].join('');
+    console.log(chalk.blue(`Redirecting ${clientIP} to ${redirectTarget}`));
+    return res.redirect(redirectTarget);
+  }
+  return next();
+};
+
+if (process.env.NODE_ENV === 'production') {
+  console.log(chalk.blue('Production Environment detected, so redirect to HTTPS'));
+  app.use(forceSSL);
+}
+
 if (process.env.NODE_ENV !== 'production') {
   // Logging middleware (dev only)
   const morgan = require('morgan');

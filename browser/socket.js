@@ -7,6 +7,7 @@ import store from './redux/store';
 import { receiveUsers } from './redux/reducers/user-reducer';
 import { putUserOnDOM, putUserBodyOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
+import './aframeComponents/webrtc-controls';
 import { disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';
 
 socket.on('connect', () => {
@@ -15,9 +16,9 @@ socket.on('connect', () => {
 
 // Render the user returned by the server, add first person attributes (camera, controls,
 //   and ticks pushed to server), then get other users in the scene
-socket.on('createUser', user => {
+socket.on('renderAvatar', user => {
   const avatar = putUserOnDOM(user);
-  addFirstPersonProperties(avatar);
+  addFirstPersonProperties(avatar, user);
   socket.emit('getOthers');
 });
 

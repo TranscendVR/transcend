@@ -316,7 +316,7 @@ THREEx.Animations.prototype.stop = function () {
 THREEx.MinecraftChar = function (skinUrl) {
   this.baseUrl = './';
   // set default arguments values
-  skinUrl = skinUrl || (THREEx.MinecraftChar.baseUrl + 'images/jetienne.png');
+  skinUrl = skinUrl || (THREEx.MinecraftChar.baseUrl + 'images/3djesus.png');
 
   const texture = new THREE.Texture();
   texture.magFilter = THREE.NearestFilter;
@@ -873,12 +873,11 @@ THREEx.MinecraftNickname = function (character) {
     texture.needsUpdate = true;
     // build the sprite itself
     const material = new THREE.SpriteMaterial({
-      map: texture,
-      useScreenCoordinates: false
+      map: texture
     });
     const sprite = new THREE.Sprite(material);
     this.object3d = sprite;
-    sprite.position.y = 0.25;
+    sprite.position.y = 0.3;
     // add sprite to the character
     character.root.add(this.object3d);
   };
