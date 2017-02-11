@@ -24,7 +24,6 @@ const onHomeEnter = () => {
     .then(() => {
       const user = store.getState().auth;
       if (user.has('id')) {
-        console.log('User Found');
         window.socket.emit('connectUser', user);
         browserHistory.push('/vr');
       }
@@ -36,9 +35,7 @@ const confirmLogin = () => {
   store.dispatch(whoami())
     .then(() => {
       const user = store.getState().auth;
-      console.log('User on state: ', user);
       if (user.has('id')) {
-        console.log('User Found');
         window.socket.emit('connectUser', user);
         return;
       }
