@@ -10,6 +10,7 @@ const { getOtherUsers } = require('./utils');
 module.exports = io => {
   io.on('connection', socket => {
     console.log(chalk.yellow(`${socket.id} has connected`));
+    // These fix a race condition between scene loaded and user created
     socket.sceneLoaded = false;
     socket.createdUser = false;
     // When a socket client establishes a conenction, create and persist a user
