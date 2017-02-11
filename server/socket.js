@@ -27,7 +27,7 @@ module.exports = io => {
       socket.sceneLoaded = true;
       if (socket.createdUser) {
         const user = store.getState().users.get(socket.id);
-        socket.emit('createUser', user);
+        socket.emit('renderAvatar', user);
       }
     });
 

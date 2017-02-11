@@ -316,7 +316,7 @@ THREEx.Animations.prototype.stop = function () {
 THREEx.MinecraftChar = function (skinUrl) {
   this.baseUrl = './';
   // set default arguments values
-  skinUrl = skinUrl || (THREEx.MinecraftChar.baseUrl + 'images/jetienne.png');
+  skinUrl = skinUrl || (THREEx.MinecraftChar.baseUrl + 'images/3djesus.png');
 
   const texture = new THREE.Texture();
   texture.magFilter = THREE.NearestFilter;

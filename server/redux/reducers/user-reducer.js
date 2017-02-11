@@ -1,6 +1,6 @@
 const { Map } = require('immutable');
 
-const { createUser } = require('../../utils');
+const { User } = require('../../utils');
 
 /* --------------- INITIAL STATE --------------- */
 
@@ -41,11 +41,11 @@ const createAndEmitUser = (socket, user) => {
   return dispatch => {
     const userId = socket.id;
     const displayName = user.displayName;
-    const newUser = Map(createUser(userId, displayName));
+    const newUser = Map(new User(userId, displayName));
     dispatch(addUser(newUser));
     console.log('User created');
     if (socket.sceneLoaded) {
-      socket.emit('createUser', newUser);
+      socket.emit('renderAvatar', newUser);
     }
   };
 };

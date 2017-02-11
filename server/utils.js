@@ -11,18 +11,12 @@ function User (id, displayName) {
   this.scene = '';  // VR scene
 }
 
-// Create a user given the socket ID
-function createUser (id, displayName) {
-  const user = new User(id, displayName);
-  return user;
-}
-
 // When a user connects, send them a list of all of the existing users (minus themselves)
 function getOtherUsers (users, id) {
   return users.filterNot(userData => userData.get('id') === id);
 }
 
 module.exports = {
-  createUser,
+  User,
   getOtherUsers
 };
