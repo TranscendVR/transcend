@@ -6,15 +6,15 @@ import Room from './Room';
 
 export default class Sean extends React.Component {
 
-  componentDidMount () {
+  componentDidMount() {
     joinChatRoom('changingroom');
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     leaveChatRoom();
   }
 
-  render () {
+  render() {
     return (
       <a-entity>
         <Room floorWidth="50"
@@ -42,7 +42,14 @@ export default class Sean extends React.Component {
         <Mannequin x="14" y="1.25" z="10" xrot="0" yrot="0" zrot="0" skin="theflash" nickname="theflash" />
         <Mannequin x="16" y="1.25" z="10" xrot="0" yrot="0" zrot="0" skin="woody" nickname="woody" />
 
-        <Teleporter x="-10" y="1" z="-1" color="green" href="/vr" />
+        <Teleporter
+          color="green"
+          label="Lobby"
+          href="/vr"
+          rotation="90"
+          x="-24.5" y="1" z="-3"
+          labelx="-1" labely="1"
+        />
       </a-entity>
     );
   }
