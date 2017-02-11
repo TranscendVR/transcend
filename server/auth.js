@@ -21,6 +21,18 @@ passport.deserializeUser(
   }
 );
 
+// Local signup
+auth.post('/local/signup', (req, res, next) => {
+  User.create(req.body)
+  .then(user => {
+    req.login(user, (err) => {
+      if (err) next(err);
+      else res.sendStatus(201);
+    });
+  })
+  .catch(next);
+});
+
 // Local login
 auth.post('/local/login', (req, res, next) => {
   passport.authenticate('local', {
@@ -42,7 +54,6 @@ passport.use(new (LocalStrategy)(
           if (!ok) {
             return done(null, false, { message: 'Login incorrect' });
           }
-          console.log('USER IS: ', user);
           done(null, user);
         });
     })

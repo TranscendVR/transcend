@@ -15,3 +15,45 @@ As Mark Davis, Fullstack's Product Manager, describes [in a post about Fullstack
 > Here’s what we wish existed, now: a simple VR environment where up to 25 avatars can interact with each other, with real-time voice chat, that’s accessible on a Google Daydream headset as an MVP, but is also extensible to any WebVR enabled headset.
 
 This project serves to address that need. Transcend was built by [Joey Darbyshire](https://github.com/Jmikeydarby), [Sean McBride](https://github.com/spmcbride1201), [Yoo-Nah Park](https://github.com/parky22), and [Beth Qiang](https://github.com/bethqiang) as their Capstone Project during their Senior Phase at Fullstack Academy.
+
+## How to Play
+Transcend supports:
+* keyboard/mouse controls on Chrome 56 or higher on a PC or Mac 
+* Headset/controller controls on the Google Daydream.
+
+### Keyboard and Mouse Controls:
+
+#### Camera Movement:
+* Lock Mouse: Click the 3d Scene
+* Left and right turns the camera left and right
+* Up and Down turns the camera up and down
+* Unlock Mouse: Press ESC
+
+#### Avatar Movement:
+* Walk Forward: W or ⭡
+* Walk Backwards: S or ⭣
+* Sidestep Left: A or ⭠
+* Sidestep Right: S or ⭢
+
+#### Cursor:
+The ring in the center of your screen represents your cursor, which is your tool for interacting with the world. Elements in the world can responds to your cursor via left mouse clicks or when your cursor rests on something for a prolonged period.
+
+### Google Daydream:
+#### Camera Movement
+When wearing the Daydream headset, your camera tracks the movement of your head. 
+#### Avatar Movement / Cursor
+* Click once to wake controller while in VR Mode
+* Move your controller to move an in-game digital representation of your controller
+* Point your controller on a spot on the ground and click the large top button to teleport yourself to where you click.
+* Point your controller at teleporter orbs and click to activate them and teleport to another VR scene.
+
+### Teleporters:
+* Teleporters are the way we move between VR scenes. They cause you to leave one scene and enter another. 
+* Teleporters are orbs and they usually have a label representing where they lead. 
+* Teleporters highlight blue like a hyperlink when you hover your cursor over them. 
+* If you click on the teleporter or stay hovered to keep it highlighted for one second, the teleporter activates, taking you to the other scene.
+
+### UI Wheel:
+TBD
+
+
