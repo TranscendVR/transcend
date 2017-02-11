@@ -54,7 +54,6 @@ passport.use(new (LocalStrategy)(
           if (!ok) {
             return done(null, false, { message: 'Login incorrect' });
           }
-          console.log('USER IS: ', user);
           done(null, user);
         });
     })

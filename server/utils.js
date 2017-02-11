@@ -1,9 +1,7 @@
-const randomcolor = require('randomcolor');
-
 // User constructor
-function User (id) {
+function User (id, displayName) {
   this.id = id;
-  this.color = randomcolor();
+  this.displayName = displayName;
   this.x = Math.random() * 30 - 15;
   this.y = 1.3;
   this.z = Math.random() * 30 - 15;
@@ -13,18 +11,12 @@ function User (id) {
   this.scene = '';  // VR scene
 }
 
-// Create a user given the socket ID
-function createUser (id) {
-  const user = new User(id);
-  return user;
-}
-
 // When a user connects, send them a list of all of the existing users (minus themselves)
 function getOtherUsers (users, id) {
   return users.filterNot(userData => userData.get('id') === id);
 }
 
 module.exports = {
-  createUser,
+  User,
   getOtherUsers
 };

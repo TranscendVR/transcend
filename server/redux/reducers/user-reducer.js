@@ -1,6 +1,6 @@
 const { Map } = require('immutable');
 
-const { createUser } = require('../../utils');
+const { User } = require('../../utils');
 
 /* --------------- INITIAL STATE --------------- */
 
@@ -37,14 +37,16 @@ const removeUser = userId => {
 
 /* --------------- THUNK ACTION CREATORS --------------- */
 
-const createAndEmitUser = socket => {
+const createAndEmitUser = (socket, user) => {
   return dispatch => {
     const userId = socket.id;
-    const user = Map(createUser(userId));
-    dispatch(addUser(user));
-    socket.on('sceneLoad', () => {
-      socket.emit('createUser', user);
-    });
+    const displayName = user.displayName;
+    const newUser = Map(new User(userId, displayName));
+    dispatch(addUser(newUser));
+    console.log('User created');
+    if (socket.sceneLoaded) {
+      socket.emit('renderAvatar', newUser);
+    }
   };
 };
 
