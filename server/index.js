@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const { resolve } = require('path');
 const chalk = require('chalk');
 const passport = require('passport');
+const flash = require('connect-flash');
 
 // Custom Middleware to redirect HTTP to https using request headers appended
 // By one of Heroku's AWS ELB instances.
@@ -38,6 +39,9 @@ app.use(require('cookie-session')({
   name: 'session',
   keys: [process.env.SESSION_SECRET || 'an insecure secret key']
 }));
+
+// Set up req.flash() function on all requests which is used for flash messages; this is used for error messages during login
+app.use(flash());
 
 // Body parsing middleware
 app.use(bodyParser.urlencoded({ extended: true }));
