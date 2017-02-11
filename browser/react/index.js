@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import store from '../redux/store';
-import { Router, Route, browserHistory, IndexRoute, IndexRedirect } from 'react-router';
+import { Router, Route, browserHistory, IndexRedirect } from 'react-router';
 import App from './components/App';
 import Sean from './components/Sean';
 import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
-import Login from './components/Login';
+import Home from './components/Login/Home';
+import Login from './components/Login/Login';
+import Signup from './components/Login/Signup';
 import SOCKET from '../socket';
 import { whoami, logout } from '../redux/reducers/auth';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -54,7 +56,11 @@ ReactDOM.render(
     <MuiThemeProvider>
       <Router history={browserHistory}>
         <Route path="/" onEnter={onHomeEnter} >
-          <IndexRoute component={Login} />
+          <IndexRedirect to="/login" />
+          <Route component={Home}>
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+          </Route>
           <Route path="/logout" onEnter={bye} />
           <Route path="/vr" component={App} onEnter={confirmLogin}>
             <IndexRedirect to="lobby" />
@@ -65,7 +71,7 @@ ReactDOM.render(
             <Route path="joey" component={Joey} />
           </Route>
         </Route>
-      </Router>
+    </Router>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('react-app')

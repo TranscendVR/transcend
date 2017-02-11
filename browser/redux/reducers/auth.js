@@ -25,6 +25,13 @@ export const login = (username, password) => {
     .catch(err => console.log(err.message));
 };
 
+export const signup = (name, displayName, email, password) => {
+  return dispatch =>
+    axios.post('/api/auth/local/signup', { name, displayName, email, password })
+    .then(() => browserHistory.push('/vr'))
+    .catch(err => console.log(err.message));
+};
+
 export const logout = () =>
   dispatch =>
     axios.post('/api/auth/logout')

@@ -1,6 +1,18 @@
 export default {
   container: {
     position: 'relative',
+    height: '400px',
+    width: '320px',
+    margin: '100px auto',
+    paddingTop: '20px',
+    paddingBottom: '20px',
+    backgroundColor: 'rgba(25, 25, 25, 0.75)',
+    boxShadow: '0px 10px 60px -5px #000',
+    borderRadius: '2px',
+    textAlign: 'center'
+  },
+  signUpContainer: {
+    position: 'relative',
     height: '300px',
     width: '320px',
     margin: '100px auto',
@@ -34,6 +46,31 @@ export default {
   },
   loginButton: {
     backgroundColor: '#2F75B8',
+    color: '#FFF',
+    width: '254px',
+    height: '39px',
+    paddingLeft: '0',
+    paddingRight: '0',
+    display: 'block',
+    marginTop: '10px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    border: 'none',
+    borderRadius: '2px',
+    fontSize: '14px',
+    transition: 'all 0.25s ease-in-out',
+    ':hover': {
+      cursor: 'pointer'
+    },
+    ':focus': {
+      outline: 'none'
+    }
+  },
+  signupLink: {
+    textDecoration: 'none'
+  },
+  signupButton: {
+    backgroundColor: '#3FA03F',
     color: '#FFF',
     width: '254px',
     height: '39px',
