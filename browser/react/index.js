@@ -47,8 +47,8 @@ ReactDOM.render(
     <MuiThemeProvider>
       <Router history={browserHistory}>
         <Route path="/" onEnter={onHomeEnter} >
-          <IndexRedirect to="/home" />
-          <Route path="/home" component={Home}>
+          <IndexRedirect to="/login" />
+          <Route component={Home}>
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
           </Route>

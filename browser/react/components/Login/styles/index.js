@@ -82,7 +82,6 @@ export default {
     marginRight: 'auto',
     border: 'none',
     borderRadius: '2px',
-    textTransform: 'uppercase',
     fontSize: '14px',
     transition: 'all 0.25s ease-in-out',
     ':hover': {
