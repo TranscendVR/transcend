@@ -8,7 +8,6 @@ export default (props) => {
           <input
             key="name"
             name="name"
-            type="name"
             placeholder="name"
             style={props.styles.formControl}
             required
@@ -18,7 +17,6 @@ export default (props) => {
           <input
             key="displayName"
             name="displayName"
-            type="displayName"
             placeholder="display name"
             style={props.styles.formControl}
             required
