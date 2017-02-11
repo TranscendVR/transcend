@@ -19,6 +19,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 // Dispatch whoami to set the user whenever you hit the home page
 // Primary purpose right now is to set user right after local/OAuth login
 const onHomeEnter = () => {
+  // Clear the DIV in the physical DOM that provides initial feedback to user while bundle.js loads
+  document.getElementById('prebundleContent').setAttribute('style', 'display: none;');
   if (store.getState().auth.has('id')) browserHistory.push('/vr');
   store.dispatch(whoami())
     .then(() => {
