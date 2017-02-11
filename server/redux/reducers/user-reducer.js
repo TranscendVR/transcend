@@ -44,8 +44,7 @@ const createAndEmitUser = (socket, user) => {
     const newUser = Map(createUser(userId, displayName));
     dispatch(addUser(newUser));
     console.log('User created');
-    if (socket.sceneLoaded === true) {
-      console.log('Scene loaded first');
+    if (socket.sceneLoaded) {
       socket.emit('createUser', newUser);
     }
   };

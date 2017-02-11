@@ -25,8 +25,7 @@ module.exports = io => {
     socket.on('sceneLoad', () => {
       console.log('Scene loaded');
       socket.sceneLoaded = true;
-      if (socket.createdUser === true) {
-        console.log('User created first');
+      if (socket.createdUser) {
         const user = store.getState().users.get(socket.id);
         socket.emit('createUser', user);
       }
