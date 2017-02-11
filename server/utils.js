@@ -13,7 +13,6 @@ function User (id, displayName) {
 
 // Create a user given the socket ID
 function createUser (id, displayName) {
-  console.log(displayName);
   const user = new User(id, displayName);
   return user;
 }

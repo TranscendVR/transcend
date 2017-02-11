@@ -35,10 +35,11 @@ export const whoami = () => {
   return dispatch =>
     axios.get('/api/auth/whoami')
     .then(response => {
+      console.log(response.data);
       const user = Map(response.data);
       dispatch(authenticated(user));
     })
-    .catch(failed => dispatch(authenticated(null)));
+    .catch(failed => dispatch(authenticated(Map({}))));
 };
 
 /* --------------- REDUCER --------------- */

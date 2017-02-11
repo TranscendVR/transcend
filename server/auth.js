@@ -2,7 +2,6 @@ const auth = require('express').Router();
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
-const store = require('./redux/store');
 
 const User = require('../db').model('users');
 

@@ -40,13 +40,14 @@ const removeUser = userId => {
 const createAndEmitUser = (socket, user) => {
   return dispatch => {
     const userId = socket.id;
-    console.log('User: ', user);
     const displayName = user.displayName;
     const newUser = Map(createUser(userId, displayName));
     dispatch(addUser(newUser));
-    socket.on('sceneLoad', () => {
+    console.log('User created');
+    if (socket.sceneLoaded === true) {
+      console.log('Scene loaded first');
       socket.emit('createUser', newUser);
-    });
+    }
   };
 };
 

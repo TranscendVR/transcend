@@ -10,13 +10,25 @@ const { getOtherUsers } = require('./utils');
 module.exports = io => {
   io.on('connection', socket => {
     console.log(chalk.yellow(`${socket.id} has connected`));
+    socket.sceneLoaded = false;
+    socket.createdUser = false;
     // When a socket client establishes a conenction, create and persist a user
     //   for the client and return the user upon receipt of the sceneLoad event
     store.dispatch(addSocket(socket));
 
     socket.on('connectUser', (user) => {
-      console.log(user);
+      socket.createdUser = true;
       store.dispatch(createAndEmitUser(socket, user));
+    });
+
+    socket.on('sceneLoad', () => {
+      console.log('Scene loaded');
+      socket.sceneLoaded = true;
+      if (socket.createdUser === true) {
+        console.log('User created first');
+        const user = store.getState().users.get(socket.id);
+        socket.emit('createUser', user);
+      }
     });
 
     // getOthers returns all users other the the user associated with the socket
