@@ -54,7 +54,3 @@ export default class Sean extends React.Component {
     );
   }
 }
-
-            // position="10 1.25 10"
-          // minecraft='skinUrl: ../../images/3djesus.png;  component: body; heightMeter: 0.4'
-        // position="20 1.25 -1"
