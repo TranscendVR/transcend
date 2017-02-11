@@ -10,6 +10,12 @@ export default function addControllerAndListeners (userId) {
 
   const avatar = document.getElementById(userId);
 
+  const randomBox = document.createElement('a-entity');
+  avatar.appendChild(randomBox);
+  randomBox.setAttribute('geometry', 'primitive: box');
+  randomBox.setAttribute('position', '0 0 -5');
+  randomBox.setAttribute('material', 'color: cyan; shader: flat');
+
   // Put remote on DOM
   const remote = document.createElement('a-entity');
   avatar.appendChild(remote);

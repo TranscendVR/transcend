@@ -43,6 +43,7 @@ export function addFirstPersonProperties (avatar, user) {
 
   const camera = document.createElement('a-entity');
   avatar.appendChild(camera);
+  camera.setAttribute('id', 'camera');
   camera.setAttribute('camera', true);
 
   // Add and append the cursor to the player's avatar
