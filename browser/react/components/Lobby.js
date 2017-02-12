@@ -106,6 +106,16 @@ export default class Lobby extends React.Component {
           rotx="0" roty="0" rotz="0" />
         <Couch x="-13" y="0" z="20"
           rotx="0" roty="-90" rotz="0" />
+        <Couch x="-2" y="0" z="20"
+          rotx="0" roty="90" rotz="0" />
+        <Couch x="5" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="10" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="2" y="0" z="20"
+          rotx="0" roty="-90" rotz="0" />
+        <Couch x="13" y="0" z="20"
+          rotx="0" roty="90" rotz="0" />
 
         {/* Whiteboards */}
         <a-entity geometry="primitive: plane; height: 3; width: 4.5"
