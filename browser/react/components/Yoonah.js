@@ -45,6 +45,11 @@ export default class Yoonah extends React.Component {
           </a-entity>
         </a-entity>
 
+        <a-entity rotation="0 0 0" position="5 3 -4">
+          <a-entity geometry="primitive: circle; height: 1.5; radius: 1"
+            material="shader: gif; src: #lasercat"></a-entity>
+        </a-entity>
+
         <a-entity rotation="0 0 0" position="0 2 -10">
           <a-entity geometry="primitive: box; width: 1.5; height: 1.5; depth: 1.5"
             position="3 2 0"
