@@ -100,28 +100,12 @@ export default class Lobby extends React.Component {
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="14.75 1.5 -20.5" rotation="0 90 0"></a-collada-model>
 
         {/* Couches */}
-        <Couch
-          x="-5"
-          y="0"
-          z="23"
-          rotx="0"
-          roty="0"
-          rotz="0" />
-        <Couch
-          x="-10"
-          y="0"
-          z="23"
-          rotx="0"
-          roty="0"
-          rotz="0" />
-        <Couch
-          x="-13"
-          y="0"
-          z="21"
-          rotx="0"
-          roty="-90"
-          rotz="0" />
-
+        <Couch x="-5" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="-10" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="-13" y="0" z="20"
+          rotx="0" roty="-90" rotz="0" />
 
         {/* Whiteboards */}
         <a-entity geometry="primitive: plane; height: 3; width: 4.5"
