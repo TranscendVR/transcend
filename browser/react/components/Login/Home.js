@@ -8,17 +8,7 @@ import styles from './styles';
 
 @Radium
 class Home extends React.Component {
-  // Set the background style & size for just this component
-  componentDidMount () {
-    document.body.style.background = 'url(/images/background.png) no-repeat top center fixed';
-    document.body.style.backgroundSize = 'cover';
-  }
 
-  // Remove background style & size when this component unmounts
-  componentWillUnmount () {
-    document.body.style.background = '';
-    document.body.style.backgroundSize = '';
-  }
 
   render () {
     return (
