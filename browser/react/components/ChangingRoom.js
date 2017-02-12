@@ -41,6 +41,7 @@ export default class Sean extends React.Component {
         <Mannequin x="12" y="0.75" z="10" xrot="0" yrot="0" zrot="0" skin="Superman" nickname="Superman" />
         <Mannequin x="14" y="0.75" z="10" xrot="0" yrot="0" zrot="0" skin="theflash" nickname="theflash" />
         <Mannequin x="16" y="0.75" z="10" xrot="0" yrot="0" zrot="0" skin="woody" nickname="woody" />
+        <Mannequin x="18" y="0.75" z="10" xrot="0" yrot="0" zrot="0" skin="powerRanger" nickname="Power Ranger" />
 
         <Teleporter
           color="green"
