@@ -20,7 +20,7 @@ export default class Yoonah extends React.Component {
         <Room floorWidth="50"
           floorHeight="50"
           wallHeight="25"
-          wallColor="4B5D6A; shader:gif; src: #pusheen_gangnam"
+          wallColor="4B5D6A; shader:gif; src: #pusheen_gangnam; color: white"
           floorColor=""
           floorTexture="#floorText"
           ceilingColor="#998403" />
