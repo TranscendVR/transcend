@@ -17,6 +17,7 @@ export default class Beth extends React.Component {
       <a-entity position="0 0 0">
         <Room floorWidth="50"
           floorHeight="50"
+          floorDepth="50"
           wallHeight="25"
           wallColor="orange"
           floorColor=""

@@ -18,6 +18,7 @@ export default class Yoonah extends React.Component {
       <a-entity>
         <Room floorWidth="50"
           floorHeight="50"
+          floorDepth="50"
           wallHeight="25"
           wallColor="purple"
           floorColor=""
