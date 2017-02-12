@@ -16,6 +16,7 @@ export default function AssetLoader (props) {
 
       {/* YoonahRoom assets */}
       <img id="pusheen" src="/img/pusheen.gif"/>
+      <img id="pusheen_gangnam" src="/img/pusheen_gangnam.gif"/>
       <img id="nyancat" src="/img/nyancat.gif"/>
     </a-assets>
   );
