@@ -47,7 +47,6 @@ socket.on('getOthersCallback', users => {
 //   on the state of the client's DOM.
 socket.on('usersUpdated', users => {
   store.dispatch(receiveUsers(fromJS(users)));
-
   const receivedUsers = store.getState().users;
   receivedUsers.valueSeq().forEach(user => {
     // Pull the path off the URL, stripping forward slashes
@@ -56,10 +55,9 @@ socket.on('usersUpdated', users => {
     // These values are passed up as "scene" in the user tick and correspond to the names of react components and a-scenes
     const currentScene = window.location.pathname.replace(/\//g, '') || 'root';
     // If the user is on the current scene, add or update the user's head and body
-    const avatarHead = document.getElementById(user.get('id'));
-    const avatarBody = document.getElementById(`${user.get('id')}-body`);
     if (user.get('scene') === currentScene) {
-      // console.log(`Attempting to update ${user.get('id')}-body`);
+      const avatarHead = document.getElementById(user.get('id'));
+      const avatarBody = document.getElementById(`${user.get('id')}-body`);
       // If a user's avatar is NOT on the DOM already, add it
       // Convert it back to a normal JS object so we can use putUserOnDOM function as is
       if (avatarHead === null) {
@@ -67,13 +65,25 @@ socket.on('usersUpdated', users => {
         putUserOnDOM(userObj);
         putUserBodyOnDOM(userObj);
       } else {
+        const renderedSkin = avatarHead.getAttribute('skin');
+        const userSkin = user.get('skin');
+        if (renderedSkin !== userSkin) {
+          removeUser(user.get('id'));
+          const userObj = user.toJS();
+          putUserOnDOM(userObj);
+          putUserBodyOnDOM(userObj);
+        }
         // If a user's avatar is already on the DOM, update it
         avatarHead.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
         avatarHead.setAttribute('rotation', `${user.get('xrot')} ${user.get('yrot')} ${user.get('zrot')}`);
+        avatarHead.setAttribute('skin', user.get('skin'));
         avatarBody.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
         avatarBody.setAttribute('rotation', `0 ${user.get('yrot')} 0`);
+        // avatarBody.setAttribute('skin', user.get('skin'));
       }
     } else { // If the user is not on the scene, make sure the user is not on the DOM
+      const avatarHead = document.getElementById(user.get('id'));
+      const avatarBody = document.getElementById(`${user.get('id')}-body`);
       if (avatarHead || avatarBody) removeUser(user.get('id'));
     }
   });
