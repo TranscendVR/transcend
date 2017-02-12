@@ -4,6 +4,7 @@
 
 import AFRAME from 'aframe';
 const THREE = window.THREE;
+import { changeUserSkin } from '../utils';
 
 export default AFRAME.registerComponent('wearable-skin', {
   schema: {
@@ -13,9 +14,10 @@ export default AFRAME.registerComponent('wearable-skin', {
   // init binds this, creates event listeners for click and grip that both trigger the href handler, and setups the highlight effect.
   init: function () {
     this.handler = this.handler.bind(this);
+    this.setupHighlight = this.setupHighlight.bind(this);
     this.el.addEventListener('click', this.handler);
     this.el.addEventListener('gripdown', this.handler);
-    // this.setupHighlight();
+    this.setupHighlight();
   },
 
   /**
@@ -29,7 +31,10 @@ export default AFRAME.registerComponent('wearable-skin', {
   // This will be the handler to start wearing a skin.
   handler: function () {
     console.log('Hey');
-    console.log(`Selected ${this.data.skin}`);
+    console.log(`Selected ${this.el.id}`);
+    changeUserSkin(this.el.id);
+    let msg = new SpeechSynthesisUtterance(`Changed skin to ${this.el.id}`);
+    window.speechSynthesis.speak(msg);
   },
 
   // setupHighlight creates a transluscent blue glow that is 20% larger than the shape with the href in all directions
