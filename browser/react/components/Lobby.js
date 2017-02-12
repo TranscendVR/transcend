@@ -30,7 +30,7 @@ export default class Lobby extends React.Component {
           wallColor="#f9f7d9"
           floorColor="gray"
           floorTexture="#floorText"
-          ceilingColor="#998403" />
+          ceilingColor="#8DA0AF" />
 
         {/* Orbs */}
         <Teleporter
@@ -99,12 +99,22 @@ export default class Lobby extends React.Component {
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="14.75 1.5 -20.5" rotation="0 90 0"></a-collada-model>
 
         {/* Couches */}
-        <a-collada-model src="#couches" scale="3 3 3" position="7 0 24.5" rotation="0 0 0"></a-collada-model>
+        <a-collada-model src="#couches" scale="3 3 3" position="4 0 24.5" rotation="0 0 0"></a-collada-model>
         <a-collada-model src="#couches" scale="3 3 3" position="-23 0 24.5" rotation="0 0 0"></a-collada-model>
 
         {/* Whiteboards */}
-        <a-collada-model src="#whiteboard" scale="5 5 5" position="10 2 24.5" rotation="0 90 0"></a-collada-model>
-        <a-collada-model src="#whiteboard" scale="5 5 5" position="-10 2 24.5" rotation="0 90 0"></a-collada-model>
+        <a-entity geometry="primitive: plane; height: 3; width: 4.5"
+          material="color: white" position="-10 2.5 24.70" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3.25; width: 4.75"
+          material="color: gray" position="-10 2.5 24.75" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3; width: 4.5"
+          material="color: white" position="10 2.5 24.70" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3.25; width: 4.75"
+          material="color: gray" position="10 2.5 24.75" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3; width: 4.5"
+          material="color: white" position="0 2.5 24.70" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3.25; width: 4.75"
+          material="color: gray" position="0 2.5 24.75" rotation="0 180 0"></a-entity>
 
       </a-entity>
     );

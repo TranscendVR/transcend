@@ -40,7 +40,7 @@ export default class Yoonah extends React.Component {
         </a-entity>
 
         <a-entity rotation="0 0 0" position="0 2 -10">
-          <a-entity geometry="primitive:box;width:1.5;height:1.5;depth:1.5;" position="3 2 0" material="shader:gif;src:#pusheen; color: white" />
+          <a-entity geometry="primitive:box;width:1.5;height:1.5;depth:1.5;" position="3 2 0" material="shader:gif;src:#nyancat; color: white" />
           <a-animation attribute="rotation" dur="5000" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear" />
         </a-entity>
 

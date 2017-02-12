@@ -19,10 +19,10 @@ export default function AssetLoader (props) {
       <a-mixin id="chair-part" geometry="primitive: box" material="color: brown"></a-mixin>
       <a-asset-item id="monitor" src="/img/monitor/model.dae"></a-asset-item>
       <a-asset-item id="couches" src="/img/couches/model.dae"></a-asset-item>
-      <a-asset-item id="whiteboard" src="/img/whiteboard/model.dae"></a-asset-item>
 
       {/* YoonahRoom assets */}
       <img id="pusheen" src="/img/pusheen.gif"/>
+      <img id="nyancat" src="/img/nyancat.gif"/>
     </a-assets>
   );
 }
