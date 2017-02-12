@@ -19,7 +19,7 @@ export default (props) => (
               material={`color: ${props.wallColor}`}/>
 
     <a-entity geometry={`primitive: plane; width:${props.floorWidth}; height:${props.wallHeight}`}
-              rotation="180 0 0"
+              rotation="0 180 0"
               position={`0 ${props.wallHeight / 2} ${props.floorHeight / 2}`}
               material={`color: ${props.wallColor}; shader: flat`}/>
 

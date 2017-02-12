@@ -1,5 +1,6 @@
 import React from 'react';
 import Chair from './Chair';
+import Couch from './Couch';
 import Room from './Room';
 import '../../aframeComponents/scene-load';
 import { createArray } from '../../utils';
@@ -30,7 +31,7 @@ export default class Lobby extends React.Component {
           wallColor="#f9f7d9"
           floorColor="gray"
           floorTexture="#floorText"
-          ceilingColor="#998403" />
+          ceilingColor="#8DA0AF" />
 
         {/* Orbs */}
         <Teleporter
@@ -97,6 +98,38 @@ export default class Lobby extends React.Component {
         {/* Monitors */}
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="12.5 1.5 -20.5" rotation="0 90 0"></a-collada-model>
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="14.75 1.5 -20.5" rotation="0 90 0"></a-collada-model>
+
+        {/* Couches */}
+        <Couch x="-5" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="-10" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="-13" y="0" z="20"
+          rotx="0" roty="-90" rotz="0" />
+        <Couch x="-2" y="0" z="20"
+          rotx="0" roty="90" rotz="0" />
+        <Couch x="5" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="10" y="0" z="23"
+          rotx="0" roty="0" rotz="0" />
+        <Couch x="2" y="0" z="20"
+          rotx="0" roty="-90" rotz="0" />
+        <Couch x="13" y="0" z="20"
+          rotx="0" roty="90" rotz="0" />
+
+        {/* Whiteboards */}
+        <a-entity geometry="primitive: plane; height: 3; width: 4.5"
+          material="color: white" position="-10 2.5 24.70" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3.25; width: 4.75"
+          material="color: gray" position="-10 2.5 24.75" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3; width: 4.5"
+          material="color: white" position="10 2.5 24.70" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3.25; width: 4.75"
+          material="color: gray" position="10 2.5 24.75" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3; width: 4.5"
+          material="color: white" position="0 2.5 24.70" rotation="0 180 0"></a-entity>
+        <a-entity geometry="primitive: plane; height: 3.25; width: 4.75"
+          material="color: gray" position="0 2.5 24.75" rotation="0 180 0"></a-entity>
 
       </a-entity>
     );
