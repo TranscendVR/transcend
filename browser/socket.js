@@ -28,8 +28,7 @@ socket.on('renderAvatar', user => {
 // Perform an initial render the other users' avatars (after local filtering) and emit the following:
 //     --haveGottenOthers: an event that causes the server to emit the startTick event, which causes
 //       this client's publish-location components to begin broadcating real-time updates to the server.
-//       While this likely seems unneccesary, the intention of this ping-pong is to provide
-//       a hook for the server to throttle the frequency of client updates to the server.
+//       The intention of this ping-pong is to prevent race conditions from occurring.
 //     --readyToReceiveUpdates: an event that tells the server to begin sending the ticks of other
 //       users' avatars to this client. This only occurs after the initial render of the users is
 //       complete, which should avoid potential jenk when joining a room with many avatars.
@@ -62,7 +61,6 @@ socket.on('usersUpdated', users => {
     const avatarHead = document.getElementById(user.get('id'));
     const avatarBody = document.getElementById(`${user.get('id')}-body`);
     if (user.get('scene') === currentScene) {
-      // console.log(`Attempting to update ${user.get('id')}-body`);
       // If a user's avatar is NOT on the DOM already, add it
       // Convert it back to a normal JS object so we can use putUserOnDOM function as is
       if (avatarHead === null) {

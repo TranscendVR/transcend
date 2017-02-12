@@ -43,12 +43,13 @@ export function addFirstPersonProperties (avatar, user) {
   avatar.setAttribute('fps-look-controls', true);
   avatar.setAttribute('wasd-controls', 'sensitivity: 1');
 
+  // Camera needs to be a child of the avatar so that things don't go wonky with
+  // the controller
   const camera = document.createElement('a-entity');
   avatar.appendChild(camera);
-  camera.setAttribute('id', 'camera');
   camera.setAttribute('camera', true);
 
-  // Add and append the cursor to the player's avatar
+  // Add and append the cursor to the camera
   // The cursor is represented by a tiny ring 1/10 of a meter in front of the player
   // The cursor casts a ray along the vector from the player to the cursor
   // The cursor emits click events and fuse events (automatically emitting click after keeping cursor on something)

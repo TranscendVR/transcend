@@ -38,10 +38,11 @@ module.exports = io => {
       socket.emit('getOthersCallback', getOtherUsers(allUsers, socket.id));
     });
 
-    // Currently unused lifecycle hook that occurs after a client perform the initial
-    //   render of all of the avatars but before starting to emit avatar updates to
-    //   the server. This is intended to be used to allow the server the ability
-    //   to potentially throttle the client's rate of updates to the server.
+    // Occurs after a client perform the initial render of all of the avatars
+    // but before starting to emit avatar updates to the server. The `tick` kicks off
+    // the process by which users recieve other users' updates, so this is to ensure
+    // race conditions don't occur where a user is attempting to be updated before
+    // they are completely on the DOM.
     // Note that the startTick event listener is located in the publish-location
     //   A-Frame component located at /browser/aframeComponents/publish-location.js
     socket.on('haveGottenOthers', () => {
