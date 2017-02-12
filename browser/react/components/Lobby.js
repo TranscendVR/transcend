@@ -99,8 +99,8 @@ export default class Lobby extends React.Component {
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="14.75 1.5 -20.5" rotation="0 90 0"></a-collada-model>
 
         {/* Couches */}
-        <a-collada-model src="#couches" scale="3 3 3" position="4 0 24.5" rotation="0 0 0"></a-collada-model>
-        <a-collada-model src="#couches" scale="3 3 3" position="-23 0 24.5" rotation="0 0 0"></a-collada-model>
+        <a-collada-model src="#sofa" scale="3 3 3" position="4 0 24.5" rotation="0 0 0"></a-collada-model>
+        <a-collada-model src="#sofa" scale="3 3 3" position="-23 0 24.5" rotation="0 0 0"></a-collada-model>
 
         {/* Whiteboards */}
         <a-entity geometry="primitive: plane; height: 3; width: 4.5"
