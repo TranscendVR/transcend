@@ -1,9 +1,9 @@
+/* global THREE, SpeechSynthesisUtterance */
 /**
  * Component for selecting your character's skin in game.
  */
 
 import AFRAME from 'aframe';
-const THREE = window.THREE;
 import { changeUserSkin } from '../utils';
 
 export default AFRAME.registerComponent('wearable-skin', {
@@ -30,10 +30,8 @@ export default AFRAME.registerComponent('wearable-skin', {
 
   // This will be the handler to start wearing a skin.
   handler: function () {
-    console.log('Hey');
-    console.log(`Selected ${this.el.id}`);
     changeUserSkin(this.el.id);
-    let msg = new SpeechSynthesisUtterance(`Changed skin to ${this.el.id}`);
+    const msg = new SpeechSynthesisUtterance(`Changed skin to ${this.el.id}`);
     window.speechSynthesis.speak(msg);
   },
 
@@ -42,11 +40,11 @@ export default AFRAME.registerComponent('wearable-skin', {
   //   with the wearable-skin.
   setupHighlight: function () {
     // Clone mesh and set up highlighter material.
-    var mesh = this.el.object3DMap.mesh;
+    const mesh = this.el.object3DMap.mesh;
     if (!mesh) {
       return false;
     }
-    var clone = mesh.clone();
+    const clone = mesh.clone();
     clone.material = new THREE.MeshBasicMaterial({
       color: 0x0000ff,
       transparent: true,
