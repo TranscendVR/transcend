@@ -18,6 +18,7 @@ export default (props) => {
             key="displayName"
             name="displayName"
             placeholder="display name"
+            maxLength="8"
             style={props.styles.formControl}
             required
           />
