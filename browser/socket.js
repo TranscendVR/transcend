@@ -7,7 +7,7 @@ import store from './redux/store';
 import { setCurrentUser, receiveUsers } from './redux/reducers/user-reducer';
 import { putUserOnDOM, putUserBodyOnDOM, addFirstPersonProperties } from './utils';
 import './aframeComponents/publish-location';
-// import './aframeComponents/daydream-controller';
+import './aframeComponents/daydream-controller';
 import './aframeComponents/collider';
 import './aframeComponents/webrtc-controls';
 import { disconnectUser, addPeerConn, removePeerConn, setRemoteAnswer, setIceCandidate } from './webRTC/client';

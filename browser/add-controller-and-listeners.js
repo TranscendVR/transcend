@@ -12,17 +12,11 @@ export default function addControllerAndListeners (userId) {
 
   const avatar = document.getElementById(userId);
 
-  const intermediary = document.createElement('a-entity');
-  avatar.appendChild(intermediary);
-  intermediary.setAttribute('tracked-controls', 'id:Daydream Controller');
-
   // Put remote on DOM
   const remote = document.createElement('a-entity');
-  intermediary.appendChild(remote);
+  avatar.appendChild(remote);
   remote.setAttribute('id', 'remote');
-  // remote.setAttribute('daydream-controller', true);
-  remote.setAttribute('position', '0 -0.5 -0.5');
-  remote.setAttribute('obj-model', 'obj:https://raw.githubusercontent.com/TechnoBuddhist/VR-Controller-Daydream/master/vr_controller_daydream.obj; mtl:https://raw.githubusercontent.com/TechnoBuddhist/VR-Controller-Daydream/master/vr_controller_daydream.mtl');
+  remote.setAttribute('daydream-controller', true);
 
   // Put ray on DOM
   const ray = document.createElement('a-entity');
