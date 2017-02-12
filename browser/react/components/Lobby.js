@@ -1,5 +1,6 @@
 import React from 'react';
 import Chair from './Chair';
+import Couch from './Couch';
 import Room from './Room';
 import '../../aframeComponents/scene-load';
 import { createArray } from '../../utils';
@@ -99,8 +100,22 @@ export default class Lobby extends React.Component {
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="14.75 1.5 -20.5" rotation="0 90 0"></a-collada-model>
 
         {/* Couches */}
-        <a-collada-model src="#sofa" scale="3 3 3" position="4 0 24.5" rotation="0 0 0"></a-collada-model>
-        <a-collada-model src="#sofa" scale="3 3 3" position="-23 0 24.5" rotation="0 0 0"></a-collada-model>
+        <Couch
+          x="-5"
+          y="0"
+          z="23" />
+        <Couch
+          x="-10"
+          y="0"
+          z="23" />
+        <Couch
+          x="-12"
+          y="0"
+          z="23"
+          rotx="0"
+          roty="-90"
+          rotz="0" />
+
 
         {/* Whiteboards */}
         <a-entity geometry="primitive: plane; height: 3; width: 4.5"
