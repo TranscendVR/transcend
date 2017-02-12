@@ -79,7 +79,6 @@ socket.on('usersUpdated', users => {
         avatarHead.setAttribute('skin', user.get('skin'));
         avatarBody.setAttribute('position', `${user.get('x')} ${user.get('y')} ${user.get('z')}`);
         avatarBody.setAttribute('rotation', `0 ${user.get('yrot')} 0`);
-        // avatarBody.setAttribute('skin', user.get('skin'));
       }
     } else { // If the user is not on the scene, make sure the user is not on the DOM
       const avatarHead = document.getElementById(user.get('id'));
