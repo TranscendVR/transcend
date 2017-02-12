@@ -1,3 +1,5 @@
+import './aframeComponents/fps-look-controls';
+
 // putUserOnDom performs local filtering to make sure the user is in the same
 //   A-Frame room and perfoms an initial render of their avatar if they are
 export function putUserOnDOM (user) {
@@ -7,7 +9,7 @@ export function putUserOnDOM (user) {
     const head = document.createElement('a-minecraft');
     scene.appendChild(head);
     head.setAttribute('id', user.id);
-    head.setAttribute('minecraft-nickname', user.color);
+    head.setAttribute('minecraft-nickname', user.displayName);
     head.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png;');
     head.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
     head.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
@@ -38,8 +40,8 @@ export function addFirstPersonProperties (avatar, user) {
   mutebutton.setAttribute('mute-self', false);
 
   avatar.setAttribute('publish-location', true);
-  avatar.setAttribute('look-controls', true);
-  avatar.setAttribute('wasd-controls', true);
+  avatar.setAttribute('fps-look-controls', true);
+  avatar.setAttribute('wasd-controls', 'sensitivity: 1');
 
   const camera = document.createElement('a-entity');
   avatar.appendChild(camera);
