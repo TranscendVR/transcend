@@ -103,15 +103,21 @@ export default class Lobby extends React.Component {
         <Couch
           x="-5"
           y="0"
-          z="23" />
+          z="23"
+          rotx="0"
+          roty="0"
+          rotz="0" />
         <Couch
           x="-10"
           y="0"
-          z="23" />
-        <Couch
-          x="-12"
-          y="0"
           z="23"
+          rotx="0"
+          roty="0"
+          rotz="0" />
+        <Couch
+          x="-13"
+          y="0"
+          z="21"
           rotx="0"
           roty="-90"
           rotz="0" />
