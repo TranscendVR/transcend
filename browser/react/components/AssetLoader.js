@@ -20,7 +20,7 @@ export default function AssetLoader (props) {
       <a-asset-item id="monitor" src="/img/monitor/model.dae"></a-asset-item>
 
       {/* YoonahRoom assets */}
-      <img id="pusheen" src="pusheen.gif"/>
+      <img id="pusheen" src="/img/pusheen.gif"/>
     </a-assets>
   );
 }

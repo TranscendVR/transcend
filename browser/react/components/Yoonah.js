@@ -32,7 +32,18 @@ export default class Yoonah extends React.Component {
           x="-24.5" y="1" z="-3"
           labelx="-1" labely="1"
         />
-        <a-entity geometry="primitive:circle; segments:64" position="-1.2 -0.5 -1" material="shader:gif; src:#pusheen; opacity:.2; color:blue" data-label="left bottom"></a-entity>
+        {/* Cat GIFs */}
+        <a-entity rotation="0 0 0" position="1.2 2 -1">
+          <a-entity geometry="primitive:cylinder; height:1.5;radius:1;" material="shader:gif;src:#pusheen;">
+            <a-animation attribute="rotation" dur="5000" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear"></a-animation>
+          </a-entity>
+        </a-entity>
+
+        <a-entity rotation="0 0 0" position="0 2 -10">
+          <a-entity geometry="primitive:box;width:1.5;height:1.5;depth:1.5;" position="3 2 0" material="shader:gif;src:#pusheen; color: white" />
+          <a-animation attribute="rotation" dur="5000" fill="forwards" to="0 360 0" repeat="indefinite" easing="linear" />
+        </a-entity>
+
       </a-entity>
     );
   }
