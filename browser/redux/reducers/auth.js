@@ -18,34 +18,43 @@ export const authenticated = user => ({
 });
 
 export const login = (username, password) => {
+  console.log(`Logging in with ${username}, ${password}`);
   return dispatch =>
     axios.post('/api/auth/local/login', { username, password })
-    .then((res) => console.log('USER IS: ', res.user))
-    .then(() => browserHistory.push('/vr'))
-    .catch(err => console.log(err.message));
+      .then(response => {
+        console.log(`Server login responded with ${response}`);
+        const user = Map(response.data);
+        dispatch(authenticated(user));
+      })
+      .then(() => browserHistory.push('/vr'))
+      .catch(err => {
+        dispatch(authenticated(Map({})));
+        console.log(err.message);
+      });
 };
 
 export const signup = (name, displayName, email, password) => {
+  console.log(`Logging in with ${name}, ${displayName}, ${email}, ${password}`);
   return dispatch =>
     axios.post('/api/auth/local/signup', { name, displayName, email, password })
-    .then(() => browserHistory.push('/vr'))
-    .catch(err => console.log(err.message));
+      .then(response => dispatch(login(email, password)))
+      .catch(err => console.log(err.message));
 };
 
 export const logout = () =>
   dispatch =>
     axios.post('/api/auth/logout')
-    .then(() => dispatch(whoami()))
-    .catch(() => dispatch(whoami()));
+      .then(() => dispatch(whoami()))
+      .catch(() => dispatch(whoami()));
 
 export const whoami = () => {
   return dispatch =>
     axios.get('/api/auth/whoami')
-    .then(response => {
-      const user = Map(response.data);
-      dispatch(authenticated(user));
-    })
-    .catch(failed => dispatch(authenticated(Map({}))));
+      .then(response => {
+        const user = Map(response.data);
+        dispatch(authenticated(user));
+      })
+      .catch(failed => dispatch(authenticated(Map({}))));
 };
 
 /* --------------- REDUCER --------------- */

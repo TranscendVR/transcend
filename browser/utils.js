@@ -7,10 +7,13 @@ export function putUserOnDOM (user) {
   if (user.scene === window.location.pathname.replace(/\//g, '') || 'root') {
     const scene = document.getElementById('scene');
     const head = document.createElement('a-minecraft');
+    // Just in case a user doesn't have a skin associated with their user, use 3djesus
+    const skin = user.skin || '3djesus';
+    head.setAttribute('skin', skin);
     scene.appendChild(head);
     head.setAttribute('id', user.id);
     head.setAttribute('minecraft-nickname', user.displayName);
-    head.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png;');
+    head.setAttribute('minecraft', `skinUrl: ../../images/${skin}.png;`);
     head.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
     head.setAttribute('rotation', `${user.xrot} ${user.yrot} ${user.zrot}`);
     return head;
@@ -20,11 +23,24 @@ export function putUserOnDOM (user) {
 export function putUserBodyOnDOM (user) {
   const scene = document.getElementById('scene');
   const body = document.createElement('a-minecraft');
+  const skin = user.skin || '3djesus';
   scene.appendChild(body);
+  body.setAttribute('skin', skin);
   body.setAttribute('id', `${user.id}-body`);
-  body.setAttribute('minecraft', 'skinUrl: ../../images/3djesus.png;  component: body; heightMeter: 0.4');
+  body.setAttribute('minecraft', `skinUrl: ../../images/${skin}.png;  component: body; heightMeter: 0.4`);
   body.setAttribute('position', `${user.x} ${user.y} ${user.z}`);
   body.setAttribute('rotation', `0 ${user.yrot} 0`);
+}
+
+export function changeUserSkin (skin) {
+  const avatarHead = document.getElementById(window.socket.id);
+  // Just stuff the shortform skin name on the DOM to emit in publish-location
+  // I consider this a 'hack' until we change how we update user locations
+  avatarHead.setAttribute('skin', skin);
+  avatarHead.setAttribute('minecraft', `skinUrl: ../../images/${skin}.png;`);
+  // Commented out because we're just floating heads
+  // const avatarBody = document.getElementById(`${window.socket.id}-body`);
+  // avatarBody.setAttribute('minecraft', `skinUrl: ../../images/${skin}.png;  component: body; heightMeter: 0.4`);
 }
 
 export function addFirstPersonProperties (avatar, user) {
