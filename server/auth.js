@@ -97,7 +97,9 @@ passport.use(
 
 // Google OAuth cont. - handle the callback after Google has authenticated the user
 auth.get('/google/callback',
-  passport.authenticate('google')
+  passport.authenticate('google', {
+    successRedirect: '/vr'
+  })
 );
 
 // Send user info to frontend
