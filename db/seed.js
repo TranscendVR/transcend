@@ -4,7 +4,7 @@ const seedUsers = () => db.Promise.map([
   { name: 'Omri Bernstein', displayName: 'ArmyBarnstorm', email: 'omri@transcend.vr', password: '1234', skin: '3djesus' },
   { name: 'Barack Obama', displayName: 'BMoney', email: 'barack@transcend.vr', password: '1234', skin: 'agentsmith' },
   { name: 'Joey Darbyshire', displayName: 'HeadForFeet', email: 'joey@transcend.vr', password: '1234', skin: 'batman' },
-  { name: 'Sean McBride', displayName: 'Mainframe', email: 'sean@transcend.vr', password: '1234', skin: 'mario' },
+  { name: 'Sean McBride', displayName: 'Mainframe', email: 'sean@transcend.vr', password: '1234', skin: 'Mario' },
   { name: 'Yoo-Nah Park', displayName: 'TheChair', email: 'yoo-nah@transcend.vr', password: '1234', skin: 'god' },
   { name: 'Beth Qiang', displayName: 'AnotherRaceCondition', email: 'beth@transcend.vr', password: '1234', skin: 'Iron-Man-Minecraft-Suit' },
   { name: 'Eliot Sfiwbdflkuwsjkdfhweioj', displayName: 'TheNextOgdenMorrow', email: 'eliot@transcend.vr', password: '1234', skin: 'char' },
