@@ -1,7 +1,8 @@
 // User constructor
-function User (id, displayName) {
+function User (id, displayName, skin) {
   this.id = id;
   this.displayName = displayName;
+  this.skin = skin;
   this.x = Math.random() * 30 - 15;
   this.y = 1.3;
   this.z = Math.random() * 30 - 15;

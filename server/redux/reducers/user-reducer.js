@@ -41,7 +41,8 @@ const createAndEmitUser = (socket, user) => {
   return dispatch => {
     const userId = socket.id;
     const displayName = user.displayName;
-    const newUser = Map(new User(userId, displayName));
+    const skin = user.skin;
+    const newUser = Map(new User(userId, displayName, skin));
     dispatch(addUser(newUser));
     console.log('User created');
     if (socket.sceneLoaded) {

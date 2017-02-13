@@ -9,6 +9,7 @@ import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
+import ChangingRoom from './components/ChangingRoom';
 import Home from './components/Login/Home';
 import Login from './components/Login/Login';
 import Signup from './components/Login/Signup';
@@ -21,28 +22,39 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const onHomeEnter = () => {
   // Clear the DIV in the physical DOM that provides initial feedback to user while bundle.js loads
   document.getElementById('prebundleContent').setAttribute('style', 'display: none;');
-  if (store.getState().auth.has('id')) browserHistory.push('/vr');
-  store.dispatch(whoami())
-    .then(() => {
-      const user = store.getState().auth;
-      if (user.has('id')) {
-        window.socket.emit('connectUser', user);
-        browserHistory.push('/vr');
-      }
-    });
+  if (window.location.pathname === '/login') {
+    if (store.getState().auth.has('id')) browserHistory.push('/vr');
+    store.dispatch(whoami())
+      .then(() => {
+        const user = store.getState().auth;
+        console.log(`onHomeEnter is comparing on ${user}`);
+        if (user.has('id')) {
+          console.log(`EMITTING CONNECT USER from onHomeEnter via ${window.location.pathname}`);
+          window.socket.emit('connectUser', user);
+          browserHistory.push('/vr');
+        }
+      });
+  }
 };
 
 const confirmLogin = () => {
-  if (store.getState().auth.has('id')) return;
-  store.dispatch(whoami())
-    .then(() => {
-      const user = store.getState().auth;
-      if (user.has('id')) {
-        window.socket.emit('connectUser', user);
-        return;
-      }
-      browserHistory.push('/');
-    });
+  // Clear the DIV in the physical DOM that provides initial feedback to user while bundle.js loads
+  document.getElementById('prebundleContent').setAttribute('style', 'display: none;');
+  const user = store.getState().auth;
+  console.log(`confirmLogin is comparing on ${user}`);
+  if (!user.has('id')) {
+    store.dispatch(whoami())
+      .then(() => {
+        const user = store.getState().auth;
+        if (user.has('id')) {
+          console.log(`EMITTING CONNECT USER from confirmLogin via ${window.location.pathname}`);
+          window.socket.emit('connectUser', user);
+          return;
+        }
+        console.log("confirmLogin is redirecting to root");
+        browserHistory.push('/');
+      });
+  }
 };
 
 const bye = () => {
@@ -68,9 +80,10 @@ ReactDOM.render(
             <Route path="beth" component={Beth} />
             <Route path="yoonah" component={Yoonah} />
             <Route path="joey" component={Joey} />
+            <Route path="changingroom" component={ChangingRoom} />
           </Route>
         </Route>
-    </Router>
+      </Router>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('react-app')
