@@ -19,7 +19,8 @@ This project serves to address that need. Transcend was built by [Joey Darbyshir
 ## How to Play
 Transcend supports:
 * keyboard/mouse controls on Chrome 56 or higher on a PC or Mac 
-* Headset/controller controls on the Google Daydream.
+
+Note: Headset/controller controls on the Google Daydream coming soon.
 
 ### Keyboard and Mouse Controls:
 
@@ -36,24 +37,18 @@ Transcend supports:
 * Sidestep Right: S or ⭢
 
 #### Cursor:
-The ring in the center of your screen represents your cursor, which is your tool for interacting with the world. Elements in the world can responds to your cursor via left mouse clicks or when your cursor rests on something for a prolonged period.
-
-### Google Daydream:
-#### Camera Movement
-When wearing the Daydream headset, your camera tracks the movement of your head. 
-#### Avatar Movement / Cursor
-* Click once to wake controller while in VR Mode
-* Move your controller to move an in-game digital representation of your controller
-* Point your controller on a spot on the ground and click the large top button to teleport yourself to where you click.
-* Point your controller at teleporter orbs and click to activate them and teleport to another VR scene.
+The ring in the center of your screen represents your cursor, which is your tool for interacting with the world. Certain elements in the world responds to your cursor hovering over a selectable object for one continuous second. You know that an object is responding to your cursor when it glows a transluscent blue, similar to an HTML hyperlink.
 
 ### Teleporters:
 * Teleporters are the way we move between VR scenes. They cause you to leave one scene and enter another. 
 * Teleporters are orbs and they usually have a label representing where they lead. 
 * Teleporters highlight blue like a hyperlink when you hover your cursor over them. 
-* If you click on the teleporter or stay hovered to keep it highlighted for one second, the teleporter activates, taking you to the other scene.
+* If you stay hovered to keep it highlighted for one second, the teleporter activates, taking you to the other scene.
+
+### Costumes in 'The Gap'
+In this VR universe, The Gap is where the fashion happens. Hover your cursor over a mannequin wearing an avatar you like, and you'll notice a translucent blue cylinder appear around it. After one second, you should hear a voice confirming that you now are that avatar. Talk about Fast Fashion!
 
 ### UI Wheel:
-TBD
+When you are in game, look down where your feet would be and you'll notice a button. No, it's not for your [Reebok Pumps](https://en.wikipedia.org/wiki/Reebok_Pump). C'mon, you can't even jump in this world! The button mutes your in-game microphone. Start at it for a second, and you'll see the button change between recording and muted states. Hope you can hold your sneeze that long!
 
 
