@@ -1,6 +1,7 @@
 import React from 'react';
 import Chair from './Chair';
 import Couch from './Couch';
+import Table from './Table';
 import Room from './Room';
 import '../../aframeComponents/scene-load';
 import { createArray } from '../../utils';
@@ -107,7 +108,7 @@ export default class Lobby extends React.Component {
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="12.5 1.5 -20.5" rotation="0 90 0"></a-collada-model>
         <a-collada-model src="#monitor" scale="0.5 0.5 0.5" position="14.75 1.5 -20.5" rotation="0 90 0"></a-collada-model>
 
-        {/* Couches */}
+        {/* Couches and coffee tables */}
         <Couch x="-5" y="0" z="23"
           rotx="0" roty="0" rotz="0" />
         <Couch x="-10" y="0" z="23"
@@ -124,6 +125,29 @@ export default class Lobby extends React.Component {
           rotx="0" roty="-90" rotz="0" />
         <Couch x="13" y="0" z="20"
           rotx="0" roty="90" rotz="0" />
+        <Table x="-7.5" y="0" z="20"
+          color="#521515"
+          legHeight="0.4"
+          depth="1.5" />
+        <Table x="7.5" y="0" z="20"
+          color="#521515"
+          legHeight="0.4"
+          depth="1.5" />
+
+        {/* Tables and chairs */}
+        <Table x="5" y="0" z="0"
+          color="white"
+          legHeight="0.8"
+          depth="0.5" />
+        <Table x="-5" y="0" z="0"
+          color="white"
+          legHeight="0.8"
+          depth="0.5" />
+        <Chair x="-5.75" y="0" z="0.3" />
+        <Chair x="-4.25" y="0" z="0.3" />
+        <Chair x="5.75" y="0" z="0.3" />
+        <Chair x="4.25" y="0" z="0.3" />
+
 
         {/* Whiteboards */}
         <a-entity geometry="primitive: plane; height: 3; width: 4.5"
