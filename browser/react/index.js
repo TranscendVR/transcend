@@ -27,9 +27,7 @@ const onHomeEnter = () => {
     store.dispatch(whoami())
       .then(() => {
         const user = store.getState().auth;
-        console.log(`onHomeEnter is comparing on ${user}`);
         if (user.has('id')) {
-          console.log(`EMITTING CONNECT USER from onHomeEnter via ${window.location.pathname}`);
           window.socket.emit('connectUser', user);
           browserHistory.push('/vr');
         }
@@ -41,17 +39,14 @@ const confirmLogin = () => {
   // Clear the DIV in the physical DOM that provides initial feedback to user while bundle.js loads
   document.getElementById('prebundleContent').setAttribute('style', 'display: none;');
   const user = store.getState().auth;
-  console.log(`confirmLogin is comparing on ${user}`);
   if (!user.has('id')) {
     store.dispatch(whoami())
       .then(() => {
         const user = store.getState().auth;
         if (user.has('id')) {
-          console.log(`EMITTING CONNECT USER from confirmLogin via ${window.location.pathname}`);
           window.socket.emit('connectUser', user);
           return;
         }
-        console.log("confirmLogin is redirecting to root");
         browserHistory.push('/');
       });
   }

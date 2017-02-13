@@ -10,7 +10,7 @@ export default (props) => (
     </div>
     <div style={props.styles.orDividerLineDiv}>
       <div style={props.styles.orDividerLineBefore}></div>
-      <p style={props.styles.orDivider}></p>
+      <p style={props.styles.orDivider}>or</p>
       <div style={props.styles.orDividerLineAfter}></div>
     </div>
     <form onSubmit={props.login}>

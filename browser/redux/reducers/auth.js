@@ -18,23 +18,19 @@ export const authenticated = user => ({
 });
 
 export const login = (username, password) => {
-  console.log(`Logging in with ${username}, ${password}`);
   return dispatch =>
     axios.post('/api/auth/local/login', { username, password })
       .then(response => {
-        console.log(`Server login responded with ${response}`);
         const user = Map(response.data);
         dispatch(authenticated(user));
       })
       .then(() => browserHistory.push('/vr'))
       .catch(err => {
         dispatch(authenticated(Map({})));
-        console.log(err.message);
       });
 };
 
 export const signup = (name, displayName, email, password) => {
-  console.log(`Logging in with ${name}, ${displayName}, ${email}, ${password}`);
   return dispatch =>
     axios.post('/api/auth/local/signup', { name, displayName, email, password })
       .then(response => dispatch(login(email, password)))

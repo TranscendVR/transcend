@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Radium from 'radium';
 import { login, logout, signup } from '../../../redux/reducers/auth';
 import styles from './styles';
+import Title from './Title';
 
 /* ----------------- COMPONENT ------------------ */
 
@@ -13,6 +14,7 @@ class Home extends React.Component {
   render () {
     return (
       <div>
+        <Title styles={this.props.styles} />
         {this.props.children && React.cloneElement(this.props.children, this.props)}
       </div>
     );

@@ -1,9 +1,59 @@
 export default {
+  aboutContainer: {
+    position: 'relative',
+    height: '160px',
+    width: '320px',
+    margin: '50px auto 25px auto',
+    paddingTop: '20px',
+    paddingBottom: '20px',
+    backgroundColor: 'rgba(25, 25, 25, 0.75)',
+    boxShadow: '0px 10px 60px -5px #000',
+    borderRadius: '2px',
+    textAlign: 'center',
+    color: '#FFF'
+  },
+  appTitle: {
+    margin: '5px auto'
+  },
+  subtitleLeft: {
+    marginLeft: '10px',
+    textAlign: 'left'
+  },
+  subtitleCenter: {
+    textAlign: 'center'
+  },
+  subtitleRight: {
+    marginRight: '10px',
+    textAlign: 'right'
+  },
+  viewOnGitHub: {
+    width: '254px',
+    height: '39px',
+    display: 'block',
+    margin: '15px auto',
+    color: '#FFF',
+    textAlign: 'center',
+    lineHeight: '40px',
+    fontSize: '14px',
+    backgroundColor: 'purple',
+    textDecoration: 'none',
+    borderRadius: '2px'
+  },
+  viewOnGitHubIcon: {
+    float: 'left',
+    fontSize: '21px',
+    width: '50px',
+    height: '26px',
+    margin: '7px',
+    padding: '2px',
+    textAlign: 'center',
+    borderRight: '1px solid #FFF'
+  },
   container: {
     position: 'relative',
     height: '400px',
     width: '320px',
-    margin: '100px auto',
+    margin: '25px auto 50px auto',
     paddingTop: '20px',
     paddingBottom: '20px',
     backgroundColor: 'rgba(25, 25, 25, 0.75)',
@@ -15,7 +65,7 @@ export default {
     position: 'relative',
     height: '300px',
     width: '320px',
-    margin: '100px auto',
+    margin: '25px auto 50px auto',
     paddingTop: '20px',
     paddingBottom: '20px',
     backgroundColor: 'rgba(25, 25, 25, 0.75)',
