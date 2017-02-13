@@ -37,40 +37,40 @@ export default class Lobby extends React.Component {
         {/* Orbs */}
         <Teleporter
           color="red"
-          label="Sean"
-          href="/vr/sean"
+          label="The Basement"
+          href="/vr/thebasement"
           rotation="90"
-          x="-24.5" y="1" z="1"
-          labelx="-0.75" labely="1"
+          x="-24.5" y="1" z="-3"
+          labelx="-2.5" labely="1"
         />
         <Teleporter
           color="orange"
-          label="Beth"
-          href="/vr/beth"
+          label="Space Room"
+          href="/vr/spaceroom"
           rotation="90"
-          x="-24.5" y="1" z="5"
-          labelx="-0.75" labely="1"
+          x="-24.5" y="1" z="2"
+          labelx="-2" labely="1"
         />
         <Teleporter
           color="blue"
-          label="Joey"
-          href="/vr/joey"
+          label="Game Room"
+          href="/vr/gameroom"
           rotation="90"
-          x="-24.5" y="1" z="9"
-          labelx="-0.75" labely="1"
+          x="-24.5" y="1" z="7"
+          labelx="-2" labely="1"
         />
         <Teleporter
           color="purple"
-          label="Yoo-Nah"
-          href="/vr/yoonah"
+          label="Cat Room"
+          href="/vr/catroom"
           rotation="90"
-          x="-24.5" y="1" z="13"
+          x="-24.5" y="1" z="12"
           labelx="-1.5" labely="1"
         />
         <Teleporter
           color="#BB96FF"
           label="The Gap"
-          href="/vr/changingroom"
+          href="/vr/thegap"
           rotation="90"
           x="-24.5" y="1" z="17"
           labelx="-1.5" labely="1"

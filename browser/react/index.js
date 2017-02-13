@@ -71,11 +71,11 @@ ReactDOM.render(
           <Route path="/vr" component={App} onEnter={confirmLogin}>
             <IndexRedirect to="lobby" />
             <Route path="lobby" component={Lobby} />
-            <Route path="sean" component={Sean} />
-            <Route path="beth" component={Beth} />
-            <Route path="yoonah" component={Yoonah} />
-            <Route path="joey" component={Joey} />
-            <Route path="changingroom" component={ChangingRoom} />
+            <Route path="thebasement" component={Sean} />
+            <Route path="spaceroom" component={Beth} />
+            <Route path="catroom" component={Yoonah} />
+            <Route path="gameroom" component={Joey} />
+            <Route path="thegap" component={ChangingRoom} />
           </Route>
         </Route>
       </Router>
