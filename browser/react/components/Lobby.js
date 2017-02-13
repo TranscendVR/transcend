@@ -67,7 +67,7 @@ export default class Lobby extends React.Component {
           labelx="-1.5" labely="1"
         />
         <Teleporter
-          color="aqua"
+          color="#BB96FF"
           label="The Gap"
           href="/vr/changingroom"
           rotation="90"
