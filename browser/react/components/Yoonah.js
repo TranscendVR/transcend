@@ -21,9 +21,9 @@ export default class Yoonah extends React.Component {
           floorHeight="50"
           wallHeight="25"
           wallColor="4B5D6A; shader:gif; src: #pusheen_gangnam; color: white"
-          floorColor=""
-          floorTexture="#floorText"
-          ceilingColor="#998403" />
+          floorColor="#F4C2C2"
+          floorTexture=""
+          ceilingColor="#F4C2C2" />
         <Teleporter
           color="green"
           label="Lobby"
@@ -33,7 +33,7 @@ export default class Yoonah extends React.Component {
           labelx="-1" labely="1"
         />
         {/* Cat GIFs */}
-        <a-entity rotation="0 0 0" position="1.2 2 -1">
+        <a-entity rotation="0 0 0" position="5 2 -10">
           <a-entity geometry="primitive: cylinder; height: 1.5; radius: 1"
             material="shader: gif; src: #pusheen">
             <a-animation attribute="rotation"
@@ -45,12 +45,12 @@ export default class Yoonah extends React.Component {
           </a-entity>
         </a-entity>
 
-        <a-entity rotation="0 0 0" position="5 3 -4">
-          <a-entity geometry="primitive: circle; height: 1.5; radius: 1"
+        <a-entity rotation="0 90 0" position="5 2 -5">
+          <a-entity geometry="primitive: circle; height: 1.5; radius: 3"
             material="shader: gif; src: #lasercat"></a-entity>
         </a-entity>
 
-        <a-entity rotation="0 0 0" position="0 2 -10">
+        <a-entity rotation="0 0 0" position="5 2 0">
           <a-entity geometry="primitive: box; width: 1.5; height: 1.5; depth: 1.5"
             position="3 2 0"
             material="shader: gif; src: #nyancat; color: white" />
@@ -63,7 +63,7 @@ export default class Yoonah extends React.Component {
             easing="linear" />
         </a-entity>
 
-        <a-entity rotation="0 0 0" position="0 2 -10">
+        <a-entity rotation="0 0 0" position="5 2 5">
           <a-entity geometry="primitive: box; width: 1.5; height: 1.5; depth: 1.5"
             position="3 2 0"
             material="shader: gif; src: #nyancat; color: white" />
@@ -75,7 +75,7 @@ export default class Yoonah extends React.Component {
             easing="linear" />
         </a-entity>
 
-        <a-entity rotation="0 0 0" position="5 5 -15">
+        <a-entity rotation="0 0 0" position="5 2 10">
           <a-entity geometry="primitive: box; width: 1.5; height: 1.5; depth: 1.5"
             position="3 2 0"
             material="shader: gif; src: #bwcat; color: white" />
