@@ -14,11 +14,11 @@ export default function AssetLoader (props) {
       <a-asset-item id="monitor" src="/img/monitor/model.dae"></a-asset-item>
 
       {/* Cat GIF Room assets */}
-      <img id="pusheen" src="/img/cats/pusheen.gif"/>
+      {/*<img id="pusheen" src="/img/cats/pusheen.gif"/>
       <img id="pusheen_gangnam" src="/img/cats/pusheen_gangnam.gif"/>
       <img id="nyancat" src="/img/cats/nyancat.gif"/>
       <img id="bwcat" src="/img/cats/bwcat.gif"/>
-      <img id="lasercat" src="/img/cats/lasercat.gif"/>
+      <img id="lasercat" src="/img/cats/lasercat.gif"/>*/}
     </a-assets>
   );
 }
