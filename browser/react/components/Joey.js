@@ -28,7 +28,7 @@ export default class Joey extends React.Component {
           label="Lobby"
           href="/vr"
           rotation="90"
-          x="-24.5" y="1" z="-3"
+          x="-24.5" y="1" z="-5"
           labelx="-1" labely="1"
         />
       </a-entity>

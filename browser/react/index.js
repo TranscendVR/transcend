@@ -9,6 +9,7 @@ import Beth from './components/Beth';
 import Yoonah from './components/Yoonah';
 import Joey from './components/Joey';
 import Lobby from './components/Lobby';
+import ChangingRoom from './components/ChangingRoom';
 import Home from './components/Login/Home';
 import Login from './components/Login/Login';
 import Signup from './components/Login/Signup';
@@ -21,28 +22,34 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const onHomeEnter = () => {
   // Clear the DIV in the physical DOM that provides initial feedback to user while bundle.js loads
   document.getElementById('prebundleContent').setAttribute('style', 'display: none;');
-  if (store.getState().auth.has('id')) browserHistory.push('/vr');
-  store.dispatch(whoami())
-    .then(() => {
-      const user = store.getState().auth;
-      if (user.has('id')) {
-        window.socket.emit('connectUser', user);
-        browserHistory.push('/vr');
-      }
-    });
+  if (window.location.pathname === '/login') {
+    if (store.getState().auth.has('id')) browserHistory.push('/vr');
+    store.dispatch(whoami())
+      .then(() => {
+        const user = store.getState().auth;
+        if (user.has('id')) {
+          window.socket.emit('connectUser', user);
+          browserHistory.push('/vr');
+        }
+      });
+  }
 };
 
 const confirmLogin = () => {
-  if (store.getState().auth.has('id')) return;
-  store.dispatch(whoami())
-    .then(() => {
-      const user = store.getState().auth;
-      if (user.has('id')) {
-        window.socket.emit('connectUser', user);
-        return;
-      }
-      browserHistory.push('/');
-    });
+  // Clear the DIV in the physical DOM that provides initial feedback to user while bundle.js loads
+  document.getElementById('prebundleContent').setAttribute('style', 'display: none;');
+  const user = store.getState().auth;
+  if (!user.has('id')) {
+    store.dispatch(whoami())
+      .then(() => {
+        const user = store.getState().auth;
+        if (user.has('id')) {
+          window.socket.emit('connectUser', user);
+          return;
+        }
+        browserHistory.push('/');
+      });
+  }
 };
 
 const bye = () => {
@@ -64,13 +71,14 @@ ReactDOM.render(
           <Route path="/vr" component={App} onEnter={confirmLogin}>
             <IndexRedirect to="lobby" />
             <Route path="lobby" component={Lobby} />
-            <Route path="sean" component={Sean} />
-            <Route path="beth" component={Beth} />
-            <Route path="yoonah" component={Yoonah} />
-            <Route path="joey" component={Joey} />
+            <Route path="thebasement" component={Sean} />
+            <Route path="spaceroom" component={Beth} />
+            <Route path="catroom" component={Yoonah} />
+            <Route path="gameroom" component={Joey} />
+            <Route path="thegap" component={ChangingRoom} />
           </Route>
         </Route>
-    </Router>
+      </Router>
     </MuiThemeProvider>
   </Provider>,
   document.getElementById('react-app')

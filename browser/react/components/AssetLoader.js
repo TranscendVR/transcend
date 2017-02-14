@@ -10,10 +10,10 @@ export default function AssetLoader (props) {
       <img id="floorText" src="/img/carpet2.jpg"/>
       <img id="microphone-mute" src="/img/microphone-mute.png"/>
       <img id="microphone-unmute" src="/img/microphone-unmute.png"/>
-      <a-mixin id="chair-part" geometry="primitive: box" material="color: brown"></a-mixin>
+      <a-mixin id="chair-part" geometry="primitive: box" material="color: #BFBFBF"></a-mixin>
       <a-asset-item id="monitor" src="/img/monitor/model.dae"></a-asset-item>
 
-      {/* YoonahRoom assets */}
+      {/* Cat GIF Room assets */}
       <img id="pusheen" src="/img/cats/pusheen.gif"/>
       <img id="pusheen_gangnam" src="/img/cats/pusheen_gangnam.gif"/>
       <img id="nyancat" src="/img/cats/nyancat.gif"/>

@@ -21,6 +21,7 @@ export default AFRAME.registerComponent('publish-location', {
         xrot: el.getAttribute('rotation').x,
         yrot: el.getAttribute('rotation').y,
         zrot: el.getAttribute('rotation').z,
+        skin: el.getAttribute('skin'),
         scene: window.location.pathname.replace(/\//g, '') || 'root' // returns the room name or root if the lobby
       };
       const mutebutton = document.getElementById(`mutebutton`);
