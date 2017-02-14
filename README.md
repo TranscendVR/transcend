@@ -22,7 +22,7 @@ A playable online build of Transcend can be found [here](https://transcend.herok
 
 ## Architecture
 
-Transcend is built on [Node.js](https://nodejs.org/en/) using [Socket.io](http://socket.io/) for event-based client-server interaction, [WebRTC](https://webrtc.org/) for real-time audio communication, [A-Frame](https://aframe.io/) for 3D graphics and scene rendering and WebVR capabilities, [React](https://facebook.github.io/react/) as a view layer, and [Redux](http://redux.js.org/) for both client and server state management.
+Transcend is built on [Node.js](https://nodejs.org/en/) using [Socket.io](http://socket.io/) for event-based client-server interaction, [WebRTC](https://webrtc.org/) for real-time audio communication, [A-Frame](https://aframe.io/) for 3D graphics and scene rendering and WebVR capabilities, [React](https://facebook.github.io/react/) as a view layer, and [Redux](http://redux.js.org/) with [Immutable.js](https://facebook.github.io/immutable-js/) for immutable state management on both the client and server.
 
 ## How to Play
 
