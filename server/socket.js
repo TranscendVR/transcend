@@ -9,6 +9,9 @@ const { getOtherUsers } = require('./utils');
 
 module.exports = io => {
   io.on('connection', socket => {
+
+    let unsubscribe;
+
     console.log(chalk.yellow(`${socket.id} has connected`));
     // These fix a race condition between scene loaded and user created
     socket.sceneLoaded = false;
@@ -51,7 +54,7 @@ module.exports = io => {
     // readyToReceiveUpdates sends the position of all users except the client's own
     //   whenever the server's store updates.
     socket.on('readyToReceiveUpdates', () => {
-      store.subscribe(() => {
+      unsubscribe = store.subscribe(() => {
         const allUsers = store.getState().users;
         socket.emit('usersUpdated', getOtherUsers(allUsers, socket.id));
       });
@@ -72,6 +75,11 @@ module.exports = io => {
       leaveChatRoom();
       console.log(`[${socket.id}] disconnected`);
       store.dispatch(removeSocket(socket));
+      if (unsubscribe) {
+        // Conditional here to prevent a possible race condition where a user
+        // disconnects before `readyToReceiveUpdates` event
+        unsubscribe();
+      }
     });
 
     // joinChatRoom joins a socket.io room and tells all clients in that room to establish a WebRTC
