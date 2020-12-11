@@ -16,9 +16,11 @@ As Mark Davis, Fullstack's Product Manager, describes [in a post about Fullstack
 
 This project serves to address that need. Transcend was built by [Joey Darbyshire](https://github.com/Jmikeydarby), [Sean McBride](https://github.com/spmcbride1201), [Yoo-Nah Park](https://github.com/parky22), and [Beth Qiang](https://github.com/bethqiang) as their Capstone Project during their Senior Phase at [Fullstack Academy](https://www.fullstackacademy.com/).
 
-## Live Demo
+## Demo
 
-A playable online build of Transcend can be found [here](https://transcend.herokuapp.com/).
+A playable online build of Transcend can be found [here](https://transcend.herokuapp.com/). Note: it has not been updated in years and we make no promise of it currently working.
+
+[Here's our presentation](https://www.youtube.com/watch?v=I5ND_1PI77c) with a demo and discussion of the architecture and the challenges we faced while building it.
 
 ## Architecture
 
