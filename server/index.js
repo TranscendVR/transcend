@@ -3,7 +3,6 @@ const http = require('http');
 const server = http.createServer();
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
 const { resolve } = require('path');
 const chalk = require('chalk');
 const passport = require('passport');
@@ -39,9 +38,20 @@ app.use(require('cookie-session')({
   keys: [process.env.SESSION_SECRET || 'an insecure secret key']
 }));
 
+// Shim for passport 0.6+ compatibility with cookie-session (which lacks regenerate/save)
+app.use((req, res, next) => {
+  if (req.session && !req.session.regenerate) {
+    req.session.regenerate = (cb) => { cb(); };
+  }
+  if (req.session && !req.session.save) {
+    req.session.save = (cb) => { cb(); };
+  }
+  next();
+});
+
 // Body parsing middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Authentication middleware
 app.use(passport.initialize());
@@ -54,7 +64,6 @@ const io = socketio(server);
 require('./socket')(io);
 
 // Serve static files
-app.use(express.static(resolve(__dirname, '../browser/app.html')));
 app.use(express.static(resolve(__dirname, '../browser/stylesheets')));
 app.use(express.static(resolve(__dirname, '../public')));
 app.use(express.static(resolve(__dirname, '../node_modules/font-awesome')));
@@ -63,8 +72,8 @@ app.use(express.static(resolve(__dirname, '../node_modules/font-awesome')));
 app.use('/api', require('./api'));
 
 // Send index.html for anything else
-app.get('/*', (req, res) => {
-  res.sendFile(resolve(__dirname, '../browser/app.html'));
+app.get('/{*path}', (req, res) => {
+  res.sendFile('app.html', { root: resolve(__dirname, '../browser') });
 });
 
 const port = process.env.PORT || 1337;

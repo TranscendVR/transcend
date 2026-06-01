@@ -106,8 +106,10 @@ auth.get('/google/callback',
 auth.get('/whoami', (req, res) => res.send(req.user));
 
 auth.post('/logout', (req, res, next) => {
-  req.logout();
-  res.redirect('/api/auth/whoami');
+  req.logout((err) => {
+    if (err) return next(err);
+    res.redirect('/api/auth/whoami');
+  });
 });
 
 module.exports = auth;
